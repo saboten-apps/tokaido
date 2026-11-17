@@ -65,7 +65,10 @@ export function BoardView({ board, players, activeId, focusId, positions, jump }
           </g>
         ))}
         {roads.map(([a, b], i) => (
-          <line key={i} x1={a.x} y1={a.y} x2={b.x} y2={b.y} className="road" />
+          <g key={i}>
+            <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="rgba(248, 244, 236, 0.7)" strokeWidth={10} strokeLinecap="round" />
+            <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} className="road" />
+          </g>
         ))}
         {board.tiles.map((tile, i) => {
           const p = pts[i]
@@ -74,6 +77,9 @@ export function BoardView({ board, players, activeId, focusId, positions, jump }
           const r = big ? 22 : 16
           return (
             <g key={i} transform={`translate(${p.x},${p.y})`} data-tile={i}>
+              {big && (
+                <circle r={r + 3} fill="none" stroke={tile.mustStop ? '#b33e2b' : '#8a6e47'} strokeWidth={1.5} strokeDasharray={tile.type === 'shuku' ? '3,2' : undefined} opacity={0.7} />
+              )}
               <circle r={r} fill={art.fill} stroke={tile.mustStop ? '#f5d76e' : '#fff'} strokeWidth={tile.mustStop ? 4 : 2} />
               {art.image ? (
                 <>

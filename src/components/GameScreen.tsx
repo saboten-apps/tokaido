@@ -60,6 +60,11 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
   const weather = weatherOn(state.seed, state.day, cfg)
   const [stampPop, closeStampPop] = useStampPop(state, state.players.filter((p) => p.isHuman).map((p) => p.id), anim !== null)
 
+  // 画面開始時は画面最上部から表示する
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   // 駒の見かけの位置（動いている駒だけ、1マスずつ）
   const positions: Record<string, number> = {}
   for (const p of state.players) positions[p.id] = state.board.playerStates[p.id].position

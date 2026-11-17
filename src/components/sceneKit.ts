@@ -33,7 +33,12 @@ export const MOODS: Record<Mood, MoodDef> = {
 let gradient: THREE.DataTexture | null = null
 function toonGradient(): THREE.DataTexture {
   if (!gradient) {
-    gradient = new THREE.DataTexture(new Uint8Array([120, 120, 120, 255, 190, 190, 190, 255, 255, 255, 255, 255]), 3, 1, THREE.RGBAFormat)
+    gradient = new THREE.DataTexture(
+      new Uint8Array([130, 126, 120, 255, 198, 194, 188, 255, 255, 255, 255, 255]),
+      3,
+      1,
+      THREE.RGBAFormat,
+    )
     gradient.minFilter = THREE.NearestFilter
     gradient.magFilter = THREE.NearestFilter
     gradient.needsUpdate = true
@@ -712,20 +717,20 @@ export interface SkyStops {
 }
 
 export const SKIES: Record<Exclude<Mood, 'day'>, SkyStops> = {
-  morning: { top: '#4a78a6', mid: '#ecd0b6', horizon: '#f2a27a' },
-  dusk: { top: '#3d5384', mid: '#dc8e6e', horizon: '#f5bd78' },
-  night: { top: '#0a1130', mid: '#1b2a55', horizon: '#33437a' },
-  rain: { top: '#6a7a88', mid: '#a5b2ba', horizon: '#d2dadd' },
-  snow: { top: '#1c2943', mid: '#3a4b70', horizon: '#8294b4' },
-  mist: { top: '#a7b6b2', mid: '#ccd6d2', horizon: '#eaf0ea' },
+  morning: { top: '#36638f', mid: '#eccfb8', horizon: '#f29772' },
+  dusk: { top: '#2c4070', mid: '#d77f59', horizon: '#f5b565' },
+  night: { top: '#0a1029', mid: '#162248', horizon: '#2b3c70' },
+  rain: { top: '#586b7c', mid: '#9aa8b2', horizon: '#cbd6da' },
+  snow: { top: '#1b2742', mid: '#37476e', horizon: '#8395b7' },
+  mist: { top: '#9eada8', mid: '#c9d4cf', horizon: '#ebf1ea' },
 }
 
-/** 晴れの空は、県の空の色を中ほどにして、上を濃い藍、地平を淡い黄にする */
+/** 晴れの空は、県の空の色を中ほどにして、上を濃い藍（広重ブルー）、地平を淡い和紙色にする */
 export function skyFor(mood: Mood, regionSky: string): SkyStops {
   if (mood !== 'day') return SKIES[mood]
   const c = new THREE.Color(regionSky)
-  const top = c.clone().lerp(new THREE.Color('#1f5f9a'), 0.85)
-  const horizon = c.clone().lerp(new THREE.Color('#fbeec8'), 0.7)
+  const top = c.clone().lerp(new THREE.Color('#164b7d'), 0.88)
+  const horizon = c.clone().lerp(new THREE.Color('#fcf2d9'), 0.72)
   return { top: `#${top.getHexString()}`, mid: regionSky, horizon: `#${horizon.getHexString()}` }
 }
 

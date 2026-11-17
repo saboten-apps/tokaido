@@ -127,7 +127,13 @@ export function ActionPanel({ state, aw, onAct }: ActionProps) {
   if (aw.kind === 'roll') {
     return (
       <section className="dock">
-        <div className="dock-who">{awPlayer.name}の番{tired ? `（疲れていて、出目は${maxFaceFor(awPlayer, cfg)}まで）` : ''}{weatherOn(state.seed, state.day, cfg) === 'rain' ? `（雨：歩くと1歩ごとに体力-${cfg.balance.weather.rainStaminaPerStep}余分。働けば影響なし）` : ''}</div>
+        <div className="dock-who">
+          <span>{awPlayer.name}の番</span>
+          {tired && <span className="dock-warn">（疲れていて、出目は{maxFaceFor(awPlayer, cfg)}まで）</span>}
+          {weatherOn(state.seed, state.day, cfg) === 'rain' && (
+            <span className="dock-warn">（雨：歩くと1歩ごとに体力-{cfg.balance.weather.rainStaminaPerStep}余分。働けば影響なし）</span>
+          )}
+        </div>
         <StaminaGauge value={awPlayer.stats.stamina} id={`dock-${awPlayer.id}`} large />
         <button className="primary" data-testid="roll" onClick={() => onAct({ type: 'roll' })}>
           サイコロを振る
