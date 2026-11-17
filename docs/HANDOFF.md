@@ -36,6 +36,12 @@
 - 称号：`src/data/titles.json`（条件式）。京都に着いた人だけが、結果画面で得る。取得率（CPU4人×400）：川止めの客41%・思い出の旅人38%・名物通27%・一番乗り25%・関所の顔16%・人望の旅人8%・思い出ぶくろ3%。「倹約の旅人」（路銀1000文以上で到着）は CPU では0%（人間なら狙える）。
 - 旅日記：`GameState.diary`。出来事・関所・名物・分かれ道・本陣・到着を、日・場所つきで記録。結果画面の「〇〇の東海道」で読む。
 
+## 3D の盤面（試作、ROADMAP F、2026-11-17）
+- `src/components/Board3D.tsx`（three.js。`React.lazy` で、3D を開いたときだけ読み込む：約547KB・gzip 136KB の別チャンク）。2D と同じ座標（`boardLayout`）を地面の上の街道にし、マス（種類の色・必ず止まるマスは金の輪）・名前の札・松並木・山・富士・駒（笠の旅人）を立てる。カメラは焦点の駒を追う（小地図で押した所を4秒映す）。駒は、2D と同じ `positions` を、なめらかに追いかける。
+- 切り替え：画面の上の「3D表示／2D表示」（`localStorage` に覚える）。WebGL が使えなければ、メッセージを出す。ひとり用・オンラインの両方で使える。
+- **未確認**：実機（スマホ）での描画の重さ。ヘッドレス Chromium（ソフトウェア描画）で、描画・駒の追従・切り替えは確認した。実機では `?stats=` のような計測は入れていない（必要なら足す）。
+- 試作の割り切り：マスの絵（`artFor` の画像）は、3D では使っていない（色だけ）。駒は共通の形。夜・天気・水面なし。
+
 ## オンライン対戦（ROADMAP D2、2026-11-17）
 - **ローカルで動作確認済み**：`npm run test:e2e:online`（`wrangler dev --local` に、2つのブラウザでつなぎ、部屋づくり→招待リンクで入室→身分の選択→準備→開始→最後まで→同じ結果、を確認。約3分）。
 - 構成：`src/engine/room.ts`（ロビー・席・身分・持ち時間・切断・自動プレイ）／`src/online/protocol.ts`（通信の形式。行動は厳しく検証）／`roomServer.ts`（認証・重複送信の防止・猶予・アラーム。純粋な関数）／`client.ts`（WebSocket・つなぎ直し・ack・再送）／`worker/`（`index.ts` が入口、`roomDO.ts` が Durable Object）／`wrangler.jsonc`。画面は `src/components/online/OnlineScreen.tsx`（入口・ロビー・対戦・結果）と、共有部品 `src/components/parts.tsx`。umaregacya のものを旅向けに作り替えた（1ターンの年数・人生の目標を外し、身分の選択を足した）。
@@ -87,6 +93,11 @@
 - 旅日記（umaregacya の chronicle を作り直す）
 
 ## 記録（新しいものを上に）
+### 2026-11-17 Claude（ROADMAP F：3D の試作）
+- 3D の盤面（遅延読み込み）、2D/3D の切り替え（記憶つき）、e2e。`viewMode.ts`・`BoardStage.tsx` を追加。
+- 確認：`npm run check`（単体82件）、`npm run test:e2e`（22件）。スクリーンショットで、街道・名前・駒・景色が出ることを確認。
+- 次：実機での重さの確認（ユーザー）。重ければ、マス数を減らして描く・影を使わない・低解像度、などの手がある。
+
 ### 2026-11-17 Claude（絵の取り込み・PWA の準備・結果画面）
 - 絵の差し替え（ROADMAP E）：`scripts/importArt.mjs`（`art-inbox/<マスの名前>.png` → `public/art/*.webp` ＋ `src/art/overrides.json`）、`artFor` がマスの名前か `art` のキーで探す、盤面では円形に切り抜いて表示。仮の画像で、取り込み→表示まで確認（コミットしていない）。`docs/ASSETS.md` に権利の注意。
 - 公開の準備（G の一部）：アイコン（`public/favicon.svg`・png）、`manifest.webmanifest`、`index.html` のメタ。service worker は入れていない（オフライン対応は未）。

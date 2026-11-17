@@ -1,0 +1,34 @@
+// 盤面：2D（SVG）か、3D（three.js。開いたときだけ読み込む）。切り替えボタンつき。
+
+import { Suspense, lazy } from 'react'
+import { BoardView } from './BoardView'
+import type { ViewMode } from './viewMode'
+import type { BoardState, Player } from '../types/game'
+
+const Board3D = lazy(() => import('./Board3D'))
+
+interface Props {
+  board: BoardState
+  players: Player[]
+  activeId: string | null
+  focusId: string | null
+  positions: Record<string, number>
+  jump: { index: number; n: number } | null
+}
+
+export function ViewToggle({ mode, onToggle }: { mode: ViewMode; onToggle: () => void }) {
+  return (
+    <button className="linkish" data-testid="view-toggle" aria-pressed={mode === '3d'} onClick={onToggle}>
+      {mode === '2d' ? '3D表示' : '2D表示'}
+    </button>
+  )
+}
+
+export function BoardStage({ mode, ...props }: Props & { mode: ViewMode }) {
+  if (mode === '2d') return <BoardView {...props} />
+  return (
+    <Suspense fallback={<div className="board3d" data-testid="board3d-loading">3Dを読み込んでいます…</div>}>
+      <Board3D {...props} />
+    </Suspense>
+  )
+}

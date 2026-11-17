@@ -4,7 +4,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { DEFAULT_CONFIG, ROLE_IDS, ROOM_MAX_PLAYERS, ROOM_MIN_PLAYERS, getAwaiting } from '../../engine'
 import { OnlineClient, clearLastRoom, getSavedName, loadLastRoom, newRoomCode, saveLastRoom, saveName, type ReplayBatch } from '../../online/client'
-import { BoardView } from '../BoardView'
+import { BoardStage, ViewToggle } from '../BoardStage'
+import { useViewMode } from '../viewMode'
 import { MiniMap } from '../MiniMap'
 import { ResultScreen } from '../ResultScreen'
 import { newLogLines, positionAtStep, prefersReducedMotion } from '../feedback'
@@ -241,6 +242,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
   const [toasts, setToasts] = useState<Array<{ id: number; text: string }>>([])
   const [jump, setJump] = useState<{ index: number; n: number } | null>(null)
   const [message, setMessage] = useState<string | null>(null)
+  const [mode, toggleMode] = useViewMode()
   const [now, setNow] = useState(() => Date.now())
   const prev = useRef<GameState>(game)
   const seq = useRef(0)
@@ -314,6 +316,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
       <header className="topbar">
         <span className="day" data-testid="day">{game.day}日目</span>
         <span className="sub">／ {cfg.balance.game.maxDays}日まで</span>
+        <ViewToggle mode={mode} onToggle={toggleMode} />
         <span className="turn">{mine ? 'あなたの番' : `${waitingName}の番`}{left !== null && aw ? `（あと${left}秒）` : ''}</span>
       </header>
       {autoSeat && (
@@ -323,7 +326,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
         </div>
       )}
       <MiniMap board={game.board} players={game.players} positions={positions} focusId={focusId} onJump={(index) => setJump({ index, n: (jump?.n ?? 0) + 1 })} />
-      <BoardView board={game.board} players={game.players} activeId={active.id} focusId={focusId} positions={positions} jump={jump} />
+      <BoardStage mode={mode} board={game.board} players={game.players} activeId={active.id} focusId={focusId} positions={positions} jump={jump} />
       <PlayerCards state={game} activeId={active.id} selfId={selfPlayerId} />
       {mine && !busy ? <ActionPanel state={game} aw={aw} onAct={act} /> : mine ? null : <p className="waiting" data-testid="waiting">{waitingName}の行動を待っています…</p>}
       {message && <p className="conn-error" role="alert">{message}</p>}

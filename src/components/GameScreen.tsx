@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { DEFAULT_CONFIG, advanceOne, getAwaiting, submitAction, type SessionAction, type SessionResult } from '../engine'
-import { BoardView } from './BoardView'
+import { BoardStage, ViewToggle } from './BoardStage'
+import { useViewMode } from './viewMode'
 import { MiniMap } from './MiniMap'
 import { ActionPanel, LogPanel, PlayerCards } from './parts'
 import { newLogLines, positionAtStep, prefersReducedMotion } from './feedback'
@@ -39,6 +40,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
   const [toasts, setToasts] = useState<Toast[]>([])
   const [arrival, setArrival] = useState<{ rank: number; day: number } | null>(null)
   const [jump, setJump] = useState<{ index: number; n: number } | null>(null)
+  const [mode, toggleMode] = useViewMode()
   // 演出は、CPU の番を待たない（?fast=1）ときと、動きを減らす設定のときは省く
   const animate = cpuDelayMs > 0 && !prefersReducedMotion()
   const busy = anim !== null
@@ -108,6 +110,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
         <span className="day" data-testid="day">{state.day}日目</span>
         <span className="sub">／ {cfg.balance.game.maxDays}日まで</span>
         <span className="turn">{active.name}の番</span>
+        <ViewToggle mode={mode} onToggle={toggleMode} />
         {onHowTo && <button className="linkish" data-testid="open-howto" onClick={onHowTo}>遊び方</button>}
         {lastRoll && <span className="roll" data-testid="last-roll">🎲 {lastRoll.name}：{lastRoll.face}</span>}
       </header>
@@ -119,7 +122,8 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
         focusId={anim?.playerId ?? awPlayer?.id ?? (active.isHuman ? active : human)?.id ?? active.id}
         onJump={(index) => setJump({ index, n: (jump?.n ?? 0) + 1 })}
       />
-      <BoardView
+      <BoardStage
+        mode={mode}
         board={state.board}
         players={state.players}
         activeId={active.id}

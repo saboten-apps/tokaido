@@ -144,3 +144,24 @@ test('遊び方が、タイトルでも、遊んでいる途中でも開ける',
   await expect(page.getByTestId('howto')).toContainText('得点')
   await page.getByTestId('howto-close').click()
 })
+
+test('3D表示に切り替えられて、2Dに戻せる（記憶もされる）', async ({ page }) => {
+  const errors: string[] = []
+  page.on('pageerror', (e) => errors.push(e.message))
+  await page.goto('/?seed=4&fast=1')
+  await page.getByTestId('start').click()
+  await expect(page.getByTestId('board')).toBeVisible()
+  await page.getByTestId('view-toggle').click()
+  await expect(page.getByTestId('board3d-canvas')).toBeVisible({ timeout: 15_000 })
+  await expect(page.getByTestId('board')).toHaveCount(0)
+  // 遊びを進めても、3D のまま動く
+  await page.getByTestId('roll').click()
+  await expect(page.getByTestId('board3d-canvas')).toBeVisible()
+  // 次に開いたときも、3D
+  await page.reload()
+  await page.getByTestId('continue').click()
+  await expect(page.getByTestId('board3d-canvas')).toBeVisible({ timeout: 15_000 })
+  await page.getByTestId('view-toggle').click()
+  await expect(page.getByTestId('board')).toBeVisible()
+  expect(errors).toEqual([])
+})
