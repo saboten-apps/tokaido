@@ -8,7 +8,7 @@ test('日本橋から京都まで遊び、得点が出る', async ({ page }) => 
   await expect(page.getByTestId('board')).toBeVisible()
 
   const result = page.getByTestId('result')
-  for (let i = 0; i < 400; i++) {
+  for (let i = 0; i < 3000; i++) {
     if (await result.isVisible()) break
     for (const id of ['roll', 'choice', 'buy', 'route-lane']) {
       const btn = page.getByTestId(id).locator('visible=true').and(page.locator(':not([disabled])')).first()

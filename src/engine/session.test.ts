@@ -15,7 +15,7 @@ function soloHuman(seed = 1, playerCount = 2): GameState {
 
 function playOut(state: GameState): GameState {
   let s = state
-  for (let i = 0; i < 2000 && s.phase === 'playing'; i++) s = runUntilHuman(autoAct(s, cfg).state, cfg).state
+  for (let i = 0; i < 5000 && s.phase === 'playing'; i++) s = runUntilHuman(autoAct(s, cfg).state, cfg).state
   return s
 }
 

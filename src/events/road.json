@@ -4,11 +4,38 @@
     "title": "追い剥ぎが出た！",
     "description": "人通りの少ない山道で、怪しい男が道をふさいだ。",
     "weight": 6,
-    "conditions": { "minMoney": 200 },
+    "conditions": {
+      "minMoney": 200
+    },
     "choices": [
-      { "label": "路銀を少し渡して通してもらう", "effects": { "money": -200 } },
-      { "label": "走って逃げる", "effects": { "stamina": -5 }, "gamble": { "chance": 0.6, "failEffects": { "money": -400, "stamina": -10 } } },
-      { "label": "大声で助けを呼ぶ", "effects": { "reputation": 4 }, "requires": { "minReputation": 40 } }
+      {
+        "label": "路銀を少し渡して通してもらう",
+        "effects": {
+          "money": -200
+        }
+      },
+      {
+        "label": "走って逃げる",
+        "effects": {
+          "stamina": -5
+        },
+        "gamble": {
+          "chance": 0.6,
+          "failEffects": {
+            "money": -400,
+            "stamina": -10
+          }
+        }
+      },
+      {
+        "label": "大声で助けを呼ぶ",
+        "effects": {
+          "reputation": 4
+        },
+        "requires": {
+          "minReputation": 40
+        }
+      }
     ]
   },
   {
@@ -17,8 +44,19 @@
     "description": "同じ方角へ向かう旅人が、道連れになろうと声をかけてきた。",
     "weight": 8,
     "choices": [
-      { "label": "道連れになって、語りながら歩く", "effects": { "memories": 5, "stamina": -2 } },
-      { "label": "会釈して、自分の歩みで行く", "effects": { "stamina": 2 } }
+      {
+        "label": "道連れになって、語りながら歩く",
+        "effects": {
+          "memories": 5,
+          "stamina": -2
+        }
+      },
+      {
+        "label": "会釈して、自分の歩みで行く",
+        "effects": {
+          "stamina": 2
+        }
+      }
     ]
   },
   {
@@ -27,8 +65,21 @@
     "description": "道ばたに、ずしりと重い財布が落ちていた。",
     "weight": 5,
     "choices": [
-      { "label": "次の宿場の役人に届ける", "effects": { "reputation": 8, "memories": 1 } },
-      { "label": "持ち主を探して、来た道を戻る", "effects": { "reputation": 5, "money": 150, "stamina": -8 } }
+      {
+        "label": "次の宿場の役人に届ける",
+        "effects": {
+          "reputation": 8,
+          "memories": 1
+        }
+      },
+      {
+        "label": "持ち主を探して、来た道を戻る",
+        "effects": {
+          "reputation": 5,
+          "money": 150,
+          "stamina": -8
+        }
+      }
     ]
   },
   {
@@ -36,10 +87,21 @@
     "title": "駕籠かきの誘い",
     "description": "「旦那、乗っていきなせえ」。駕籠かきが声をかけてきた。",
     "weight": 5,
-    "conditions": { "minMoney": 150 },
+    "conditions": {
+      "minMoney": 150
+    },
     "choices": [
-      { "label": "乗って、足を休める", "effects": { "money": -150, "stamina": 15 } },
-      { "label": "自分の足で歩く", "effects": {} }
+      {
+        "label": "乗って、足を休める",
+        "effects": {
+          "money": -150,
+          "stamina": 15
+        }
+      },
+      {
+        "label": "自分の足で歩く",
+        "effects": {}
+      }
     ]
   },
   {
@@ -48,8 +110,20 @@
     "description": "空が急に暗くなり、大粒の雨が降ってきた。",
     "weight": 6,
     "choices": [
-      { "label": "笠をかぶって、先を急ぐ", "effects": { "stamina": -8 } },
-      { "label": "軒先で雨宿りして、一日休む", "effects": { "stamina": 6, "memories": 1 }, "restDays": 1 }
+      {
+        "label": "笠をかぶって、先を急ぐ",
+        "effects": {
+          "stamina": -8
+        }
+      },
+      {
+        "label": "軒先で雨宿りして、一日休む",
+        "effects": {
+          "stamina": 6,
+          "memories": 1
+        },
+        "restDays": 1
+      }
     ]
   },
   {
@@ -58,8 +132,25 @@
     "description": "茶屋の縁台で、旅の俳人たちが句をひねっていた。",
     "weight": 4,
     "choices": [
-      { "label": "一句詠んでみる", "effects": { "memories": 3 }, "gamble": { "chance": 0.5, "failEffects": { "memories": 2, "reputation": -1 } } },
-      { "label": "聞き役にまわる", "effects": { "memories": 2 } }
+      {
+        "label": "一句詠んでみる",
+        "effects": {
+          "memories": 3
+        },
+        "gamble": {
+          "chance": 0.5,
+          "failEffects": {
+            "memories": 2,
+            "reputation": -1
+          }
+        }
+      },
+      {
+        "label": "聞き役にまわる",
+        "effects": {
+          "memories": 2
+        }
+      }
     ]
   },
   {
@@ -68,8 +159,19 @@
     "description": "わらじが合わず、足の裏が痛む。",
     "weight": 5,
     "choices": [
-      { "label": "新しいわらじを買う", "effects": { "money": -40, "stamina": 3 } },
-      { "label": "我慢して歩く", "effects": { "stamina": -10 } }
+      {
+        "label": "新しいわらじを買う",
+        "effects": {
+          "money": -40,
+          "stamina": 3
+        }
+      },
+      {
+        "label": "我慢して歩く",
+        "effects": {
+          "stamina": -10
+        }
+      }
     ]
   },
   {
@@ -77,10 +179,24 @@
     "title": "困っている旅人",
     "description": "路銀を落とした旅人が、途方に暮れている。",
     "weight": 5,
-    "conditions": { "minMoney": 100 },
+    "conditions": {
+      "minMoney": 100
+    },
     "choices": [
-      { "label": "路銀を分けてあげる", "effects": { "money": -100, "reputation": 7, "memories": 2 } },
-      { "label": "次の宿場の場所を教える", "effects": { "reputation": 1 } }
+      {
+        "label": "路銀を分けてあげる",
+        "effects": {
+          "money": -100,
+          "reputation": 7,
+          "memories": 2
+        }
+      },
+      {
+        "label": "次の宿場の場所を教える",
+        "effects": {
+          "reputation": 1
+        }
+      }
     ]
   },
   {
@@ -89,8 +205,20 @@
     "description": "太鼓の音が聞こえる。今日は土地の祭りの日らしい。",
     "weight": 4,
     "choices": [
-      { "label": "祭りに加わって踊る", "effects": { "memories": 6, "stamina": -6, "money": -50 } },
-      { "label": "少しだけ見物する", "effects": { "memories": 2 } }
+      {
+        "label": "祭りに加わって踊る",
+        "effects": {
+          "memories": 6,
+          "stamina": -6,
+          "money": -50
+        }
+      },
+      {
+        "label": "少しだけ見物する",
+        "effects": {
+          "memories": 2
+        }
+      }
     ]
   },
   {
@@ -98,10 +226,157 @@
     "title": "熱を出した",
     "description": "旅の疲れか、体が重い。",
     "weight": 3,
-    "conditions": { "maxStamina": 35 },
+    "conditions": {
+      "maxStamina": 35
+    },
     "choices": [
-      { "label": "宿で一日寝込んで治す", "effects": { "stamina": 25, "money": -100 }, "restDays": 1 },
-      { "label": "薬を飲んで歩き続ける", "effects": { "money": -60, "stamina": 8 } }
+      {
+        "label": "宿で一日寝込んで治す",
+        "effects": {
+          "stamina": 25,
+          "money": -100
+        },
+        "restDays": 1
+      },
+      {
+        "label": "薬を飲んで歩き続ける",
+        "effects": {
+          "money": -60,
+          "stamina": 8
+        }
+      }
+    ]
+  },
+  {
+    "id": "hikyaku",
+    "title": "飛脚に道をゆずる",
+    "description": "「ほいさ、ほいさ」。飛脚が土煙を上げて駆けてくる。",
+    "weight": 4,
+    "choices": [
+      {
+        "label": "道ばたに寄って、走り去るのを見送る",
+        "effects": {
+          "memories": 2
+        }
+      },
+      {
+        "label": "あとを追って、しばらく一緒に走る",
+        "effects": {
+          "stamina": -8,
+          "memories": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": "jizo",
+    "title": "道ばたの地蔵",
+    "description": "苔むした地蔵が、旅の安全を見守っている。",
+    "weight": 4,
+    "choices": [
+      {
+        "label": "賽銭を供えて、手を合わせる",
+        "effects": {
+          "money": -20,
+          "stamina": 5,
+          "reputation": 1
+        }
+      },
+      {
+        "label": "会釈だけして通る",
+        "effects": {}
+      }
+    ]
+  },
+  {
+    "id": "ukiyoe",
+    "title": "絵師との出会い",
+    "description": "街道の景色を写す絵師が、筆を止めて話しかけてきた。",
+    "weight": 3,
+    "choices": [
+      {
+        "label": "絵を一枚、買い求める",
+        "effects": {
+          "money": -150,
+          "memories": 6
+        }
+      },
+      {
+        "label": "絵を描くところを、しばらく眺める",
+        "effects": {
+          "memories": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "hatagoya",
+    "title": "旅籠の客引き",
+    "description": "「旦那、うちは湯がたっぷり出ますよ！」。客引きが袖を引く。",
+    "weight": 4,
+    "conditions": {
+      "minMoney": 120
+    },
+    "choices": [
+      {
+        "label": "誘いに乗って、早めに宿を取る",
+        "effects": {
+          "money": -120,
+          "stamina": 12
+        }
+      },
+      {
+        "label": "断って、先へ進む",
+        "effects": {}
+      }
+    ]
+  },
+  {
+    "id": "fujisan",
+    "title": "雲間の富士",
+    "description": "雲が切れて、真っ白な富士の山が姿を見せた。",
+    "weight": 3,
+    "choices": [
+      {
+        "label": "立ち止まって、しばらく見入る",
+        "effects": {
+          "memories": 5,
+          "stamina": 2
+        }
+      },
+      {
+        "label": "歩きながら、ちらりと眺める",
+        "effects": {
+          "memories": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "michi_mayoi",
+    "title": "道に迷った",
+    "description": "分かれ道で、どちらへ行けばよいのか分からなくなった。",
+    "weight": 4,
+    "choices": [
+      {
+        "label": "通りがかりの人に道を尋ねる",
+        "effects": {
+          "stamina": -2,
+          "reputation": 1
+        }
+      },
+      {
+        "label": "勘を頼りに進む",
+        "effects": {
+          "stamina": -4
+        },
+        "gamble": {
+          "chance": 0.5,
+          "failEffects": {
+            "stamina": -14
+          }
+        }
+      }
     ]
   }
 ]
