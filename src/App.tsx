@@ -13,7 +13,8 @@ const CPU_DELAY_MS = params.get('fast') ? 0 : 450
 export default function App() {
   const [state, setState] = useState<GameState | null>(null)
   const [saved, setSaved] = useState(() => loadGame())
-  const [name, setName] = useState('あなた')
+  const [names, setNames] = useState<string[]>(['あなた', '旅人2', '旅人3', '旅人4'])
+  const [humans, setHumans] = useState(1)
   const [count, setCount] = useState(DEFAULT_CONFIG.balance.game.playerCount)
 
   const update = useCallback((s: GameState) => {
@@ -23,7 +24,8 @@ export default function App() {
   }, [])
 
   const start = () => {
-    const g = createGame({ playerName: name.trim() || 'あなた', playerCount: count, seed: seedParam ? Number(seedParam) : undefined })
+    const humanNames = names.slice(0, humans).map((n, i) => n.trim() || (i === 0 ? 'あなた' : `旅人${i + 1}`))
+    const g = createGame({ humanNames, playerCount: Math.max(count, humans), seed: seedParam ? Number(seedParam) : undefined })
     update(runUntilHuman(g).state)
   }
 
@@ -37,13 +39,31 @@ export default function App() {
       <h1>東海道すごろく</h1>
       <p className="lead">江戸・日本橋から京都・三条大橋へ。路銀をやりくりし、名物を味わい、思い出を集める旅。</p>
       <label>
-        名前
-        <input data-testid="name" value={name} maxLength={8} onChange={(e) => setName(e.target.value)} />
+        遊ぶ人の数（同じ端末で、順番に遊ぶ）
+        <select
+          data-testid="humans"
+          value={humans}
+          onChange={(e) => {
+            const h = Number(e.target.value)
+            setHumans(h)
+            if (count < h) setCount(h)
+          }}
+        >
+          {[1, 2, 3, 4].map((n) => (
+            <option key={n} value={n}>{n}人</option>
+          ))}
+        </select>
       </label>
+      {names.slice(0, humans).map((n, i) => (
+        <label key={i}>
+          {humans > 1 ? `${i + 1}人目の名前` : '名前'}
+          <input data-testid={`name-${i}`} value={n} maxLength={8} onChange={(e) => setNames((cur) => cur.map((x, j) => (j === i ? e.target.value : x)))} />
+        </label>
+      ))}
       <label>
-        人数（あなた＋CPU）
-        <select data-testid="count" value={count} onChange={(e) => setCount(Number(e.target.value))}>
-          {Array.from({ length: MAX_PLAYERS - MIN_PLAYERS + 1 }, (_, i) => i + MIN_PLAYERS).map((n) => (
+        人数（遊ぶ人＋CPU）
+        <select data-testid="count" value={Math.max(count, humans)} onChange={(e) => setCount(Number(e.target.value))}>
+          {Array.from({ length: MAX_PLAYERS - Math.max(MIN_PLAYERS, humans) + 1 }, (_, i) => i + Math.max(MIN_PLAYERS, humans)).map((n) => (
             <option key={n} value={n}>{n}人</option>
           ))}
         </select>

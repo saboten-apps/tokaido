@@ -1,9 +1,12 @@
+import { useState } from 'react'
 import { DEFAULT_CONFIG, earnedTitles, rankPlayers } from '../engine'
 import type { GameState } from '../types/game'
 
 export function ResultScreen({ state, onRestart }: { state: GameState; onRestart: () => void }) {
   const ranking = rankPlayers(state, DEFAULT_CONFIG)
-  const me = state.players.find((p) => p.isHuman)
+  const humans = state.players.filter((p) => p.isHuman)
+  const [pick, setPick] = useState(humans[0]?.id ?? null)
+  const me = humans.find((p) => p.id === pick) ?? humans[0]
   return (
     <div className="result" data-testid="result">
       <h1>旅の終わり</h1>
@@ -41,6 +44,13 @@ export function ResultScreen({ state, onRestart }: { state: GameState; onRestart
       {me && (
         <section className="diary" data-testid="diary">
           <h2>{me.name}の東海道</h2>
+          {humans.length > 1 && (
+            <div className="diary-tabs">
+              {humans.map((h) => (
+                <button key={h.id} data-testid={`diary-tab-${h.id}`} className={h.id === me.id ? 'on' : ''} onClick={() => setPick(h.id)}>{h.name}</button>
+              ))}
+            </div>
+          )}
           <ol>
             {state.diary.filter((d) => d.playerId === me.id).map((d, i) => (
               <li key={i}><span className="lday">{d.day}日目</span> <span className="dplace">{d.place}</span>{d.text}</li>

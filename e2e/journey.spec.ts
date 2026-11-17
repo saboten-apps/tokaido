@@ -90,3 +90,33 @@ test('小地図を押すと、盤面がそこへ動く', async ({ page }) => {
   await page.mouse.click(box.x + 4, box.y + box.height / 2)
   await expect.poll(() => board.evaluate((el) => el.scrollLeft)).not.toBe(before)
 })
+
+test('同じ端末で2人が順番に遊べて、結果に2人の旅日記が出る', async ({ page }) => {
+  await page.goto('/?seed=8&fast=1')
+  await page.getByTestId('humans').selectOption('2')
+  await page.getByTestId('name-0').fill('花子')
+  await page.getByTestId('name-1').fill('太郎')
+  await page.getByTestId('count').selectOption('3')
+  await page.getByTestId('start').click()
+  // 花子の番から始まる
+  await expect(page.locator('.dock-who')).toContainText('花子')
+  // 花子が進めると、いつか太郎の番になる
+  let sawTaro = false
+  const result = page.getByTestId('result')
+  for (let i = 0; i < 3000 && !(await result.isVisible()); i++) {
+    if (await page.locator('.dock-who').filter({ hasText: '太郎' }).isVisible().catch(() => false)) sawTaro = true
+    for (const id of ['roll', 'choice', 'buy', 'route-lane']) {
+      const btn = page.getByTestId(id).locator('visible=true').and(page.locator(':not([disabled])')).first()
+      if (await btn.isVisible().catch(() => false)) {
+        await btn.click()
+        break
+      }
+    }
+    await page.waitForTimeout(20)
+  }
+  expect(sawTaro).toBe(true)
+  await expect(result).toBeVisible()
+  await expect(page.getByTestId('diary-tab-p0')).toBeVisible()
+  await page.getByTestId('diary-tab-p1').click()
+  await expect(page.getByTestId('diary')).toContainText('太郎の東海道')
+})

@@ -115,14 +115,14 @@ export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
         board={state.board}
         players={state.players}
         positions={positions}
-        focusId={(anim?.playerId ?? awPlayer?.id ?? human?.id ?? active.id)}
+        focusId={anim?.playerId ?? awPlayer?.id ?? (active.isHuman ? active : human)?.id ?? active.id}
         onJump={(index) => setJump({ index, n: (jump?.n ?? 0) + 1 })}
       />
       <BoardView
         board={state.board}
         players={state.players}
         activeId={active.id}
-        focusId={anim?.playerId ?? (awPlayer ?? human ?? active).id}
+        focusId={anim?.playerId ?? (awPlayer ?? (active.isHuman ? active : human) ?? active).id}
         positions={positions}
         jump={jump}
       />
@@ -187,6 +187,7 @@ export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
         const ev = getEvent(cfg, aw.eventId!)
         return (
           <div className="modal" role="dialog" aria-label={ev.title} data-testid="event-modal">
+            <small className="modal-who">{awPlayer.name}</small>
             <h2>{ev.title}</h2>
             <p>{ev.description}</p>
             {ev.choices.map((c, i) => (
@@ -202,6 +203,7 @@ export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
         const m = state.board.tiles[aw.tileIndex!].meibutsu!
         return (
           <div className="modal" role="dialog" aria-label="名物" data-testid="meibutsu-modal">
+            <small className="modal-who">{awPlayer?.name}</small>
             <h2>{state.board.tiles[aw.tileIndex!].name}の名物</h2>
             <p>「{m.name}」— {m.price}文（思い出+{m.memories}・得点+{cfg.balance.scoring.meibutsuPoints}）</p>
             <button className="primary" data-testid="buy" onClick={() => act({ type: 'meibutsu', buy: true })}>買う</button>
@@ -214,6 +216,7 @@ export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
         const f = state.board.forks.find((x) => x.tileIndex === aw.tileIndex)!
         return (
           <div className="modal" role="dialog" aria-label="分かれ道" data-testid="fork-modal">
+            <small className="modal-who">{awPlayer?.name}</small>
             <h2>{state.board.tiles[f.tileIndex].name}</h2>
             <p>どうやって渡る？</p>
             <button data-testid="route-main" onClick={() => act({ type: 'fork', route: 'main' })}>{f.main.label}<small>{f.main.desc}</small></button>
