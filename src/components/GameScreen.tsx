@@ -1,7 +1,7 @@
 // 旅の画面：盤面・旅人の札・行動・判断（出来事／名物／分かれ道）・道中記。CPU の番は、少しずつ進めて見せる。
 
 import { useEffect, useState } from 'react'
-import { DEFAULT_CONFIG, advanceOne, getAwaiting, getEvent, isChoiceAvailable, maxFaceFor, submitAction, type SessionAction } from '../engine'
+import { DEFAULT_CONFIG, advanceOne, getAwaiting, getEvent, innCostFor, isChoiceAvailable, maxFaceFor, submitAction, type SessionAction } from '../engine'
 import { pieceColors } from '../art/theme'
 import { BoardView } from './BoardView'
 import type { GameState } from '../types/game'
@@ -73,6 +73,7 @@ export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
                 <span>体力 {p.stats.stamina}</span>
                 <span>思い出 {p.stats.memories}</span>
                 <span>評判 {p.stats.reputation}</span>
+                <span>宿代 {innCostFor(p, cfg)}文</span>
                 <span>名物 {p.meibutsu.length}</span>
               </div>
             </div>

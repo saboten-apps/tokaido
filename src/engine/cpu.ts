@@ -1,6 +1,7 @@
 // CPU の判断。旅の流儀（性格）ごとの重みで選択肢を評価する（umaregacya の cpu.ts を旅向けに作り替え）。
 
 import { getPersonality, type GameConfig } from './config'
+import { innCostFor } from './board'
 import { isChoiceAvailable } from './events'
 import { STAT_KEYS } from './stats'
 import type { Rng } from './rng'
@@ -57,7 +58,7 @@ export function shouldCpuWork(player: Player, config: GameConfig): boolean {
 
 /** 名物を買うか（宿代2日ぶんは残す） */
 export function chooseCpuBuyMeibutsu(player: Player, m: Meibutsu, config: GameConfig): boolean {
-  const reserve = config.balance.travel.innCost * 2
+  const reserve = innCostFor(player, config) * 2
   if (player.stats.money - m.price < reserve) return false
   const p = personalityOf(player, config)
   const value = p.meibutsuLove + m.memories * p.weights.memories - (m.price / MONEY_SCALE) * p.weights.money
@@ -67,6 +68,6 @@ export function chooseCpuBuyMeibutsu(player: Player, m: Meibutsu, config: GameCo
 /** 分かれ道で選ぶ道 */
 export function chooseCpuRoute(player: Player, fork: ForkDef, config: GameConfig, rng: Rng): 'main' | 'lane' {
   const mainCost = -(fork.main.effects.money ?? 0)
-  if (player.stats.money - mainCost < config.balance.travel.innCost) return 'lane'
+  if (player.stats.money - mainCost < innCostFor(player, config)) return 'lane'
   return rng.next() < personalityOf(player, config).detourLove ? 'lane' : 'main'
 }

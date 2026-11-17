@@ -41,6 +41,8 @@ export interface Balance {
     arrivedBonus: number
     arrivalRankBonus: number[]
   }
+  /** 評判の効果：goodAt 以上で宿代が goodInnRate 倍、badBelow 未満で badInnRate 倍 */
+  reputation: { goodAt: number; goodInnRate: number; badBelow: number; badInnRate: number }
   cpuPersonalities: CpuPersonality[]
 }
 

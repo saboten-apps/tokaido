@@ -36,7 +36,7 @@
     "innCost": 120,
     "innStamina": 22,
     "campStamina": -8,
-    "campReputation": -1,
+    "campReputation": 0,
     "teahouseCost": 40,
     "teahouseStamina": 12,
     "teahouseMemories": 1,
@@ -110,5 +110,11 @@
       "meibutsuLove": 6,
       "detourLove": 0.5
     }
-  ]
+  ],
+  "reputation": {
+    "goodAt": 45,
+    "goodInnRate": 0.75,
+    "badBelow": 20,
+    "badInnRate": 1.25
+  }
 }

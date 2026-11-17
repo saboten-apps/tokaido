@@ -20,6 +20,16 @@
           "reputation": 1,
           "memories": 2
         }
+      },
+      {
+        "label": "名の知れた旅人として、顔なじみの役人にすんなり通される",
+        "effects": {
+          "memories": 3,
+          "stamina": 4
+        },
+        "requires": {
+          "minReputation": 45
+        }
       }
     ]
   },
@@ -66,6 +76,16 @@
         "effects": {
           "memories": 3,
           "stamina": 4
+        }
+      },
+      {
+        "label": "評判のよさで、取り調べもほどなく済む",
+        "effects": {
+          "memories": 3,
+          "stamina": 6
+        },
+        "requires": {
+          "minReputation": 45
         }
       }
     ]

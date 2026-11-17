@@ -56,6 +56,16 @@
         "effects": {
           "stamina": 2
         }
+      },
+      {
+        "label": "評判を聞きつけた旅人たちが加わり、にぎやかな道連れになる",
+        "effects": {
+          "memories": 8,
+          "stamina": -2
+        },
+        "requires": {
+          "minReputation": 45
+        }
       }
     ]
   },

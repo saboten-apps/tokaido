@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_CONFIG } from './config'
-import { goalIndex } from './board'
+import { goalIndex, innCostFor } from './board'
+import { isChoiceAvailable } from './events'
 import { rankPlayers } from './scoring'
 import { SessionError, autoAct, getAwaiting, runUntilHuman, submitAction } from './session'
 import { createGame } from './setup'
@@ -103,5 +104,38 @@ describe('シミュレーション', () => {
     const r = simulateGames(100, 1, cfg, 4)
     expect(r.arrivedRate).toBeGreaterThan(0.9)
     expect(r.avgDays).toBeLessThanOrEqual(cfg.balance.game.maxDays + 1)
+  })
+})
+
+describe('評判の効果', () => {
+  it('宿代：評判が高いと割引、低いと割増', () => {
+    const s = soloHuman()
+    const p = s.players[0]
+    const base = cfg.balance.travel.innCost
+    p.stats.reputation = 30
+    expect(innCostFor(p, cfg)).toBe(base)
+    p.stats.reputation = cfg.balance.reputation.goodAt
+    expect(innCostFor(p, cfg)).toBeLessThan(base)
+    p.stats.reputation = cfg.balance.reputation.badBelow - 1
+    expect(innCostFor(p, cfg)).toBeGreaterThan(base)
+  })
+
+  it('日の終わりに、評判の高い人は割引の宿代を払う', () => {
+    const s = soloHuman()
+    s.players[0].stats.reputation = 80
+    s.players[0].stats.money = 1000
+    const out = runUntilHuman(submitAction(s, 'p0', { type: 'work' }, cfg).state, cfg).state
+    // 日本橋（出発地）で泊まる：働いた分を足して、割引の宿代を引く
+    expect(out.players[0].stats.money).toBe(1000 + cfg.balance.travel.workMoney - innCostFor(out.players[0], cfg))
+  })
+
+  it('関所の特別な選択肢は、評判が高い人だけ選べる', () => {
+    const e = cfg.events.find((x) => x.id === 'hakone_sekisho')!
+    const special = e.choices.find((c) => c.requires?.minReputation)!
+    const p = soloHuman().players[0]
+    p.stats.reputation = 30
+    expect(isChoiceAvailable(p, special)).toBe(false)
+    p.stats.reputation = 70
+    expect(isChoiceAvailable(p, special)).toBe(true)
   })
 })

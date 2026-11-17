@@ -82,3 +82,12 @@ export function syncLaneFlag(board: BoardState, player: Player, pos: number): vo
   player.flags = player.flags.filter((f) => !f.startsWith('lane:'))
   if (want) player.flags.push(want)
 }
+
+/** いまの宿代。評判が高いと割引、低いと割増（balance.json の reputation） */
+export function innCostFor(player: Player, config: GameConfig): number {
+  const base = config.balance.travel.innCost
+  const r = config.balance.reputation
+  if (player.stats.reputation >= r.goodAt) return Math.round(base * r.goodInnRate)
+  if (player.stats.reputation < r.badBelow) return Math.round(base * r.badInnRate)
+  return base
+}

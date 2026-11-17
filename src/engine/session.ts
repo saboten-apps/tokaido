@@ -3,7 +3,7 @@
 // 状態はすべて GameState に入っているので、保存・復元・サーバーでの再開ができる。
 // 乱数は state.rngState から決まるので、同じ状態と同じ行動なら、同じ結果になる。
 
-import { forkAt, pathFrom, rollFace, syncLaneFlag } from './board'
+import { forkAt, innCostFor, pathFrom, rollFace, syncLaneFlag } from './board'
 import { DEFAULT_CONFIG, getEvent, type GameConfig } from './config'
 import { chooseCpuBuyMeibutsu, chooseCpuChoice, chooseCpuRoute, shouldCpuWork } from './cpu'
 import { applyChoice, drawEvent, isChoiceAvailable, markEventUsed } from './events'
@@ -95,9 +95,10 @@ function endOfDay(c: Ctx): void {
   for (const p of s.players) {
     if (hasArrived(p)) continue
     const tile = s.board.tiles[s.board.playerStates[p.id].position]
-    const canInn = (tile.type === 'shuku' || tile.type === 'start') && p.stats.money >= t.innCost
+    const cost = innCostFor(p, config)
+    const canInn = (tile.type === 'shuku' || tile.type === 'start') && p.stats.money >= cost
     if (canInn) {
-      p.stats = applyDelta(p.stats, { money: -t.innCost, stamina: t.innStamina }, config.balance.limits)
+      p.stats = applyDelta(p.stats, { money: -cost, stamina: t.innStamina }, config.balance.limits)
     } else {
       p.stats = applyDelta(p.stats, { stamina: t.campStamina, reputation: t.campReputation }, config.balance.limits)
       log(s, p, `${p.name}は${tile.type === 'shuku' ? '宿代が足りず、' : ''}野宿した。`)
