@@ -231,3 +231,26 @@ test('いまいる県が表示される（最初は東京都）', async ({ page 
   await page.getByTestId('start').click()
   await expect(page.getByTestId('region-badge')).toHaveText('東京都')
 })
+
+test('いまいる場所の、時代背景と、今では（現代の豆知識）が出る', async ({ page }) => {
+  await page.goto('/?seed=4&fast=1')
+  await page.getByTestId('start').click()
+  await expect(page.getByTestId('place-name')).toHaveText('日本橋')
+  await expect(page.getByTestId('place-era')).toContainText('慶長8年')
+  await expect(page.getByTestId('place-now')).toContainText('首都高')
+  // 進めると、止まった場所の解説に変わる
+  for (let i = 0; i < 100 && (await page.getByTestId('place-name').innerText()) === '日本橋'; i++) {
+    await page.evaluate(() => {
+      for (const id of ['roll', 'choice', 'buy', 'route-lane']) {
+        const el = Array.from(document.querySelectorAll<HTMLButtonElement>(`[data-testid="${id}"]`)).find((e) => !e.disabled && e.offsetParent !== null)
+        if (el) {
+          el.click()
+          return
+        }
+      }
+    })
+    await page.waitForTimeout(40)
+  }
+  await expect(page.getByTestId('place-name')).not.toHaveText('日本橋')
+  await expect(page.getByTestId('place-card')).toBeVisible()
+})

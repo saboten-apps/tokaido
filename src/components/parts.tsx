@@ -1,6 +1,6 @@
 // 画面の部品。ひとり用の旅（GameScreen）と、オンラインの旅（OnlineScreen）で共有する。
 
-import { DEFAULT_CONFIG, canHurry, getEvent, innCostFor, isChoiceAvailable, isTired, maxFaceFor, type Awaiting, type SessionAction } from '../engine'
+import { DEFAULT_CONFIG, PLACES, REGIONS, canHurry, getEvent, innCostFor, isChoiceAvailable, isTired, maxFaceFor, regionAt, shukuNumber, type Awaiting, type SessionAction } from '../engine'
 import { pieceColors } from '../art/theme'
 import { choiceChips, forkChips, type Chip } from './choiceText'
 import type { GameState, Player } from '../types/game'
@@ -166,6 +166,39 @@ export function ActionPanel({ state, aw, onAct }: ActionProps) {
     )
   }
   return null
+}
+
+/** いまいる場所の、時代背景と、今では（現代の豆知識） */
+export function PlaceCard({ board, index }: { board: GameState['board']; index: number }) {
+  const tile = board.tiles[index]
+  if (!tile) return null
+  const info = PLACES[tile.name]
+  const region = REGIONS[regionAt(board, index)]
+  const no = shukuNumber(board, index)
+  return (
+    <details className="place" key={tile.name} open data-testid="place-card">
+      <summary>
+        <strong data-testid="place-name">{tile.name}</strong>
+        <span className="place-sub">
+          {no !== null ? `江戸から${no}番目の宿場・` : ''}
+          {region.name}（{region.province}）
+        </span>
+      </summary>
+      {info?.era && (
+        <p data-testid="place-era">
+          <span className="place-h">時代背景</span>
+          {info.era}
+        </p>
+      )}
+      {info?.now && (
+        <p data-testid="place-now">
+          <span className="place-h place-h-now">今では</span>
+          {info.now}
+        </p>
+      )}
+      {!info && <p className="place-tagline">{region.tagline}</p>}
+    </details>
+  )
 }
 
 export function LogPanel({ state }: { state: GameState }) {

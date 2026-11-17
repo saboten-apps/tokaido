@@ -117,3 +117,9 @@ export function invitedToHonjin(player: Player, config: GameConfig): boolean {
 export function regionAt(board: BoardState, index: number): RegionId {
   return board.tiles[Math.min(Math.max(index, 0), board.tiles.length - 1)]?.region ?? 'tokyo'
 }
+
+/** 宿場の番号（江戸から数えて何番目の宿場か。宿場でなければ null） */
+export function shukuNumber(board: BoardState, index: number): number | null {
+  if (board.tiles[index]?.type !== 'shuku') return null
+  return board.tiles.slice(0, index + 1).filter((t, i) => i < board.mainLength && t.type === 'shuku').length
+}

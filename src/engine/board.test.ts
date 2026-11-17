@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createInitialBoardState, goalIndex, nextTileIndex, pathFrom, regionAt } from './board'
+import { createInitialBoardState, goalIndex, nextTileIndex, pathFrom, regionAt, shukuNumber } from './board'
 import { DEFAULT_CONFIG, REGIONS, REGION_ORDER } from './config'
 
 const board = createInitialBoardState([], DEFAULT_CONFIG)
@@ -103,5 +103,13 @@ describe('県', () => {
       expect(d.name && d.province && d.tagline, r).toBeTruthy()
       for (const c of [d.sky, d.fog, d.ground, d.grass, d.road, d.band]) expect(c, r).toMatch(/^#[0-9a-f]{6}$/i)
     }
+  })
+})
+
+describe('宿場の番号', () => {
+  it('品川が1番目、箱根が10番目、袋井が27番目（五十三次のまんなか）、草津が52番目、大津が53番目', () => {
+    const no = (name: string) => shukuNumber(board, board.tiles.findIndex((t) => t.name === name))
+    expect([no('品川'), no('箱根'), no('袋井'), no('草津'), no('大津')]).toEqual([1, 10, 27, 52, 53])
+    expect(no('日本橋')).toBeNull()
   })
 })

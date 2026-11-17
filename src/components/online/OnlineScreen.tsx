@@ -9,7 +9,7 @@ import { useViewMode } from '../viewMode'
 import { MiniMap } from '../MiniMap'
 import { ResultScreen } from '../ResultScreen'
 import { newLogLines, positionAtStep, prefersReducedMotion, regionEntry } from '../feedback'
-import { ActionPanel, LogPanel, PlayerCards } from '../parts'
+import { ActionPanel, LogPanel, PlaceCard, PlayerCards } from '../parts'
 import type { SessionAction } from '../../engine'
 import type { RoomView } from '../../online/protocol'
 import type { GameState } from '../../types/game'
@@ -342,6 +342,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
       )}
       <MiniMap board={game.board} players={game.players} positions={positions} focusId={focusId} onJump={(index) => setJump({ index, n: (jump?.n ?? 0) + 1 })} />
       <BoardStage mode={mode} board={game.board} players={game.players} activeId={active.id} focusId={focusId} positions={positions} jump={jump} />
+      <PlaceCard board={game.board} index={game.board.playerStates[focusId]?.position ?? 0} />
       <PlayerCards state={game} activeId={active.id} selfId={selfPlayerId} />
       {mine && !busy ? <ActionPanel state={game} aw={aw} onAct={act} /> : mine ? null : <p className="waiting" data-testid="waiting">{waitingName}の行動を待っています…</p>}
       {message && <p className="conn-error" role="alert">{message}</p>}

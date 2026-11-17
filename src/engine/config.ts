@@ -4,6 +4,7 @@ import balanceJson from '../data/balance.json'
 import boardJson from '../data/board.json'
 import titlesJson from '../data/titles.json'
 import regionsJson from '../data/regions.json'
+import placesJson from '../data/places.json'
 import roadEvents from '../events/road.json'
 import specialEvents from '../events/special.json'
 import shukuEvents from '../events/shuku.json'
@@ -118,6 +119,15 @@ export interface RegionDef {
   /** 2D の帯の色 */
   band: string
 }
+
+/** その場所の、時代背景と、現代の豆知識（places.json。キーはマスの名前） */
+export interface PlaceInfo {
+  /** 時代背景（江戸時代のこと） */
+  era?: string
+  /** 今では（現代の豆知識） */
+  now?: string
+}
+export const PLACES = placesJson as Record<string, PlaceInfo>
 
 export const REGION_ORDER = regionsJson.order as RegionId[]
 export const REGIONS = regionsJson.regions as Record<RegionId, RegionDef>

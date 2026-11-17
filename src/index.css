@@ -139,3 +139,14 @@ button small { font-size: 12px; opacity: 0.8; }
 
 .region-name { font-size: 13px; font-weight: bold; fill: #6b5a48; opacity: 0.85; }
 .region-badge { font-size: 12px; background: #efe3c8; border: 1px solid #d8c7a2; border-radius: 999px; padding: 1px 10px; }
+
+.place { background: #fffaf0; border: 1px solid #d8c7a2; border-radius: 10px; padding: 6px 12px; margin: 8px 0; font-size: 13px; line-height: 1.7; }
+.place summary { cursor: pointer; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.place summary strong { font-size: 15px; }
+.place-sub { color: #6b5a48; font-size: 12px; }
+.place p { margin: 6px 0 2px; }
+.place-h { display: inline-block; background: #b03a2e; color: #fff; border-radius: 4px; padding: 0 6px; font-size: 11px; margin-right: 6px; }
+.place-h-now { background: #2f6b7a; }
+.place-tagline { color: #6b5a48; }
+.notebook details { background: #fffaf0; border-bottom: 1px solid #eadfc5; padding: 4px 10px; font-size: 13px; line-height: 1.7; }
+.notebook summary { cursor: pointer; font-weight: bold; }

@@ -5,7 +5,7 @@ import { DEFAULT_CONFIG, REGIONS, advanceOne, getAwaiting, regionAt, submitActio
 import { BoardStage, ViewToggle } from './BoardStage'
 import { useViewMode } from './viewMode'
 import { MiniMap } from './MiniMap'
-import { ActionPanel, LogPanel, PlayerCards } from './parts'
+import { ActionPanel, LogPanel, PlaceCard, PlayerCards } from './parts'
 import { newLogLines, positionAtStep, prefersReducedMotion, regionEntry } from './feedback'
 import type { GameState } from '../types/game'
 
@@ -144,6 +144,8 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
         positions={positions}
         jump={jump}
       />
+
+      <PlaceCard board={state.board} index={state.board.playerStates[(awPlayer ?? (active.isHuman ? active : human) ?? active).id].position} />
 
       <PlayerCards state={state} activeId={active.id} />
 
