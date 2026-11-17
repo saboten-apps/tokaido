@@ -30,33 +30,33 @@
   {
     "id": "meibutsu_tsu",
     "name": "名物通",
-    "desc": "名物を8つ以上味わった。",
+    "desc": "名物を7つ以上味わった。",
     "when": {
-      "minMeibutsu": 8
+      "minMeibutsu": 7
     }
   },
   {
     "id": "omoide_tabi",
     "name": "思い出の旅人",
+    "desc": "思い出を55以上集めた。",
+    "when": {
+      "minMemories": 55
+    }
+  },
+  {
+    "id": "omoide_bukuro",
+    "name": "思い出ぶくろ",
     "desc": "思い出を70以上集めた。",
     "when": {
       "minMemories": 70
     }
   },
   {
-    "id": "omoide_bukuro",
-    "name": "思い出ぶくろ",
-    "desc": "思い出を100以上集めた。",
-    "when": {
-      "minMemories": 100
-    }
-  },
-  {
     "id": "jinbo",
     "name": "人望の旅人",
-    "desc": "道中で、評判を60以上に高めた。",
+    "desc": "道中で、評判を55以上に高めた。",
     "when": {
-      "minReputation": 60
+      "minReputation": 55
     }
   },
   {

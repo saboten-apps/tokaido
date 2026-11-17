@@ -1,9 +1,10 @@
 {
   "game": {
     "playerCount": 4,
-    "maxDays": 60,
+    "maxDays": 40,
     "diceFaces": 6,
-    "eventChance": 0.85
+    "eventChance": 0.85,
+    "shukuEventChance": 0.5
   },
   "limits": {
     "money": {
@@ -55,11 +56,11 @@
     "meibutsuPoints": 8,
     "arrivedBonus": 20,
     "arrivalRankBonus": [
-      62,
-      40,
-      24,
-      12,
-      6,
+      58,
+      36,
+      20,
+      10,
+      5,
       0
     ]
   },

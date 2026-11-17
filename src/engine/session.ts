@@ -7,7 +7,7 @@ import { canHurry, forkAt, innCostFor, invitedToHonjin, pathFrom, recordCamp, ro
 import { DEFAULT_CONFIG, getEvent, type GameConfig } from './config'
 import { chooseCpuBuyMeibutsu, chooseCpuChoice, chooseCpuLodging, chooseCpuMove, chooseCpuRoute, shouldCpuWork } from './cpu'
 import { applyChoice, drawEvent, isChoiceAvailable, markEventUsed } from './events'
-import { createRng, type Rng } from './rng'
+import { chance, createRng, type Rng } from './rng'
 import { applyDelta, formatDelta } from './stats'
 import type { DiaryKind, ForkDef, GameEvent, GameState, LodgingId, Player, TileType } from '../types/game'
 
@@ -245,6 +245,10 @@ function land(c: Ctx, p: Player, idx: number): void {
     }
     case 'shuku': {
       if (tile.eventId && !p.usedOnceEvents.includes(tile.eventId)) return startEvent(c, p, getEvent(config, tile.eventId), true, idx)
+      if (chance(c.rng, config.balance.game.shukuEventChance)) {
+        const ev = drawEvent(p, config, c.rng)
+        if (ev) return startEvent(c, p, ev, true, idx)
+      }
       return offerMeibutsu(c, p, idx)
     }
     case 'event': {

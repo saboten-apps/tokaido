@@ -14,7 +14,7 @@ export interface Range {
 }
 
 export interface Balance {
-  game: { playerCount: number; maxDays: number; diceFaces: number; eventChance: number }
+  game: { playerCount: number; maxDays: number; diceFaces: number; eventChance: number; shukuEventChance: number }
   limits: Record<keyof Stats, Range>
   start: Stats
   travel: {
