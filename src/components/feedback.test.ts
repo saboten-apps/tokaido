@@ -36,15 +36,15 @@ describe('演出の補助', () => {
   })
 
   it('道を歩く時間は、通る宿場が多いほど長く、短すぎず、長すぎない', () => {
-    expect(travelMs(1)).toBe(1400)
+    expect(travelMs(1)).toBe(2600)
     expect(travelMs(3)).toBeGreaterThan(travelMs(1))
-    expect(travelMs(30)).toBe(3600)
+    expect(travelMs(30)).toBe(5600)
   })
 
   it('場面では、サイコロ → 道を歩く → 着く、の3段階。地図では、これまでの短い間', () => {
-    expect(phaseDelay('3d', -1, 4)).toBe(1700)
+    expect(phaseDelay('3d', -1, 4)).toBe(1900)
     expect(phaseDelay('3d', 0, 4)).toBe(travelMs(4))
-    expect(phaseDelay('3d', 1, 4)).toBe(1900)
+    expect(phaseDelay('3d', 1, 4)).toBe(3200)
     expect(phaseDelay('2d', -1, 4)).toBe(350)
     expect(phaseDelay('2d', 2, 4)).toBe(120)
   })

@@ -33,7 +33,7 @@ const QS = new URLSearchParams(window.location.search)
 /** ?stats=1：描画の速さ（FPS）を出す。?lite=1：軽量（アンチエイリアスなし・解像度を落とす） */
 const SHOW_STATS = QS.has('stats')
 const LITE = QS.has('lite')
-const FADE_MS = 480
+const FADE_MS = 900
 
 function hash(s: string): number {
   let h = 2166136261
