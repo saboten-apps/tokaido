@@ -5,6 +5,7 @@ import boardJson from '../data/board.json'
 import titlesJson from '../data/titles.json'
 import regionsJson from '../data/regions.json'
 import placesJson from '../data/places.json'
+import hiroshigeJson from '../data/hiroshige.json'
 import roadEvents from '../events/road.json'
 import specialEvents from '../events/special.json'
 import shukuEvents from '../events/shuku.json'
@@ -128,6 +129,26 @@ export interface PlaceInfo {
   now?: string
 }
 export const PLACES = placesJson as Record<string, PlaceInfo>
+
+/**
+ * 歌川広重『東海道五拾三次』（保永堂版）の、その場所の図（hiroshige.json。キーはマスの名前）。
+ * image・credit・source は、絵を取り込んだとき（scripts/importHiroshige.ts）に入る。まだなければ、題名だけを見せる。
+ */
+export interface HiroshigePrint {
+  /** 図の番号（1 日本橋 〜 55 京師） */
+  plate: number
+  /** 板に彫られた宿名（例：由井・荒井・赤阪・坂之下・京師） */
+  station: string
+  /** 副題（例：湖水図） */
+  subtitle: string
+  /** 画像（public/hiroshige/ 以下の URL） */
+  image?: string
+  /** 出どころ・権利の表示 */
+  credit?: string
+  /** 所蔵館の資料のページ */
+  source?: string
+}
+export const HIROSHIGE = hiroshigeJson as Record<string, HiroshigePrint>
 
 export const REGION_ORDER = regionsJson.order as RegionId[]
 export const REGIONS = regionsJson.regions as Record<RegionId, RegionDef>

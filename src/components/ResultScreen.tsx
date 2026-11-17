@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { DEFAULT_CONFIG, PLACES, earnedTitles, rankPlayers } from '../engine'
+import { PrintCard } from './parts'
 import type { GameState } from '../types/game'
 
 export function ResultScreen({ state, onRestart }: { state: GameState; onRestart: () => void }) {
@@ -72,6 +73,7 @@ export function ResultScreen({ state, onRestart }: { state: GameState; onRestart
                 <summary>{name}</summary>
                 {PLACES[name].era && <p><span className="place-h">時代背景</span>{PLACES[name].era}</p>}
                 {PLACES[name].now && <p><span className="place-h place-h-now">今では</span>{PLACES[name].now}</p>}
+                <PrintCard name={name} />
               </details>
             ))}
         </section>

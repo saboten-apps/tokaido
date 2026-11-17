@@ -1,6 +1,6 @@
 // 画面の部品。ひとり用の旅（GameScreen）と、オンラインの旅（OnlineScreen）で共有する。
 
-import { DEFAULT_CONFIG, PLACES, REGIONS, canHurry, getEvent, innCostFor, isChoiceAvailable, isTired, maxFaceFor, regionAt, shukuNumber, type Awaiting, type SessionAction } from '../engine'
+import { DEFAULT_CONFIG, HIROSHIGE, PLACES, REGIONS, canHurry, getEvent, innCostFor, isChoiceAvailable, isTired, maxFaceFor, regionAt, shukuNumber, type Awaiting, type SessionAction } from '../engine'
 import { pieceColors } from '../art/theme'
 import { useEffect, useState } from 'react'
 import { choiceChips, forkChips, type Chip } from './choiceText'
@@ -170,6 +170,58 @@ export function ActionPanel({ state, aw, onAct }: ActionProps) {
   return null
 }
 
+/** 広重『東海道五拾三次』のその場所の図。絵があれば、サムネイル → 押すと大きく（出どころつき）。なければ、題名だけ */
+export function PrintCard({ name, compact }: { name: string; compact?: boolean }) {
+  const h = HIROSHIGE[name]
+  const [open, setOpen] = useState(false)
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open])
+  if (!h) return null
+  const title = `東海道五拾三次之内 ${h.station} ${h.subtitle}`
+  if (compact && !h.image) return null
+  return (
+    <div className={compact ? 'print print-compact' : 'print'} data-testid={compact ? 'print-compact' : 'print-card'}>
+      {!compact && (
+        <>
+          <span className="place-h place-h-art">広重</span>
+          <span className="print-title" data-testid="print-title">『{title}』</span>
+          <span className="print-sub">保永堂版・第{h.plate}図</span>
+        </>
+      )}
+      {h.image ? (
+        <button className="print-thumb" data-testid="print-thumb" onClick={() => setOpen(true)} aria-label={`${title}を大きく見る`}>
+          <img src={h.image} alt={title} loading="lazy" />
+        </button>
+      ) : (
+        !compact && <span className="print-missing" data-testid="print-missing">（絵は準備中）</span>
+      )}
+      {open && h.image && (
+        <div className="lightbox" role="dialog" aria-label={title} data-testid="print-lightbox" onClick={() => setOpen(false)}>
+          <figure onClick={(e) => e.stopPropagation()}>
+            <img src={h.image} alt={title} />
+            <figcaption>
+              『{title}』　歌川広重・保永堂版・第{h.plate}図
+              <br />
+              <span className="lightbox-credit">{h.credit}</span>
+              {h.source && (
+                <>
+                  {' ／ '}
+                  <a href={h.source} target="_blank" rel="noreferrer">所蔵館のページ</a>
+                </>
+              )}
+            </figcaption>
+          </figure>
+          <button className="primary" onClick={() => setOpen(false)}>閉じる</button>
+        </div>
+      )}
+    </div>
+  )
+}
+
 /** いまいる場所の、時代背景と、今では（現代の豆知識） */
 export function PlaceCard({ board, index }: { board: GameState['board']; index: number }) {
   const tile = board.tiles[index]
@@ -199,6 +251,7 @@ export function PlaceCard({ board, index }: { board: GameState['board']; index: 
         </p>
       )}
       {!info && <p className="place-tagline">{region.tagline}</p>}
+      <PrintCard name={tile.name} />
     </details>
   )
 }
@@ -219,25 +272,34 @@ export function CutIn({ item }: { item: CutItem }) {
   )
 }
 
+/** サイコロがころがる時間と、出目が決まってから見せる時間（ミリ秒）。遅い端末でも、出目は必ず見せる */
+export const DICE_ROLL_MS = 700
+export const DICE_HOLD_MS = 1000
+
 /** サイコロ：大きく、ころがってから、出目を見せる。何マス進むかも出す。毎回、作り直す（key を変える）こと */
-export function DicePop({ face, hurry, name, steps }: { face: number; hurry: boolean; name: string; steps: number }) {
+export function DicePop({ face, hurry, name, steps, onDone }: { face: number; hurry: boolean; name: string; steps: number; onDone?: () => void }) {
   const [shown, setShown] = useState(() => (prefersReducedMotion() ? face : 1 + Math.floor(Math.random() * 6)))
   const [rolling, setRolling] = useState(() => !prefersReducedMotion())
   useEffect(() => {
     if (!rolling) return
-    let i = 0
-    const t = setInterval(() => {
-      i += 1
-      if (i >= 10) {
-        clearInterval(t)
-        setShown(face)
-        setRolling(false)
-      } else {
-        setShown(1 + Math.floor(Math.random() * cfg.balance.game.diceFaces))
-      }
-    }, 70)
-    return () => clearInterval(t)
+    // 目の入れ替わり（見た目）と、決まる時刻（実時間）は、別々に動かす
+    const tick = setInterval(() => setShown(1 + Math.floor(Math.random() * cfg.balance.game.diceFaces)), 70)
+    const settle = setTimeout(() => {
+      clearInterval(tick)
+      setShown(face)
+      setRolling(false)
+    }, DICE_ROLL_MS)
+    return () => {
+      clearInterval(tick)
+      clearTimeout(settle)
+    }
   }, [face, rolling])
+  // 決まってから、しばらく見せて、おしまい
+  useEffect(() => {
+    if (rolling || !onDone) return
+    const t = setTimeout(onDone, DICE_HOLD_MS)
+    return () => clearTimeout(t)
+  }, [rolling, onDone])
   return (
     <div className="dice-pop" data-testid="dice-pop" role="status" aria-live="polite">
       <div className={`dice-face ${rolling ? 'rolling' : 'settled'}`} data-testid="dice-face">{rolling ? shown : face}</div>

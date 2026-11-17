@@ -14,7 +14,8 @@
     "simulate": "vite-node scripts/simulate.ts",
     "check": "npm run lint && npm run test && npm run build",
     "dev:online": "npm run build && wrangler dev --port 8787",
-    "test:e2e:online": "playwright test -c playwright.online.config.ts"
+    "test:e2e:online": "playwright test -c playwright.online.config.ts",
+    "import:hiroshige": "vite-node scripts/importHiroshige.ts --"
   },
   "dependencies": {
     "react": "^19.3.1",

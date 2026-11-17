@@ -7,6 +7,7 @@ import * as THREE from 'three'
 import { pieceColors } from '../art/theme'
 import { REGIONS, regionAt, shukuNumber } from '../engine'
 import scenesJson from '../data/scenes.json'
+import { PrintCard } from './parts'
 import { MOODS, addWeather, buildMotifs, makeCtx, makePiece, type Mood } from './sceneKit'
 import type { BoardState, Player } from '../types/game'
 
@@ -263,6 +264,11 @@ export default function SceneStage({ board, players, activeId, focusId, position
     <div className="scene-wrap">
       <div className="board3d" ref={box} data-testid="board3d" />
       <div className="scene-fade" style={{ opacity: fade ? 1 : 0 }} aria-hidden />
+      {tile && (
+        <div className="scene-print">
+          <PrintCard name={tile.name} compact />
+        </div>
+      )}
       {tile && region && (
         <div className="scene-caption" key={tile.name} data-testid="scene-caption">
           <div className="scene-name">{tile.name}</div>

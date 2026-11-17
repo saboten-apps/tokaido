@@ -1,0 +1,277 @@
+{
+ "日本橋": {
+  "plate": 1,
+  "station": "日本橋",
+  "subtitle": "朝之景"
+ },
+ "品川": {
+  "plate": 2,
+  "station": "品川",
+  "subtitle": "日之出"
+ },
+ "川崎": {
+  "plate": 3,
+  "station": "川崎",
+  "subtitle": "六郷渡舟"
+ },
+ "神奈川": {
+  "plate": 4,
+  "station": "神奈川",
+  "subtitle": "台之景"
+ },
+ "保土ヶ谷": {
+  "plate": 5,
+  "station": "保土ヶ谷",
+  "subtitle": "新町橋"
+ },
+ "戸塚": {
+  "plate": 6,
+  "station": "戸塚",
+  "subtitle": "元町別道"
+ },
+ "藤沢": {
+  "plate": 7,
+  "station": "藤沢",
+  "subtitle": "遊行寺"
+ },
+ "平塚": {
+  "plate": 8,
+  "station": "平塚",
+  "subtitle": "縄手道"
+ },
+ "大磯": {
+  "plate": 9,
+  "station": "大磯",
+  "subtitle": "虎ヶ雨"
+ },
+ "小田原": {
+  "plate": 10,
+  "station": "小田原",
+  "subtitle": "酒匂川"
+ },
+ "箱根": {
+  "plate": 11,
+  "station": "箱根",
+  "subtitle": "湖水図"
+ },
+ "三島": {
+  "plate": 12,
+  "station": "三島",
+  "subtitle": "朝霧"
+ },
+ "沼津": {
+  "plate": 13,
+  "station": "沼津",
+  "subtitle": "黄昏図"
+ },
+ "原": {
+  "plate": 14,
+  "station": "原",
+  "subtitle": "朝之富士"
+ },
+ "吉原": {
+  "plate": 15,
+  "station": "吉原",
+  "subtitle": "左富士"
+ },
+ "蒲原": {
+  "plate": 16,
+  "station": "蒲原",
+  "subtitle": "夜之雪"
+ },
+ "由比": {
+  "plate": 17,
+  "station": "由井",
+  "subtitle": "薩埵峯"
+ },
+ "興津": {
+  "plate": 18,
+  "station": "興津",
+  "subtitle": "興津川"
+ },
+ "江尻": {
+  "plate": 19,
+  "station": "江尻",
+  "subtitle": "三保遠望"
+ },
+ "府中": {
+  "plate": 20,
+  "station": "府中",
+  "subtitle": "安倍川"
+ },
+ "鞠子": {
+  "plate": 21,
+  "station": "鞠子",
+  "subtitle": "名物茶店"
+ },
+ "岡部": {
+  "plate": 22,
+  "station": "岡部",
+  "subtitle": "宇津之山"
+ },
+ "藤枝": {
+  "plate": 23,
+  "station": "藤枝",
+  "subtitle": "人馬継立"
+ },
+ "島田": {
+  "plate": 24,
+  "station": "島田",
+  "subtitle": "大井川駿岸"
+ },
+ "金谷": {
+  "plate": 25,
+  "station": "金谷",
+  "subtitle": "大井川遠岸"
+ },
+ "日坂": {
+  "plate": 26,
+  "station": "日坂",
+  "subtitle": "佐夜ノ中山"
+ },
+ "掛川": {
+  "plate": 27,
+  "station": "掛川",
+  "subtitle": "秋葉山遠望"
+ },
+ "袋井": {
+  "plate": 28,
+  "station": "袋井",
+  "subtitle": "出茶屋ノ図"
+ },
+ "見附": {
+  "plate": 29,
+  "station": "見附",
+  "subtitle": "天竜川図"
+ },
+ "浜松": {
+  "plate": 30,
+  "station": "浜松",
+  "subtitle": "冬枯ノ図"
+ },
+ "舞坂": {
+  "plate": 31,
+  "station": "舞坂",
+  "subtitle": "今切真景"
+ },
+ "新居": {
+  "plate": 32,
+  "station": "荒井",
+  "subtitle": "渡舟ノ図"
+ },
+ "白須賀": {
+  "plate": 33,
+  "station": "白須賀",
+  "subtitle": "汐見阪図"
+ },
+ "二川": {
+  "plate": 34,
+  "station": "二川",
+  "subtitle": "猿ヶ馬場"
+ },
+ "吉田": {
+  "plate": 35,
+  "station": "吉田",
+  "subtitle": "豊川橋"
+ },
+ "御油": {
+  "plate": 36,
+  "station": "御油",
+  "subtitle": "旅人留女"
+ },
+ "赤坂": {
+  "plate": 37,
+  "station": "赤阪",
+  "subtitle": "旅舎招婦ノ図"
+ },
+ "藤川": {
+  "plate": 38,
+  "station": "藤川",
+  "subtitle": "棒鼻ノ図"
+ },
+ "岡崎": {
+  "plate": 39,
+  "station": "岡崎",
+  "subtitle": "矢矧之橋"
+ },
+ "池鯉鮒": {
+  "plate": 40,
+  "station": "池鯉鮒",
+  "subtitle": "首夏馬市"
+ },
+ "鳴海": {
+  "plate": 41,
+  "station": "鳴海",
+  "subtitle": "名物有松絞"
+ },
+ "宮": {
+  "plate": 42,
+  "station": "宮",
+  "subtitle": "熱田神事"
+ },
+ "桑名": {
+  "plate": 43,
+  "station": "桑名",
+  "subtitle": "七里渡口"
+ },
+ "四日市": {
+  "plate": 44,
+  "station": "四日市",
+  "subtitle": "三重川"
+ },
+ "石薬師": {
+  "plate": 45,
+  "station": "石薬師",
+  "subtitle": "石薬師寺"
+ },
+ "庄野": {
+  "plate": 46,
+  "station": "庄野",
+  "subtitle": "白雨"
+ },
+ "亀山": {
+  "plate": 47,
+  "station": "亀山",
+  "subtitle": "雪晴"
+ },
+ "関": {
+  "plate": 48,
+  "station": "関",
+  "subtitle": "本陣早立"
+ },
+ "坂下": {
+  "plate": 49,
+  "station": "坂之下",
+  "subtitle": "筆捨嶺"
+ },
+ "土山": {
+  "plate": 50,
+  "station": "土山",
+  "subtitle": "春之雨"
+ },
+ "水口": {
+  "plate": 51,
+  "station": "水口",
+  "subtitle": "名物干瓢"
+ },
+ "石部": {
+  "plate": 52,
+  "station": "石部",
+  "subtitle": "目川ノ里"
+ },
+ "草津": {
+  "plate": 53,
+  "station": "草津",
+  "subtitle": "名物立場"
+ },
+ "大津": {
+  "plate": 54,
+  "station": "大津",
+  "subtitle": "走井茶店"
+ },
+ "京都 三条大橋": {
+  "plate": 55,
+  "station": "京師",
+  "subtitle": "三条大橋"
+ }
+}

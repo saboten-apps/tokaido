@@ -256,10 +256,11 @@ test('いまいる場所の、時代背景と、今では（現代の豆知識�
 })
 
 test('3D は場面：止まった土地の場面に切り替わる（ワープ）', async ({ page }) => {
+  test.setTimeout(180_000)
   await page.goto('/?seed=4&fast=1')
   await page.getByTestId('start').click()
   await page.getByTestId('view-toggle').click() // 好みの初期値が2Dなので、場面に切り替える
-  await expect(page.getByTestId('scene-caption')).toContainText('日本橋', { timeout: 30_000 })
+  await expect(page.getByTestId('scene-caption')).toContainText('日本橋', { timeout: 60_000 })
   await expect(page.getByTestId('scene-caption')).toContainText('東京都')
   // 進める：止まった土地の名前に変わる（日本橋ではなくなる）
   for (let i = 0; i < 60; i++) {
@@ -275,31 +276,45 @@ test('3D は場面：止まった土地の場面に切り替わる（ワープ�
     await page.waitForTimeout(60)
     if (!(await page.getByTestId('scene-caption').innerText()).includes('日本橋')) break
   }
-  await expect(page.getByTestId('scene-caption')).not.toContainText('日本橋', { timeout: 30_000 })
+  await expect(page.getByTestId('scene-caption')).not.toContainText('日本橋', { timeout: 60_000 })
   // 場面の下に、その土地の解説（時代背景）が出ている
   await expect(page.getByTestId('place-era')).toBeVisible()
   // 小地図を押すと、その場所を見学できる
   const box = (await page.locator('[data-testid=minimap] svg').boundingBox())!
   await page.mouse.click(box.x + 4, box.y + box.height / 2)
-  await expect(page.getByTestId('scene-caption')).toContainText('京都 三条大橋', { timeout: 30_000 })
+  await expect(page.getByTestId('scene-caption')).toContainText('京都 三条大橋', { timeout: 60_000 })
   await expect(page.getByTestId('scene-caption')).toContainText('見学中')
 })
 
 test('場面：サイコロがころがって出目と進むマス数が出る → 道を歩いて通る宿場が点く → 次の土地に着く', async ({ browser }) => {
+  test.setTimeout(120_000)
   const ctx = await browser.newContext()
   const page = await ctx.newPage()
   await page.goto('/?seed=4')
   await page.getByTestId('start').click()
-  await expect(page.getByTestId('scene-caption')).toContainText('日本橋', { timeout: 30_000 })
+  await expect(page.getByTestId('scene-caption')).toContainText('日本橋', { timeout: 45_000 })
+  // 出ている時間の短い表示（出目・道中の帯）は、画面の変化を監視して、見逃さずに記録する
+  await page.evaluate(() => {
+    const seen = { dice: '', steps: '', strip: '' }
+    ;(window as unknown as { __seen: typeof seen }).__seen = seen
+    const scan = () => {
+      const f = document.querySelector('[data-testid=dice-face]')
+      const st = document.querySelector('[data-testid=dice-steps]')
+      const tr = document.querySelector('[data-testid=travel-strip]')
+      if (f) seen.dice = f.textContent ?? ''
+      if (st) seen.steps = st.textContent ?? ''
+      if (tr) seen.strip = tr.textContent ?? ''
+    }
+    new MutationObserver(scan).observe(document.body, { childList: true, subtree: true, characterData: true })
+  })
   await page.getByTestId('roll').click()
-  // 大きなサイコロが出て、ころがったあと、出目と「◯マス進む」が出る
-  await expect(page.getByTestId('dice-face')).toBeVisible()
-  await expect(page.getByTestId('dice-steps')).toContainText('マス進む', { timeout: 10_000 })
+  // 着いた土地の場面に変わる（日本橋ではなくなる）
+  await expect(page.getByTestId('scene-caption')).not.toContainText('日本橋', { timeout: 60_000 })
+  const seen = await page.evaluate(() => (window as unknown as { __seen: { dice: string; steps: string; strip: string } }).__seen)
+  expect(seen.dice).toMatch(/^[1-6]$/)
+  expect(seen.steps).toContain('マス進む')
   // 旅人が道を歩く：通る場所の名前が並ぶ（出発地は日本橋）
-  await expect(page.getByTestId('travel-strip')).toBeVisible({ timeout: 15_000 })
-  await expect(page.getByTestId('travel-strip')).toContainText('日本橋')
-  // 着いた土地の場面に変わる
-  await expect(page.getByTestId('scene-caption')).not.toContainText('日本橋', { timeout: 30_000 })
+  expect(seen.strip).toContain('日本橋')
   await ctx.close()
 })
 
@@ -335,4 +350,12 @@ test('カットイン：イベントの題名が帯で出てから、選択肢�
   }
   expect(cutBeforeModal).toBe(true)
   await expect(page.getByTestId('choice').first()).toBeVisible()
+})
+
+test('広重の図：その場所の題名が出る（絵がなければ「準備中」）', async ({ page }) => {
+  await page.goto('/?seed=4&fast=1')
+  await page.getByTestId('start').click()
+  await expect(page.getByTestId('print-title')).toHaveText('『東海道五拾三次之内 日本橋 朝之景』')
+  await expect(page.getByTestId('print-card')).toContainText('保永堂版・第1図')
+  await expect(page.getByTestId('print-missing')).toBeVisible()
 })

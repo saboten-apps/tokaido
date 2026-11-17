@@ -72,7 +72,6 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
         const via = [prev.board.tiles[rolled.from].name, ...rolled.path.map((i) => prev.board.tiles[i].name)]
         setAnim({ playerId: rolled.playerId, from: rolled.from, path, step: -1, via, id: ++animSeq })
         setDice({ face: rolled.face, hurry: rolled.hurry, name, steps: rolled.path.length, id: animSeq })
-        setTimeout(() => setDice(null), mode === '3d' ? phaseDelay('3d', -1, 0) - 100 : 1000)
       }
     }
     cuts.push(cutinsFromTransition(prev, out.state))
@@ -162,7 +161,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
       <ActionPanel state={state} aw={aw} onAct={act} />
 
       {cuts.cut && <CutIn item={cuts.cut} />}
-      {dice && <DicePop key={dice.id} face={dice.face} hurry={dice.hurry} name={dice.name} steps={dice.steps} />}
+      {dice && <DicePop key={dice.id} face={dice.face} hurry={dice.hurry} name={dice.name} steps={dice.steps} onDone={() => setDice((d) => (d && d.id === dice.id ? null : d))} />}
       <div className="toasts" aria-live="polite">
         {toasts.map((t) => (
           <div key={t.id} className="toast">{t.text}</div>
