@@ -245,9 +245,11 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
   const [mode, toggleMode] = useViewMode()
   const [now, setNow] = useState(() => Date.now())
   const prev = useRef<GameState>(game)
+  const modeRef = useRef<'2d' | '3d'>('2d')
   const gameRef = useRef(game)
   useEffect(() => {
     gameRef.current = game
+    modeRef.current = mode
   })
   const seq = useRef(0)
 
@@ -268,7 +270,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
       if (!animate.current) return
       const rolls: Roll[] = batch.steps
         .flatMap((st) => st.events)
-        .flatMap((e) => (e.type === 'rolled' && e.path.length > 0 ? [{ playerId: e.playerId, from: e.from, path: e.path, face: e.face, hurry: e.hurry }] : []))
+        .flatMap((e) => (e.type === 'rolled' && e.path.length > 0 ? [{ playerId: e.playerId, from: e.from, path: modeRef.current === '3d' ? [e.to] : e.path, face: e.face, hurry: e.hurry }] : []))
       if (rolls.length) setQueue((q) => [...q, ...rolls])
       // 県の境を越えたら、通知（マスの県は変わらないので、いまの盤面で調べられる）
       for (const r of rolls) {
@@ -293,7 +295,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
           setStep(-1)
         } else setStep((n) => n + 1)
       },
-      step < 0 ? (mode === '3d' ? 600 : 350) : mode === '3d' ? 330 : 120,
+      step < 0 ? (mode === '3d' ? 1000 : 350) : mode === '3d' ? 1500 : 120,
     )
     return () => clearTimeout(timer)
   }, [queue, step, mode])

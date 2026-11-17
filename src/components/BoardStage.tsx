@@ -5,7 +5,7 @@ import { BoardView } from './BoardView'
 import type { ViewMode } from './viewMode'
 import type { BoardState, Player } from '../types/game'
 
-const Board3D = lazy(() => import('./Board3D'))
+const SceneStage = lazy(() => import('./SceneStage'))
 
 interface Props {
   board: BoardState
@@ -19,7 +19,7 @@ interface Props {
 export function ViewToggle({ mode, onToggle }: { mode: ViewMode; onToggle: () => void }) {
   return (
     <button className="linkish" data-testid="view-toggle" aria-pressed={mode === '3d'} onClick={onToggle}>
-      {mode === '2d' ? '3D表示' : '2D表示'}
+      {mode === '2d' ? '場面で見る' : '地図で見る'}
     </button>
   )
 }
@@ -28,7 +28,7 @@ export function BoardStage({ mode, ...props }: Props & { mode: ViewMode }) {
   if (mode === '2d') return <BoardView {...props} />
   return (
     <Suspense fallback={<div className="board3d" data-testid="board3d-loading">3Dを読み込んでいます…</div>}>
-      <Board3D {...props} />
+      <SceneStage {...props} />
     </Suspense>
   )
 }

@@ -30,9 +30,9 @@ interface Toast {
   text: string
 }
 
-/** 1マス進むのにかける時間。3D はマスの間が広いので、ゆっくり（旅している感じ） */
-const STEP_MS = { '2d': 120, '3d': 330 } as const
-const START_MS = { '2d': 350, '3d': 600 } as const
+/** 1マス進むのにかける時間。3D は、道を歩かず、場面を切り替える（ワープ）。サイコロの目を見せてから、暗転して、次の土地へ */
+const STEP_MS = { '2d': 120, '3d': 1500 } as const
+const START_MS = { '2d': 350, '3d': 1000 } as const
 let toastSeq = 0
 
 export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
@@ -63,7 +63,9 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
       const name = prev.players.find((p) => p.id === rolled.playerId)!.name
       setLastRoll({ name, face: rolled.face })
       if (animate && rolled.path.length > 0) {
-        setAnim({ playerId: rolled.playerId, from: rolled.from, path: rolled.path, step: -1 })
+        // 場面の表示（3D）では、通った道は見せず、着いた場所へ一度に移る
+        const path = mode === '3d' ? [rolled.to] : rolled.path
+        setAnim({ playerId: rolled.playerId, from: rolled.from, path, step: -1 })
         setDice({ face: rolled.face, hurry: rolled.hurry, name })
         setTimeout(() => setDice(null), 1000)
       }

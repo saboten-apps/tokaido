@@ -1,0 +1,592 @@
+{
+ "日本橋": {
+  "motifs": [
+   "river",
+   "bridge:red",
+   "street",
+   "boats"
+  ],
+  "mood": "day"
+ },
+ "高輪の大木戸": {
+  "motifs": [
+   "stonegate",
+   "sea",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "品川": {
+  "motifs": [
+   "sea",
+   "street",
+   "harbor"
+  ],
+  "mood": "day"
+ },
+ "六郷の渡し": {
+  "motifs": [
+   "river",
+   "ferry=river",
+   "paddies"
+  ],
+  "mood": "day"
+ },
+ "川崎": {
+  "motifs": [
+   "temple",
+   "street",
+   "pinelane"
+  ],
+  "mood": "day"
+ },
+ "神奈川": {
+  "motifs": [
+   "sea",
+   "teahouse",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "保土ヶ谷": {
+  "motifs": [
+   "pinelane",
+   "steps",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "戸塚": {
+  "motifs": [
+   "river",
+   "bridge",
+   "signpost=左 かまくら道",
+   "street"
+  ],
+  "mood": "dusk"
+ },
+ "藤沢": {
+  "motifs": [
+   "temple",
+   "torii",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "平塚": {
+  "motifs": [
+   "river",
+   "ferry=river",
+   "mountains",
+   "paddies"
+  ],
+  "mood": "day"
+ },
+ "大磯": {
+  "motifs": [
+   "pinelane",
+   "sea"
+  ],
+  "mood": "rain"
+ },
+ "大磯の松並木": {
+  "motifs": [
+   "pinelane",
+   "sea",
+   "lantern"
+  ],
+  "mood": "day"
+ },
+ "小田原": {
+  "motifs": [
+   "castle",
+   "street",
+   "sea"
+  ],
+  "mood": "day"
+ },
+ "箱根の山道": {
+  "motifs": [
+   "steps",
+   "cedar",
+   "mountains:near"
+  ],
+  "mood": "mist"
+ },
+ "箱根": {
+  "motifs": [
+   "sekisho",
+   "lake",
+   "mountains:near"
+  ],
+  "mood": "morning"
+ },
+ "芦ノ湖と富士": {
+  "motifs": [
+   "lake",
+   "fuji",
+   "mountains:near"
+  ],
+  "mood": "morning"
+ },
+ "三島": {
+  "motifs": [
+   "shrine",
+   "street",
+   "fuji"
+  ],
+  "mood": "day"
+ },
+ "沼津": {
+  "motifs": [
+   "pinelane",
+   "sea",
+   "fuji"
+  ],
+  "mood": "day"
+ },
+ "原": {
+  "motifs": [
+   "paddies",
+   "fuji:big",
+   "street"
+  ],
+  "mood": "morning"
+ },
+ "吉原": {
+  "motifs": [
+   "pinelane",
+   "fuji:left"
+  ],
+  "mood": "day"
+ },
+ "蒲原": {
+  "motifs": [
+   "street",
+   "mountains"
+  ],
+  "mood": "snow"
+ },
+ "由比": {
+  "motifs": [
+   "indigo",
+   "sea",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "薩埵峠": {
+  "motifs": [
+   "steps",
+   "sea",
+   "fuji"
+  ],
+  "mood": "day"
+ },
+ "興津": {
+  "motifs": [
+   "temple",
+   "sea",
+   "pinelane"
+  ],
+  "mood": "day"
+ },
+ "江尻": {
+  "motifs": [
+   "sea",
+   "harbor",
+   "pinelane"
+  ],
+  "mood": "day"
+ },
+ "府中": {
+  "motifs": [
+   "castle",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "丸子の茶屋": {
+  "motifs": [
+   "teahouse",
+   "teafields",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "鞠子": {
+  "motifs": [
+   "teahouse",
+   "street",
+   "teafields"
+  ],
+  "mood": "day"
+ },
+ "岡部": {
+  "motifs": [
+   "tunnel",
+   "steps",
+   "cedar"
+  ],
+  "mood": "mist"
+ },
+ "藤枝": {
+  "motifs": [
+   "street",
+   "paddies",
+   "mountains"
+  ],
+  "mood": "day"
+ },
+ "島田": {
+  "motifs": [
+   "river",
+   "porters",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "大井川": {
+  "motifs": [
+   "river",
+   "porters",
+   "mountains"
+  ],
+  "mood": "day"
+ },
+ "金谷": {
+  "motifs": [
+   "steps",
+   "teafields",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "小夜の中山": {
+  "motifs": [
+   "rock",
+   "temple",
+   "teafields",
+   "mountains"
+  ],
+  "mood": "dusk"
+ },
+ "日坂": {
+  "motifs": [
+   "rock",
+   "street",
+   "teafields"
+  ],
+  "mood": "day"
+ },
+ "掛川": {
+  "motifs": [
+   "castle",
+   "street",
+   "paddies"
+  ],
+  "mood": "day"
+ },
+ "袋井": {
+  "motifs": [
+   "signpost=東海道 どまん中",
+   "street",
+   "paddies"
+  ],
+  "mood": "day"
+ },
+ "見附": {
+  "motifs": [
+   "river",
+   "ferry=river",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "浜松": {
+  "motifs": [
+   "castle:big",
+   "street",
+   "pinelane"
+  ],
+  "mood": "day"
+ },
+ "舞坂": {
+  "motifs": [
+   "lake",
+   "ferry=lake",
+   "pinelane"
+  ],
+  "mood": "day"
+ },
+ "浜名の今切": {
+  "motifs": [
+   "lake",
+   "sea",
+   "ferry=lake"
+  ],
+  "mood": "dusk"
+ },
+ "新居": {
+  "motifs": [
+   "sekisho",
+   "lake",
+   "ferry=lake"
+  ],
+  "mood": "day"
+ },
+ "白須賀": {
+  "motifs": [
+   "steps",
+   "sea",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "二川": {
+  "motifs": [
+   "street",
+   "inn",
+   "paddies"
+  ],
+  "mood": "day"
+ },
+ "吉田": {
+  "motifs": [
+   "river",
+   "bridge",
+   "castle:small",
+   "hanabi"
+  ],
+  "mood": "night"
+ },
+ "御油": {
+  "motifs": [
+   "pinelane",
+   "inn",
+   "paddies"
+  ],
+  "mood": "day"
+ },
+ "赤坂": {
+  "motifs": [
+   "inn",
+   "lantern",
+   "pinelane"
+  ],
+  "mood": "dusk"
+ },
+ "藤川": {
+  "motifs": [
+   "stakes",
+   "street",
+   "horses"
+  ],
+  "mood": "day"
+ },
+ "岡崎": {
+  "motifs": [
+   "castle",
+   "river",
+   "bridge",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "岡崎の城下": {
+  "motifs": [
+   "castle",
+   "river",
+   "bridge",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "池鯉鮒": {
+  "motifs": [
+   "horses",
+   "flowers",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "鳴海": {
+  "motifs": [
+   "indigo:colors",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "宮": {
+  "motifs": [
+   "shrine",
+   "harbor",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "七里の渡し": {
+  "motifs": [
+   "sea",
+   "ferry=sea",
+   "lantern"
+  ],
+  "mood": "morning"
+ },
+ "桑名": {
+  "motifs": [
+   "torii:big",
+   "sea",
+   "tower",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "四日市": {
+  "motifs": [
+   "signpost=伊勢街道 追分",
+   "torii",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "石薬師": {
+  "motifs": [
+   "temple",
+   "street",
+   "pinelane"
+  ],
+  "mood": "day"
+ },
+ "庄野": {
+  "motifs": [
+   "steps",
+   "pinelane",
+   "street"
+  ],
+  "mood": "rain"
+ },
+ "亀山": {
+  "motifs": [
+   "castle:small",
+   "street",
+   "mountains"
+  ],
+  "mood": "day"
+ },
+ "関の茶屋": {
+  "motifs": [
+   "teahouse",
+   "street",
+   "cedar"
+  ],
+  "mood": "day"
+ },
+ "関": {
+  "motifs": [
+   "street:long",
+   "torii",
+   "lantern"
+  ],
+  "mood": "day"
+ },
+ "坂下": {
+  "motifs": [
+   "mountains:near",
+   "cedar",
+   "steps"
+  ],
+  "mood": "mist"
+ },
+ "鈴鹿峠": {
+  "motifs": [
+   "steps",
+   "cedar",
+   "mountains:near",
+   "lantern"
+  ],
+  "mood": "mist"
+ },
+ "土山": {
+  "motifs": [
+   "teafields",
+   "street",
+   "steps"
+  ],
+  "mood": "rain"
+ },
+ "水口": {
+  "motifs": [
+   "castle:small",
+   "kanpyo",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "石部": {
+  "motifs": [
+   "street",
+   "signpost=京立ち石部泊まり",
+   "lantern"
+  ],
+  "mood": "dusk"
+ },
+ "琵琶湖のほとり": {
+  "motifs": [
+   "lake",
+   "ferry=lake",
+   "pinelane"
+  ],
+  "mood": "day"
+ },
+ "草津": {
+  "motifs": [
+   "inn",
+   "signpost=追分 東海道・中山道",
+   "street"
+  ],
+  "mood": "day"
+ },
+ "大津": {
+  "motifs": [
+   "lake",
+   "street",
+   "signpost=逢坂の関"
+  ],
+  "mood": "dusk"
+ },
+ "京都 三条大橋": {
+  "motifs": [
+   "river",
+   "bridge:red",
+   "pagoda",
+   "mountains:low",
+   "maples",
+   "street"
+  ],
+  "mood": "dusk"
+ },
+ "島田の川止め宿": {
+  "motifs": [
+   "inn",
+   "river",
+   "street"
+  ],
+  "mood": "rain"
+ },
+ "川明けを待つ河原": {
+  "motifs": [
+   "river",
+   "mountains"
+  ],
+  "mood": "morning"
+ },
+ "川越しの朝": {
+  "motifs": [
+   "river",
+   "porters",
+   "mountains"
+  ],
+  "mood": "morning"
+ }
+}

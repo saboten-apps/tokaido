@@ -190,7 +190,7 @@ test('基本は3Dで始まる（好みが覚えられていなければ）。2D�
   await page.goto('/?seed=4&fast=1')
   await page.getByTestId('start').click()
   await expect(page.getByTestId('board3d-canvas')).toBeVisible({ timeout: 15_000 })
-  await expect(page.getByTestId('view-toggle')).toHaveText('2D表示')
+  await expect(page.getByTestId('view-toggle')).toHaveText('地図で見る')
   await page.getByTestId('view-toggle').click()
   await expect(page.getByTestId('board')).toBeVisible()
   await page.reload()
@@ -253,4 +253,34 @@ test('いまいる場所の、時代背景と、今では（現代の豆知識�
   }
   await expect(page.getByTestId('place-name')).not.toHaveText('日本橋')
   await expect(page.getByTestId('place-card')).toBeVisible()
+})
+
+test('3D は場面：止まった土地の場面に切り替わる（ワープ）', async ({ page }) => {
+  await page.goto('/?seed=4&fast=1')
+  await page.getByTestId('start').click()
+  await page.getByTestId('view-toggle').click() // 好みの初期値が2Dなので、場面に切り替える
+  await expect(page.getByTestId('scene-caption')).toContainText('日本橋', { timeout: 30_000 })
+  await expect(page.getByTestId('scene-caption')).toContainText('東京都')
+  // 進める：止まった土地の名前に変わる（日本橋ではなくなる）
+  for (let i = 0; i < 60; i++) {
+    await page.evaluate(() => {
+      for (const id of ['roll', 'choice', 'buy', 'route-lane']) {
+        const el = Array.from(document.querySelectorAll<HTMLButtonElement>(`[data-testid="${id}"]`)).find((e) => !e.disabled && e.offsetParent !== null)
+        if (el) {
+          el.click()
+          return
+        }
+      }
+    })
+    await page.waitForTimeout(60)
+    if (!(await page.getByTestId('scene-caption').innerText()).includes('日本橋')) break
+  }
+  await expect(page.getByTestId('scene-caption')).not.toContainText('日本橋', { timeout: 30_000 })
+  // 場面の下に、その土地の解説（時代背景）が出ている
+  await expect(page.getByTestId('place-era')).toBeVisible()
+  // 小地図を押すと、その場所を見学できる
+  const box = (await page.locator('[data-testid=minimap] svg').boundingBox())!
+  await page.mouse.click(box.x + 4, box.y + box.height / 2)
+  await expect(page.getByTestId('scene-caption')).toContainText('京都 三条大橋', { timeout: 30_000 })
+  await expect(page.getByTestId('scene-caption')).toContainText('見学中')
 })

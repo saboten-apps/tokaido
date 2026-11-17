@@ -4,7 +4,7 @@
 
 ## いまの作り（差し替えやすいところ）
 - 2D の絵：`src/art/theme.ts` と `art-inbox/`（`scripts/importArt.mjs`）。マスの名前で、画像を差し替える。
-- 県ごとの色・紹介：`src/data/regions.json`。3D の景色の組み立ては `src/components/Board3D.tsx`（県ごとの見どころは、関数にまとまっている）。
+- 県ごとの色・紹介：`src/data/regions.json`。3D の場面：`src/data/scenes.json`（どの土地に何を立てるか・時間と天気）と、部品 `src/components/sceneKit.ts`。部品ごとに、glTF のモデルへ差し替えられる（同じ名前の `BUILDERS` の中身を、モデルの読み込みに変える）。
 - 画面の部品：`src/components/parts.tsx`（旅人の札・行動・選択肢・場所カード）、`src/index.css`（色は `:root` の変数）。
 - 数値・文章は JSON（`balance.json`・`events/*.json`・`places.json`）なので、見た目と独立して直せる。
 

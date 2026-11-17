@@ -150,3 +150,13 @@ button small { font-size: 12px; opacity: 0.8; }
 .place-tagline { color: #6b5a48; }
 .notebook details { background: #fffaf0; border-bottom: 1px solid #eadfc5; padding: 4px 10px; font-size: 13px; line-height: 1.7; }
 .notebook summary { cursor: pointer; font-weight: bold; }
+
+.scene-wrap { position: relative; }
+.scene-wrap .board3d { height: min(52vh, 440px); }
+.scene-fade { position: absolute; inset: 0; background: #f3ead6; transition: opacity 0.45s ease; pointer-events: none; border-radius: 12px; }
+.scene-caption { position: absolute; left: 10px; bottom: 10px; background: rgba(246,239,224,0.9); border: 1px solid #cdbb94; border-radius: 10px; padding: 6px 14px; pointer-events: none; animation: caption-in 0.9s ease-out; max-width: calc(100% - 20px); }
+.scene-name { font-size: 28px; font-weight: bold; letter-spacing: 0.12em; line-height: 1.25; }
+.scene-sub { font-size: 12px; color: #5a4b38; }
+.scene-tour { margin-left: 8px; background: #2f6b7a; color: #fff; border-radius: 4px; padding: 0 6px; font-size: 11px; }
+@keyframes caption-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .scene-fade { transition: none; } .scene-caption { animation: none; } }
