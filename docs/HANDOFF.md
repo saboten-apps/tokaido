@@ -111,6 +111,8 @@
 
 ## 記録（新しいものを上に）
 
+- 2026-11-17 **広重の絵55枚を取り込み**（メトロポリタン美術館 CC0・保永堂版）。Met の公開データ（CSV）で宿場ごとの資料番号を決め（`scripts/metHoeido.json`）、objects API で `isPublicDomain` を確認して取得。紙のふち・色見本を切って webp 化（`public/hiroshige/` 6.7MB）。出どころは `docs/ASSETS.md` と `hiroshige.json`。※このセッションからは、search API が bot 対策でブロックされるため、CSV と objects API を使った。
+
 - 2026-11-17 スタンプを押した瞬間の印の演出（`useStampPop`・`StampPop`）。スタンプ帳の並びを詰めた。
 
 - 2026-11-17 面白さの強化 2：①**天気**（`weather.ts`：種と日から決まる。雨は1歩ごとに体力-1。場面も雨の景色。画面上に表示）②**同宿の語らい**（同じ宿場に泊まった旅人は思い出+2。`lodging.shared`）。単体129・e2e48・online3 通過。シミュレーション 4人：勝率 飛脚18%〜旅芸人27%。

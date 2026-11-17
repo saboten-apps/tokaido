@@ -352,12 +352,19 @@ test('カットイン：イベントの題名が帯で出てから、選択肢�
   await expect(page.getByTestId('choice').first()).toBeVisible()
 })
 
-test('広重の図：その場所の題名が出る（絵がなければ「準備中」）', async ({ page }) => {
+test('広重の図：その場所の題名と絵が出て、押すと大きく見られる（出どころつき）', async ({ page }) => {
   await page.goto('/?seed=4&fast=1')
   await page.getByTestId('start').click()
   await expect(page.getByTestId('print-title')).toHaveText('『東海道五拾三次之内 日本橋 朝之景』')
   await expect(page.getByTestId('print-card')).toContainText('保永堂版・第1図')
-  await expect(page.getByTestId('print-missing')).toBeVisible()
+  await expect(page.getByTestId('print-missing')).toHaveCount(0)
+  const thumb = page.getByTestId('print-thumb').first()
+  await expect(thumb).toBeVisible()
+  await expect.poll(() => thumb.locator('img').evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)).toBe(true)
+  await thumb.click()
+  await expect(page.getByTestId('print-lightbox')).toContainText('メトロポリタン美術館')
+  await page.keyboard.press('Escape')
+  await expect(page.getByTestId('print-lightbox')).toBeHidden()
 })
 
 test('宿場をめざす：近い宿場までの案内が出て、押すと宿場で止まり、スタンプが付く', async ({ page }) => {

@@ -31,3 +31,10 @@
 | 図（マスの名前） | 所蔵館・資料 | 権利 | 取り込み日 |
 |---|---|---|---|
 | （まだなし） | | | |
+
+
+## 広重の絵 55枚（2026-11-17 取り込み）
+- 出どころ：メトロポリタン美術館（The Metropolitan Museum of Art）のオープンアクセス（CC0）。保永堂版『東海道五拾三次』（1833〜34年ごろ）。資料番号は `scripts/metHoeido.json`、図ごとの資料番号・所蔵番号・URLは `src/data/hiroshige.json` の `credit` / `source`。
+- 取り方：公開データ（MetObjects.csv）で広重の資料を探して、宿場ごとに資料番号を決め、館の API（objects）で `isPublicDomain` を確かめて、画像を取得。画像は、紙のふちと色見本を切って、幅1000pxの webp にした（`scripts/importHiroshige.ts`）。
+- 見附は、36518（天竜川）。庄野は36967、土山は36971（1834〜35年の摺り）。ほかの宿場は、保永堂版の資料。摺りの状態（色・後摺り）は、資料ごとに違う。
+- 元の画像（`art-inbox/hiroshige/`）は、git に入れない。

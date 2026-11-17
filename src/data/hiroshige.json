@@ -2,276 +2,441 @@
  "日本橋": {
   "plate": 1,
   "station": "日本橋",
-  "subtitle": "朝之景"
+  "subtitle": "朝之景",
+  "image": "/hiroshige/%E6%97%A5%E6%9C%AC%E6%A9%8B.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP471。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36922"
  },
  "品川": {
   "plate": 2,
   "station": "品川",
-  "subtitle": "日之出"
+  "subtitle": "日之出",
+  "image": "/hiroshige/%E5%93%81%E5%B7%9D.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP472。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36923"
  },
  "川崎": {
   "plate": 3,
   "station": "川崎",
-  "subtitle": "六郷渡舟"
+  "subtitle": "六郷渡舟",
+  "image": "/hiroshige/%E5%B7%9D%E5%B4%8E.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP473。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36924"
  },
  "神奈川": {
   "plate": 4,
   "station": "神奈川",
-  "subtitle": "台之景"
+  "subtitle": "台之景",
+  "image": "/hiroshige/%E7%A5%9E%E5%A5%88%E5%B7%9D.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP474。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36925"
  },
  "保土ヶ谷": {
   "plate": 5,
   "station": "保土ヶ谷",
-  "subtitle": "新町橋"
+  "subtitle": "新町橋",
+  "image": "/hiroshige/%E4%BF%9D%E5%9C%9F%E3%83%B6%E8%B0%B7.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP475。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36926"
  },
  "戸塚": {
   "plate": 6,
   "station": "戸塚",
-  "subtitle": "元町別道"
+  "subtitle": "元町別道",
+  "image": "/hiroshige/%E6%88%B8%E5%A1%9A.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP476。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36927"
  },
  "藤沢": {
   "plate": 7,
   "station": "藤沢",
-  "subtitle": "遊行寺"
+  "subtitle": "遊行寺",
+  "image": "/hiroshige/%E8%97%A4%E6%B2%A2.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP477。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36928"
  },
  "平塚": {
   "plate": 8,
   "station": "平塚",
-  "subtitle": "縄手道"
+  "subtitle": "縄手道",
+  "image": "/hiroshige/%E5%B9%B3%E5%A1%9A.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP478。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36929"
  },
  "大磯": {
   "plate": 9,
   "station": "大磯",
-  "subtitle": "虎ヶ雨"
+  "subtitle": "虎ヶ雨",
+  "image": "/hiroshige/%E5%A4%A7%E7%A3%AF.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP479。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36930"
  },
  "小田原": {
   "plate": 10,
   "station": "小田原",
-  "subtitle": "酒匂川"
+  "subtitle": "酒匂川",
+  "image": "/hiroshige/%E5%B0%8F%E7%94%B0%E5%8E%9F.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP480。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36931"
  },
  "箱根": {
   "plate": 11,
   "station": "箱根",
-  "subtitle": "湖水図"
+  "subtitle": "湖水図",
+  "image": "/hiroshige/%E7%AE%B1%E6%A0%B9.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP481。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36932"
  },
  "三島": {
   "plate": 12,
   "station": "三島",
-  "subtitle": "朝霧"
+  "subtitle": "朝霧",
+  "image": "/hiroshige/%E4%B8%89%E5%B3%B6.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP482。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36933"
  },
  "沼津": {
   "plate": 13,
   "station": "沼津",
-  "subtitle": "黄昏図"
+  "subtitle": "黄昏図",
+  "image": "/hiroshige/%E6%B2%BC%E6%B4%A5.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP483。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36934"
  },
  "原": {
   "plate": 14,
   "station": "原",
-  "subtitle": "朝之富士"
+  "subtitle": "朝之富士",
+  "image": "/hiroshige/%E5%8E%9F.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP484。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36935"
  },
  "吉原": {
   "plate": 15,
   "station": "吉原",
-  "subtitle": "左富士"
+  "subtitle": "左富士",
+  "image": "/hiroshige/%E5%90%89%E5%8E%9F.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP485。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36936"
  },
  "蒲原": {
   "plate": 16,
   "station": "蒲原",
-  "subtitle": "夜之雪"
+  "subtitle": "夜之雪",
+  "image": "/hiroshige/%E8%92%B2%E5%8E%9F.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP486。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36937"
  },
  "由比": {
   "plate": 17,
   "station": "由井",
-  "subtitle": "薩埵峯"
+  "subtitle": "薩埵峯",
+  "image": "/hiroshige/%E7%94%B1%E6%AF%94.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP487。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36938"
  },
  "興津": {
   "plate": 18,
   "station": "興津",
-  "subtitle": "興津川"
+  "subtitle": "興津川",
+  "image": "/hiroshige/%E8%88%88%E6%B4%A5.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP488。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36939"
  },
  "江尻": {
   "plate": 19,
   "station": "江尻",
-  "subtitle": "三保遠望"
+  "subtitle": "三保遠望",
+  "image": "/hiroshige/%E6%B1%9F%E5%B0%BB.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP489。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36940"
  },
  "府中": {
   "plate": 20,
   "station": "府中",
-  "subtitle": "安倍川"
+  "subtitle": "安倍川",
+  "image": "/hiroshige/%E5%BA%9C%E4%B8%AD.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP490。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36941"
  },
  "鞠子": {
   "plate": 21,
   "station": "鞠子",
-  "subtitle": "名物茶店"
+  "subtitle": "名物茶店",
+  "image": "/hiroshige/%E9%9E%A0%E5%AD%90.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP491。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36942"
  },
  "岡部": {
   "plate": 22,
   "station": "岡部",
-  "subtitle": "宇津之山"
+  "subtitle": "宇津之山",
+  "image": "/hiroshige/%E5%B2%A1%E9%83%A8.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP492。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36943"
  },
  "藤枝": {
   "plate": 23,
   "station": "藤枝",
-  "subtitle": "人馬継立"
+  "subtitle": "人馬継立",
+  "image": "/hiroshige/%E8%97%A4%E6%9E%9D.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP493。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36944"
  },
  "島田": {
   "plate": 24,
   "station": "島田",
-  "subtitle": "大井川駿岸"
+  "subtitle": "大井川駿岸",
+  "image": "/hiroshige/%E5%B3%B6%E7%94%B0.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP494。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36945"
  },
  "金谷": {
   "plate": 25,
   "station": "金谷",
-  "subtitle": "大井川遠岸"
+  "subtitle": "大井川遠岸",
+  "image": "/hiroshige/%E9%87%91%E8%B0%B7.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP495。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36946"
  },
  "日坂": {
   "plate": 26,
   "station": "日坂",
-  "subtitle": "佐夜ノ中山"
+  "subtitle": "佐夜ノ中山",
+  "image": "/hiroshige/%E6%97%A5%E5%9D%82.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP496。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36947"
  },
  "掛川": {
   "plate": 27,
   "station": "掛川",
-  "subtitle": "秋葉山遠望"
+  "subtitle": "秋葉山遠望",
+  "image": "/hiroshige/%E6%8E%9B%E5%B7%9D.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP497。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36948"
  },
  "袋井": {
   "plate": 28,
   "station": "袋井",
-  "subtitle": "出茶屋ノ図"
+  "subtitle": "出茶屋ノ図",
+  "image": "/hiroshige/%E8%A2%8B%E4%BA%95.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP498。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36949"
  },
  "見附": {
   "plate": 29,
   "station": "見附",
-  "subtitle": "天竜川図"
+  "subtitle": "天竜川図",
+  "image": "/hiroshige/%E8%A6%8B%E9%99%84.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP38。Rogers Fund, 1914",
+  "source": "https://www.metmuseum.org/art/collection/search/36518"
  },
  "浜松": {
   "plate": 30,
   "station": "浜松",
-  "subtitle": "冬枯ノ図"
+  "subtitle": "冬枯ノ図",
+  "image": "/hiroshige/%E6%B5%9C%E6%9D%BE.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP500。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36951"
  },
  "舞坂": {
   "plate": 31,
   "station": "舞坂",
-  "subtitle": "今切真景"
+  "subtitle": "今切真景",
+  "image": "/hiroshige/%E8%88%9E%E5%9D%82.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP501。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36952"
  },
  "新居": {
   "plate": 32,
   "station": "荒井",
-  "subtitle": "渡舟ノ図"
+  "subtitle": "渡舟ノ図",
+  "image": "/hiroshige/%E6%96%B0%E5%B1%85.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP502。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36953"
  },
  "白須賀": {
   "plate": 33,
   "station": "白須賀",
-  "subtitle": "汐見阪図"
+  "subtitle": "汐見阪図",
+  "image": "/hiroshige/%E7%99%BD%E9%A0%88%E8%B3%80.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP503。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36954"
  },
  "二川": {
   "plate": 34,
   "station": "二川",
-  "subtitle": "猿ヶ馬場"
+  "subtitle": "猿ヶ馬場",
+  "image": "/hiroshige/%E4%BA%8C%E5%B7%9D.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP504。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36955"
  },
  "吉田": {
   "plate": 35,
   "station": "吉田",
-  "subtitle": "豊川橋"
+  "subtitle": "豊川橋",
+  "image": "/hiroshige/%E5%90%89%E7%94%B0.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP505。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36956"
  },
  "御油": {
   "plate": 36,
   "station": "御油",
-  "subtitle": "旅人留女"
+  "subtitle": "旅人留女",
+  "image": "/hiroshige/%E5%BE%A1%E6%B2%B9.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP506。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36957"
  },
  "赤坂": {
   "plate": 37,
   "station": "赤阪",
-  "subtitle": "旅舎招婦ノ図"
+  "subtitle": "旅舎招婦ノ図",
+  "image": "/hiroshige/%E8%B5%A4%E5%9D%82.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP507。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36958"
  },
  "藤川": {
   "plate": 38,
   "station": "藤川",
-  "subtitle": "棒鼻ノ図"
+  "subtitle": "棒鼻ノ図",
+  "image": "/hiroshige/%E8%97%A4%E5%B7%9D.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP508。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36959"
  },
  "岡崎": {
   "plate": 39,
   "station": "岡崎",
-  "subtitle": "矢矧之橋"
+  "subtitle": "矢矧之橋",
+  "image": "/hiroshige/%E5%B2%A1%E5%B4%8E.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP509。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36960"
  },
  "池鯉鮒": {
   "plate": 40,
   "station": "池鯉鮒",
-  "subtitle": "首夏馬市"
+  "subtitle": "首夏馬市",
+  "image": "/hiroshige/%E6%B1%A0%E9%AF%89%E9%AE%92.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP510。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36961"
  },
  "鳴海": {
   "plate": 41,
   "station": "鳴海",
-  "subtitle": "名物有松絞"
+  "subtitle": "名物有松絞",
+  "image": "/hiroshige/%E9%B3%B4%E6%B5%B7.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP511。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36962"
  },
  "宮": {
   "plate": 42,
   "station": "宮",
-  "subtitle": "熱田神事"
+  "subtitle": "熱田神事",
+  "image": "/hiroshige/%E5%AE%AE.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP512。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36963"
  },
  "桑名": {
   "plate": 43,
   "station": "桑名",
-  "subtitle": "七里渡口"
+  "subtitle": "七里渡口",
+  "image": "/hiroshige/%E6%A1%91%E5%90%8D.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP513。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36964"
  },
  "四日市": {
   "plate": 44,
   "station": "四日市",
-  "subtitle": "三重川"
+  "subtitle": "三重川",
+  "image": "/hiroshige/%E5%9B%9B%E6%97%A5%E5%B8%82.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP514。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36965"
  },
  "石薬師": {
   "plate": 45,
   "station": "石薬師",
-  "subtitle": "石薬師寺"
+  "subtitle": "石薬師寺",
+  "image": "/hiroshige/%E7%9F%B3%E8%96%AC%E5%B8%AB.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP515。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36966"
  },
  "庄野": {
   "plate": 46,
   "station": "庄野",
-  "subtitle": "白雨"
+  "subtitle": "白雨",
+  "image": "/hiroshige/%E5%BA%84%E9%87%8E.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP516。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36967"
  },
  "亀山": {
   "plate": 47,
   "station": "亀山",
-  "subtitle": "雪晴"
+  "subtitle": "雪晴",
+  "image": "/hiroshige/%E4%BA%80%E5%B1%B1.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP517。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36968"
  },
  "関": {
   "plate": 48,
   "station": "関",
-  "subtitle": "本陣早立"
+  "subtitle": "本陣早立",
+  "image": "/hiroshige/%E9%96%A2.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP518。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36969"
  },
  "坂下": {
   "plate": 49,
   "station": "坂之下",
-  "subtitle": "筆捨嶺"
+  "subtitle": "筆捨嶺",
+  "image": "/hiroshige/%E5%9D%82%E4%B8%8B.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP519。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36970"
  },
  "土山": {
   "plate": 50,
   "station": "土山",
-  "subtitle": "春之雨"
+  "subtitle": "春之雨",
+  "image": "/hiroshige/%E5%9C%9F%E5%B1%B1.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP520。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36971"
  },
  "水口": {
   "plate": 51,
   "station": "水口",
-  "subtitle": "名物干瓢"
+  "subtitle": "名物干瓢",
+  "image": "/hiroshige/%E6%B0%B4%E5%8F%A3.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP521。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36972"
  },
  "石部": {
   "plate": 52,
   "station": "石部",
-  "subtitle": "目川ノ里"
+  "subtitle": "目川ノ里",
+  "image": "/hiroshige/%E7%9F%B3%E9%83%A8.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP522。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36973"
  },
  "草津": {
   "plate": 53,
   "station": "草津",
-  "subtitle": "名物立場"
+  "subtitle": "名物立場",
+  "image": "/hiroshige/%E8%8D%89%E6%B4%A5.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP523。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36974"
  },
  "大津": {
   "plate": 54,
   "station": "大津",
-  "subtitle": "走井茶店"
+  "subtitle": "走井茶店",
+  "image": "/hiroshige/%E5%A4%A7%E6%B4%A5.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP524。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36975"
  },
  "京都 三条大橋": {
   "plate": 55,
   "station": "京師",
-  "subtitle": "三条大橋"
+  "subtitle": "三条大橋",
+  "image": "/hiroshige/%E4%BA%AC%E9%83%BD%20%E4%B8%89%E6%9D%A1%E5%A4%A7%E6%A9%8B.webp",
+  "credit": "メトロポリタン美術館（Open Access / CC0）JP525。Rogers Fund, 1918",
+  "source": "https://www.metmuseum.org/art/collection/search/36976"
  }
 }
