@@ -1,7 +1,7 @@
 // 旅の画面：盤面・旅人の札・行動・判断（出来事／名物／分かれ道）・道中記。CPU の番は、少しずつ進めて見せる。
 
 import { useEffect, useState } from 'react'
-import { DEFAULT_CONFIG, advanceOne, getAwaiting, getEvent, innCostFor, isChoiceAvailable, maxFaceFor, submitAction, type SessionAction } from '../engine'
+import { DEFAULT_CONFIG, advanceOne, canHurry, isTired, getAwaiting, getEvent, innCostFor, isChoiceAvailable, maxFaceFor, submitAction, type SessionAction } from '../engine'
 import { pieceColors } from '../art/theme'
 import { BoardView } from './BoardView'
 import type { GameState } from '../types/game'
@@ -41,7 +41,7 @@ export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
   }
 
   const awPlayer = aw ? state.players.find((p) => p.id === aw.playerId)! : null
-  const tired = awPlayer && maxFaceFor(awPlayer, cfg) < cfg.balance.game.diceFaces
+  const tired = awPlayer && isTired(awPlayer, cfg)
 
   return (
     <div className="game">
@@ -83,9 +83,12 @@ export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
 
       {aw?.kind === 'roll' && awPlayer && (
         <section className="dock">
-          <div className="dock-who">{awPlayer.name}の番{tired ? '（疲れていて、出目は3まで）' : ''}</div>
+          <div className="dock-who">{awPlayer.name}の番{tired ? `（疲れていて、出目は${maxFaceFor(awPlayer!, cfg)}まで）` : ''}</div>
           <button className="primary" data-testid="roll" onClick={() => act({ type: 'roll' })}>
             サイコロを振る
+          </button>
+          <button data-testid="hurry" disabled={!canHurry(awPlayer, cfg)} onClick={() => act({ type: 'hurry' })}>
+            早足で振る（+{cfg.balance.travel.hurryBonus}マス・体力-{cfg.balance.travel.hurryStamina}）
           </button>
           <button data-testid="work" onClick={() => act({ type: 'work' })}>
             働いて稼ぐ（+{cfg.balance.travel.workMoney}文・進まない）

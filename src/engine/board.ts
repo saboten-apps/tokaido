@@ -65,10 +65,26 @@ export function pathFrom(board: BoardState, pos: number, steps: number, route: '
   return path
 }
 
-/** 体力が少ないと、大きな目が出ない（疲れて歩みが鈍る） */
+/** 疲れているか：体力が少ない、または野宿が続いている */
+export function isTired(player: Player, config: GameConfig): boolean {
+  return player.stats.stamina < config.balance.travel.tiredStamina || player.flags.includes('camped2')
+}
+
+/** 疲れていると、大きな目が出ない（歩みが鈍る） */
 export function maxFaceFor(player: Player, config: GameConfig): number {
-  const t = config.balance.travel
-  return player.stats.stamina < t.tiredStamina ? t.tiredMaxFace : config.balance.game.diceFaces
+  return isTired(player, config) ? config.balance.travel.tiredMaxFace : config.balance.game.diceFaces
+}
+
+/** 早足にできるか（体力に余裕があるとき） */
+export function canHurry(player: Player, config: GameConfig): boolean {
+  return player.stats.stamina >= config.balance.travel.hurryMinStamina
+}
+
+/** 野宿の連続を数える（旗 camped → 2日続くと camped2＝疲れ）。宿に泊まれば消える */
+export function recordCamp(player: Player, camped: boolean): void {
+  const before = player.flags.includes('camped') || player.flags.includes('camped2')
+  player.flags = player.flags.filter((f) => f !== 'camped' && f !== 'camped2')
+  if (camped) player.flags.push(before ? 'camped2' : 'camped')
 }
 
 export function rollFace(player: Player, config: GameConfig, rng: Rng): number {

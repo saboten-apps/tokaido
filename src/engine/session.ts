@@ -3,9 +3,9 @@
 // 状態はすべて GameState に入っているので、保存・復元・サーバーでの再開ができる。
 // 乱数は state.rngState から決まるので、同じ状態と同じ行動なら、同じ結果になる。
 
-import { forkAt, innCostFor, pathFrom, rollFace, syncLaneFlag } from './board'
+import { canHurry, forkAt, innCostFor, pathFrom, recordCamp, rollFace, syncLaneFlag } from './board'
 import { DEFAULT_CONFIG, getEvent, type GameConfig } from './config'
-import { chooseCpuBuyMeibutsu, chooseCpuChoice, chooseCpuRoute, shouldCpuWork } from './cpu'
+import { chooseCpuBuyMeibutsu, chooseCpuChoice, chooseCpuMove, chooseCpuRoute, shouldCpuWork } from './cpu'
 import { applyChoice, drawEvent, isChoiceAvailable, markEventUsed } from './events'
 import { createRng, type Rng } from './rng'
 import { applyDelta, formatDelta } from './stats'
@@ -14,6 +14,8 @@ import type { ForkDef, GameEvent, GameState, Player, TileType } from '../types/g
 /** 人間の行動 */
 export type SessionAction =
   | { type: 'roll' }
+  /** 早足：出目に hurryBonus を足して進むかわりに、体力を余分に使う */
+  | { type: 'hurry' }
   | { type: 'work' }
   | { type: 'event'; choiceIndex: number }
   | { type: 'meibutsu'; buy: boolean }
@@ -29,7 +31,7 @@ export interface Awaiting {
 
 /** 画面・クライアントへ知らせる、進行の記録（演出や通知に使う） */
 export type SessionEvent =
-  | { type: 'rolled'; playerId: string; face: number; from: number; to: number; path: number[] }
+  | { type: 'rolled'; playerId: string; face: number; from: number; to: number; path: number[]; hurry: boolean }
   | { type: 'worked'; playerId: string; money: number }
   | { type: 'landed'; playerId: string; tileIndex: number; tileType: TileType }
   | { type: 'rested'; playerId: string; daysLeft: number }
@@ -99,9 +101,11 @@ function endOfDay(c: Ctx): void {
     const canInn = (tile.type === 'shuku' || tile.type === 'start') && p.stats.money >= cost
     if (canInn) {
       p.stats = applyDelta(p.stats, { money: -cost, stamina: t.innStamina }, config.balance.limits)
+      recordCamp(p, false)
     } else {
       p.stats = applyDelta(p.stats, { stamina: t.campStamina, reputation: t.campReputation }, config.balance.limits)
-      log(s, p, `${p.name}は${tile.type === 'shuku' ? '宿代が足りず、' : ''}野宿した。`)
+      recordCamp(p, true)
+      log(s, p, `${p.name}は${tile.type === 'shuku' ? '宿代が足りず、' : ''}野宿した。${p.flags.includes('camped2') ? '（野宿が続いて、足が重い）' : ''}`)
     }
   }
   c.events.push({ type: 'day_end', day: s.day })
@@ -247,20 +251,21 @@ function land(c: Ctx, p: Player, idx: number): void {
 
 // ---- 手番の行動 ----
 
-function doRoll(c: Ctx, forcedFace?: number): void {
+function doRoll(c: Ctx, forcedFace?: number, hurry = false): void {
   const { s, config } = c
   const p = activePlayer(s)
   const pb = s.board.playerStates[p.id]
   const face = forcedFace ?? rollFace(p, config, c.rng)
   const from = pb.position
-  const path = pathFrom(s.board, from, face, pb.route)
+  const path = pathFrom(s.board, from, face + (hurry ? config.balance.travel.hurryBonus : 0), pb.route)
   delete pb.route
   const to = path.at(-1) ?? from
   pb.position = to
   syncLaneFlag(s.board, p, to)
-  p.stats = applyDelta(p.stats, { stamina: -path.length * config.balance.travel.staminaPerStep }, config.balance.limits)
-  log(s, p, `${p.name}は「${face}」を出して、${s.board.tiles[to].name}へ。`)
-  c.events.push({ type: 'rolled', playerId: p.id, face, from, to, path })
+  const extra = hurry ? config.balance.travel.hurryStamina : 0
+  p.stats = applyDelta(p.stats, { stamina: -path.length * config.balance.travel.staminaPerStep - extra }, config.balance.limits)
+  log(s, p, `${p.name}は${hurry ? '早足で' : ''}「${face}」を出して、${s.board.tiles[to].name}へ。`)
+  c.events.push({ type: 'rolled', playerId: p.id, face, from, to, path, hurry })
   land(c, p, to)
 }
 
@@ -291,8 +296,9 @@ function stepOne(c: Ctx): boolean {
     return true
   }
   if (p.isHuman) return false
-  if (shouldCpuWork(p, c.config)) doWork(c)
-  else doRoll(c)
+  const move = chooseCpuMove(p, c.config, c.rng)
+  if (move === 'work') doWork(c)
+  else doRoll(c, undefined, move === 'hurry')
   return true
 }
 
@@ -344,10 +350,12 @@ export function submitAction(
   const p = s.players.find((x) => x.id === playerId)!
   switch (action.type) {
     case 'roll':
+    case 'hurry':
     case 'work':
       if (aw.kind !== 'roll') throw new SessionError('wrong_action', 'いまはその行動はできません')
-      if (action.type === 'roll') doRoll(c, forcedFace)
-      else doWork(c)
+      if (action.type === 'hurry' && !canHurry(p, config)) throw new SessionError('invalid_choice', '体力が足りず、早足にはできません')
+      if (action.type === 'work') doWork(c)
+      else doRoll(c, forcedFace, action.type === 'hurry')
       break
     case 'event': {
       if (aw.kind !== 'event') throw new SessionError('wrong_action', 'いまはその行動はできません')

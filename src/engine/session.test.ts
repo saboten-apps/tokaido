@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_CONFIG } from './config'
-import { goalIndex, innCostFor } from './board'
+import { goalIndex, innCostFor, isTired, maxFaceFor, recordCamp } from './board'
 import { isChoiceAvailable } from './events'
 import { rankPlayers } from './scoring'
 import { SessionError, autoAct, getAwaiting, runUntilHuman, submitAction } from './session'
@@ -137,5 +137,38 @@ describe('評判の効果', () => {
     expect(isChoiceAvailable(p, special)).toBe(false)
     p.stats.reputation = 70
     expect(isChoiceAvailable(p, special)).toBe(true)
+  })
+})
+
+describe('早足と野宿', () => {
+  it('早足は、出目に2を足して進み、体力を余分に使う', () => {
+    const s = soloHuman()
+    const normal = submitAction(s, 'p0', { type: 'roll' }, cfg, undefined, 3).state
+    const fast = submitAction(s, 'p0', { type: 'hurry' }, cfg, undefined, 3).state
+    const t = cfg.balance.travel
+    expect(fast.board.playerStates.p0.position).toBe(normal.board.playerStates.p0.position + t.hurryBonus)
+    const stNormal = normal.players[0].stats.stamina
+    const stFast = fast.players[0].stats.stamina
+    // 2マス余分に進んだぶんの体力＋早足の体力
+    expect(stNormal - stFast).toBe(t.hurryBonus * t.staminaPerStep + t.hurryStamina)
+  })
+
+  it('体力が足りないと、早足にはできない', () => {
+    const s = soloHuman()
+    s.players[0].stats.stamina = cfg.balance.travel.hurryMinStamina - 1
+    expect(() => submitAction(s, 'p0', { type: 'hurry' }, cfg)).toThrow(SessionError)
+  })
+
+  it('野宿が2日続くと疲れ（出目が小さくなる）、宿に泊まれば戻る', () => {
+    const p = soloHuman().players[0]
+    expect(isTired(p, cfg)).toBe(false)
+    recordCamp(p, true)
+    expect(isTired(p, cfg)).toBe(false)
+    recordCamp(p, true)
+    expect(p.flags).toContain('camped2')
+    expect(isTired(p, cfg)).toBe(true)
+    expect(maxFaceFor(p, cfg)).toBe(cfg.balance.travel.tiredMaxFace)
+    recordCamp(p, false)
+    expect(isTired(p, cfg)).toBe(false)
   })
 })

@@ -23,6 +23,8 @@ export interface CpuPersonality {
   meibutsuLove: number
   /** 脇道（寄り道）を選ぶ気の強さ（0〜1） */
   detourLove: number
+  /** 早足で進む気の強さ（0〜1。体力に余裕があるとき） */
+  hurryLove: number
 }
 
 /**

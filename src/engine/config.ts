@@ -32,6 +32,9 @@ export interface Balance {
     workStamina: number
     workReputation: number
     cpuWorkBelowMoney: number
+    hurryBonus: number
+    hurryStamina: number
+    hurryMinStamina: number
   }
   scoring: {
     moneyPerPoint: number

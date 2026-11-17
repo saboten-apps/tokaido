@@ -1,7 +1,7 @@
 // CPU の判断。旅の流儀（性格）ごとの重みで選択肢を評価する（umaregacya の cpu.ts を旅向けに作り替え）。
 
 import { getPersonality, type GameConfig } from './config'
-import { innCostFor } from './board'
+import { canHurry, innCostFor } from './board'
 import { isChoiceAvailable } from './events'
 import { STAT_KEYS } from './stats'
 import type { Rng } from './rng'
@@ -54,6 +54,17 @@ export function chooseCpuChoice(player: Player, event: GameEvent, config: GameCo
 /** サイコロの代わりに、働いて稼ぐか */
 export function shouldCpuWork(player: Player, config: GameConfig): boolean {
   return player.stats.money < config.balance.travel.cpuWorkBelowMoney
+}
+
+export type CpuMove = 'work' | 'hurry' | 'roll'
+
+/** 手番の動き：路銀が少なければ働く。体力に余裕があれば、流儀に応じて早足 */
+export function chooseCpuMove(player: Player, config: GameConfig, rng: Rng): CpuMove {
+  if (shouldCpuWork(player, config)) return 'work'
+  if (canHurry(player, config) && player.stats.stamina >= config.balance.travel.hurryMinStamina + 15) {
+    if (rng.next() < personalityOf(player, config).hurryLove) return 'hurry'
+  }
+  return 'roll'
 }
 
 /** 名物を買うか（宿代2日ぶんは残す） */
