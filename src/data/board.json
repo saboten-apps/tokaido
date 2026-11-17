@@ -208,9 +208,9 @@
    "type": "shuku",
    "name": "日坂",
    "meibutsu": {
-    "id": "nissaka_warabi",
-    "name": "日坂のわらび餅",
-    "price": 70,
+    "id": "nissaka_kosodate_ame",
+    "name": "子育て飴",
+    "price": 60,
     "memories": 3
    },
    "eventId": "nissaka_yonaki"
@@ -270,12 +270,6 @@
   {
    "type": "shuku",
    "name": "二川",
-   "meibutsu": {
-    "id": "futagawa_kashiwamochi",
-    "name": "二川の柏餅",
-    "price": 70,
-    "memories": 3
-   },
    "eventId": "futagawa_honjin"
   },
   {
@@ -352,12 +346,6 @@
   {
    "type": "shuku",
    "name": "四日市",
-   "meibutsu": {
-    "id": "yokkaichi_nagamochi",
-    "name": "なが餅",
-    "price": 70,
-    "memories": 3
-   },
    "eventId": "yokkaichi_oiwake"
   },
   {

@@ -161,7 +161,7 @@
       "desc": "商いで旅をする。路銀は多めだが、荷が重く体力は少なめ。「働く」と、多く稼げる。",
       "personality": "steady",
       "start": {
-        "money": 200,
+        "money": 350,
         "stamina": -10
       },
       "workMoneyBonus": 60,
@@ -189,7 +189,7 @@
       "personality": "hasty",
       "start": {
         "stamina": 20,
-        "money": 260
+        "money": 120
       },
       "workMoneyBonus": 0,
       "workMemories": 0,
@@ -202,7 +202,7 @@
       "desc": "芸を見せて旅をする。「働く」と、路銀に加えて思い出も増える。路銀は少なめ。",
       "personality": "gourmet",
       "start": {
-        "money": -500,
+        "money": -350,
         "reputation": 5
       },
       "workMoneyBonus": 0,

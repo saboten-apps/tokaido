@@ -30,9 +30,9 @@
   {
     "id": "meibutsu_tsu",
     "name": "名物通",
-    "desc": "名物を7つ以上味わった。",
+    "desc": "名物を6つ以上味わった。",
     "when": {
-      "minMeibutsu": 7
+      "minMeibutsu": 6
     }
   },
   {
@@ -46,9 +46,9 @@
   {
     "id": "omoide_bukuro",
     "name": "思い出ぶくろ",
-    "desc": "思い出を120以上集めた。",
+    "desc": "思い出を100以上集めた。",
     "when": {
-      "minMemories": 120
+      "minMemories": 100
     }
   },
   {
