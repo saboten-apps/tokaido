@@ -3,7 +3,7 @@
 
 import type { GameConfig } from './config'
 import { randomInt, type Rng } from './rng'
-import type { BoardState, ForkDef, LodgingId, Player, PlayerBoardState, TileDef } from '../types/game'
+import type { BoardState, ForkDef, LodgingId, Player, PlayerBoardState, RegionId, TileDef } from '../types/game'
 
 export function createInitialBoardState(players: readonly Player[], config: GameConfig): BoardState {
   const tiles: TileDef[] = config.board.main.map((t) => ({ ...t }))
@@ -111,4 +111,9 @@ export function innCostFor(player: Player, config: GameConfig, lodging: LodgingI
 /** 本陣に招かれるか（評判が高い人が、宿場で日が終わるとき） */
 export function invitedToHonjin(player: Player, config: GameConfig): boolean {
   return player.stats.reputation >= config.balance.lodging.honjin.reputationAt
+}
+
+/** そのマスの県（脇道は、岐路の県。決まっていなければ東京） */
+export function regionAt(board: BoardState, index: number): RegionId {
+  return board.tiles[Math.min(Math.max(index, 0), board.tiles.length - 1)]?.region ?? 'tokyo'
 }

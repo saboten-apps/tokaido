@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { createInitialBoardState, goalIndex, nextTileIndex, pathFrom } from './board'
-import { DEFAULT_CONFIG } from './config'
+import { createInitialBoardState, goalIndex, nextTileIndex, pathFrom, regionAt } from './board'
+import { DEFAULT_CONFIG, REGIONS, REGION_ORDER } from './config'
 
 const board = createInitialBoardState([], DEFAULT_CONFIG)
 const fork = board.forks[0]
@@ -68,5 +68,40 @@ describe('53次の盤面', () => {
     const laneEvents = DEFAULT_CONFIG.events.filter((e) => e.conditions?.hasFlags?.some((f) => f.startsWith('lane:')))
     expect(laneEvents.length).toBeGreaterThan(0)
     for (const e of laneEvents) expect(e.conditions!.hasFlags).toContain(flag)
+  })
+})
+
+describe('県', () => {
+  it('すべてのマスが、決められた順の県に属し、東京から京都まで、順番に進む', () => {
+    const order = REGION_ORDER
+    let last = 0
+    for (let i = 0; i < board.mainLength; i++) {
+      const r = board.tiles[i].region
+      expect(r, `${i}:${board.tiles[i].name}`).toBeDefined()
+      const k = order.indexOf(r!)
+      expect(k, board.tiles[i].name).toBeGreaterThanOrEqual(last)
+      last = k
+    }
+    expect(regionAt(board, 0)).toBe('tokyo')
+    expect(regionAt(board, goalIndex(board))).toBe('kyoto')
+  })
+
+  it('53宿の県ごとの数：東京1・神奈川9・静岡22・愛知9・三重7・滋賀5', () => {
+    const n = (r: string) => board.tiles.filter((t) => t.type === 'shuku' && t.region === r).length
+    expect([n('tokyo'), n('kanagawa'), n('shizuoka'), n('aichi'), n('mie'), n('shiga')]).toEqual([1, 9, 22, 9, 7, 5])
+  })
+
+  it('県の境目：箱根までが神奈川、三島から静岡、二川から愛知、桑名から三重、土山から滋賀', () => {
+    const at = (name: string) => board.tiles.find((t) => t.name === name)!.region
+    expect([at('箱根'), at('三島'), at('白須賀'), at('二川'), at('宮'), at('桑名'), at('坂下'), at('土山'), at('大津')]).toEqual(['kanagawa', 'shizuoka', 'shizuoka', 'aichi', 'aichi', 'mie', 'mie', 'shiga', 'shiga'])
+  })
+
+  it('脇道は、岐路の県。県の定義がすべてそろっている', () => {
+    for (let i = fork.laneStart; i < fork.laneStart + fork.laneLength; i++) expect(regionAt(board, i)).toBe('shizuoka')
+    for (const r of REGION_ORDER) {
+      const d = REGIONS[r]
+      expect(d.name && d.province && d.tagline, r).toBeTruthy()
+      for (const c of [d.sky, d.fog, d.ground, d.grass, d.road, d.band]) expect(c, r).toMatch(/^#[0-9a-f]{6}$/i)
+    }
   })
 })

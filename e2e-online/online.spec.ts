@@ -14,6 +14,12 @@ async function step(page: Page): Promise<boolean> {
   })
 }
 
+test.beforeEach(async ({ context }) => {
+  await context.addInitScript(() => {
+    if (!localStorage.getItem('tokaido-sugoroku:view-mode')) localStorage.setItem('tokaido-sugoroku:view-mode', '2d')
+  })
+})
+
 test('2人がオンラインの部屋で、最後まで遊べる', async ({ browser }) => {
   const ctxA = await browser.newContext()
   const ctxB = await browser.newContext()

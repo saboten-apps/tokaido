@@ -116,3 +116,26 @@ button small { font-size: 12px; opacity: 0.8; }
 
 .board3d-wrap { position: relative; }
 .stats3d { position: absolute; left: 6px; top: 6px; background: rgba(43,33,24,0.8); color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 6px; pointer-events: none; }
+
+.gauge { position: relative; height: 18px; background: #e4d6b4; border: 1px solid #b9a77f; border-radius: 9px; overflow: hidden; margin: 4px 0; }
+.gauge-large { height: 24px; width: 100%; border-radius: 12px; }
+.gauge-fill { position: absolute; left: 0; top: 0; bottom: 0; transition: width 0.4s ease; }
+.gauge-high { background: #5fa35a; }
+.gauge-mid { background: #d9a43b; }
+.gauge-low { background: #c4493b; }
+.gauge-mark { position: absolute; top: 0; bottom: 0; width: 2px; background: rgba(43,33,24,0.55); }
+.gauge-text { position: relative; display: block; text-align: center; font-size: 12px; line-height: 16px; font-weight: bold; color: #1f1710; text-shadow: 0 0 3px #fffaf0, 0 0 3px #fffaf0; }
+.gauge-large .gauge-text { font-size: 14px; line-height: 22px; }
+.modal button { align-items: stretch; text-align: left; }
+.choice-label { font-weight: bold; }
+.choice-effects { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.chip { font-size: 12px; border-radius: 999px; padding: 1px 8px; border: 1px solid transparent; }
+.chip-good { background: #e0f0dc; border-color: #9ac792; color: #234a1f; }
+.chip-bad { background: #f8dcd6; border-color: #de9d93; color: #6b231a; }
+.chip-plain { background: #efe9d8; border-color: #cfc3a1; color: #5a4b38; }
+.chip-luck { background: #fbefc9; border-color: #e0c670; color: #5a4510; }
+.chip-sep { color: #6b5a48; padding-left: 4px; padding-right: 0; }
+@media (prefers-reduced-motion: reduce) { .gauge-fill { transition: none; } }
+
+.region-name { font-size: 13px; font-weight: bold; fill: #6b5a48; opacity: 0.85; }
+.region-badge { font-size: 12px; background: #efe3c8; border: 1px solid #d8c7a2; border-radius: 999px; padding: 1px 10px; }

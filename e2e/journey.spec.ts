@@ -1,5 +1,12 @@
 import { expect, test } from '@playwright/test'
 
+// 基本の表示は3Dだが、テストの多くは2Dの盤面を前提にする。好みが覚えられていなければ、2Dにしておく（3Dのテストは、自分で切り替える）
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    if (!localStorage.getItem('tokaido-sugoroku:view-mode')) localStorage.setItem('tokaido-sugoroku:view-mode', '2d')
+  })
+})
+
 test('日本橋から京都まで遊び、得点が出る', async ({ page }) => {
   await page.goto('/?seed=11&fast=1')
   await expect(page.getByRole('heading', { name: '東海道すごろく' })).toBeVisible()
@@ -175,4 +182,52 @@ test('3D の描画の速さ（?stats=1）と軽量モード（?lite=1）', async
   await expect(page.getByTestId('stats3d')).toContainText('軽量')
   // 次のテストに、3D の記憶が残らないように、2D に戻す
   await page.getByTestId('view-toggle').click()
+})
+
+test('基本は3Dで始まる（好みが覚えられていなければ）。2Dに切り替えると、次も2D', async ({ browser }) => {
+  const ctx = await browser.newContext()
+  const page = await ctx.newPage()
+  await page.goto('/?seed=4&fast=1')
+  await page.getByTestId('start').click()
+  await expect(page.getByTestId('board3d-canvas')).toBeVisible({ timeout: 15_000 })
+  await expect(page.getByTestId('view-toggle')).toHaveText('2D表示')
+  await page.getByTestId('view-toggle').click()
+  await expect(page.getByTestId('board')).toBeVisible()
+  await page.reload()
+  await page.getByTestId('continue').click()
+  await expect(page.getByTestId('board')).toBeVisible()
+  await ctx.close()
+})
+
+test('体力のゲージと、選択肢の結果の数値が出る', async ({ page }) => {
+  await page.goto('/?seed=4&fast=1')
+  await page.getByTestId('start').click()
+  const gauge = page.getByTestId('stamina-gauge-p0')
+  await expect(gauge).toHaveAttribute('role', 'meter')
+  const before = Number(await gauge.getAttribute('aria-valuenow'))
+  expect(before).toBeGreaterThan(0)
+  // 出来事の選択肢が出るまで進める
+  for (let i = 0; i < 300 && !(await page.getByTestId('event-modal').isVisible()); i++) {
+    await page.evaluate(() => {
+      for (const id of ['roll', 'buy', 'route-lane']) {
+        const el = Array.from(document.querySelectorAll<HTMLButtonElement>(`[data-testid="${id}"]`)).find((e) => !e.disabled && e.offsetParent !== null)
+        if (el) {
+          el.click()
+          return
+        }
+      }
+    })
+    await page.waitForTimeout(30)
+  }
+  await expect(page.getByTestId('event-modal')).toBeVisible()
+  // どの選択肢にも、結果の数値（または「変化なし」）が添えてある
+  const effects = page.getByTestId('choice-effects')
+  expect(await effects.count()).toBeGreaterThan(1)
+  for (const t of await effects.allInnerTexts()) expect(t.trim().length).toBeGreaterThan(0)
+})
+
+test('いまいる県が表示される（最初は東京都）', async ({ page }) => {
+  await page.goto('/?seed=4&fast=1')
+  await page.getByTestId('start').click()
+  await expect(page.getByTestId('region-badge')).toHaveText('東京都')
 })

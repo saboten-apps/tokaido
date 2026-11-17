@@ -1,12 +1,12 @@
 // 旅の画面：盤面・旅人の札・行動・判断（出来事／名物／分かれ道）・道中記。CPU の番は、少しずつ進めて見せる。
 
 import { useEffect, useState } from 'react'
-import { DEFAULT_CONFIG, advanceOne, getAwaiting, submitAction, type SessionAction, type SessionResult } from '../engine'
+import { DEFAULT_CONFIG, REGIONS, advanceOne, getAwaiting, regionAt, submitAction, type SessionAction, type SessionResult } from '../engine'
 import { BoardStage, ViewToggle } from './BoardStage'
 import { useViewMode } from './viewMode'
 import { MiniMap } from './MiniMap'
 import { ActionPanel, LogPanel, PlayerCards } from './parts'
-import { newLogLines, positionAtStep, prefersReducedMotion } from './feedback'
+import { newLogLines, positionAtStep, prefersReducedMotion, regionEntry } from './feedback'
 import type { GameState } from '../types/game'
 
 const cfg = DEFAULT_CONFIG
@@ -30,7 +30,9 @@ interface Toast {
   text: string
 }
 
-const STEP_MS = 120
+/** 1マス進むのにかける時間。3D はマスの間が広いので、ゆっくり（旅している感じ） */
+const STEP_MS = { '2d': 120, '3d': 330 } as const
+const START_MS = { '2d': 350, '3d': 600 } as const
 let toastSeq = 0
 
 export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
@@ -71,6 +73,16 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
       setArrival({ rank: arrived.rank, day: arrived.day })
       setTimeout(() => setArrival(null), 2600)
     }
+    const moved = out.events.find((e) => e.type === 'rolled')
+    if (moved && moved.type === 'rolled') {
+      const who = prev.players.find((p) => p.id === moved.playerId)!.name
+      const entry = regionEntry(prev.board, who, moved.from, moved.to)
+      if (entry) {
+        const id = ++toastSeq
+        setToasts((t) => [...t.slice(-2), { id, text: entry }])
+        setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 4200)
+      }
+    }
     for (const text of newLogLines(prev, out.state)) {
       const id = ++toastSeq
       setToasts((t) => [...t.slice(-2), { id, text }])
@@ -84,10 +96,10 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
     if (!anim) return
     const timer = setTimeout(
       () => setAnim(anim.step >= anim.path.length - 1 ? null : { ...anim, step: anim.step + 1 }),
-      anim.step < 0 ? 350 : STEP_MS,
+      anim.step < 0 ? START_MS[mode] : STEP_MS[mode],
     )
     return () => clearTimeout(timer)
-  }, [anim])
+  }, [anim, mode])
 
   // 自動で進める場面（CPU の番・足止め）は、動きが終わってから、間をあけて1つずつ進める
   useEffect(() => {
@@ -109,6 +121,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
       <header className="topbar">
         <span className="day" data-testid="day">{state.day}日目</span>
         <span className="sub">／ {cfg.balance.game.maxDays}日まで</span>
+        <span className="region-badge" data-testid="region-badge">{REGIONS[regionAt(state.board, positions[(awPlayer ?? (active.isHuman ? active : human) ?? active).id])].name}</span>
         <span className="turn">{active.name}の番</span>
         <ViewToggle mode={mode} onToggle={toggleMode} />
         {onHowTo && <button className="linkish" data-testid="open-howto" onClick={onHowTo}>遊び方</button>}

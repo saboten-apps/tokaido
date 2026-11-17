@@ -2,11 +2,13 @@
  "main": [
   {
    "type": "start",
-   "name": "日本橋"
+   "name": "日本橋",
+   "region": "tokyo"
   },
   {
    "type": "event",
-   "name": "高輪の大木戸"
+   "name": "高輪の大木戸",
+   "region": "tokyo"
   },
   {
    "type": "shuku",
@@ -17,11 +19,13 @@
     "price": 120,
     "memories": 3
    },
-   "eventId": "shinagawa_miokuri"
+   "eventId": "shinagawa_miokuri",
+   "region": "tokyo"
   },
   {
    "type": "scenic",
-   "name": "六郷の渡し"
+   "name": "六郷の渡し",
+   "region": "tokyo"
   },
   {
    "type": "shuku",
@@ -32,41 +36,49 @@
     "price": 90,
     "memories": 3
    },
-   "eventId": "kawasaki_daishi"
+   "eventId": "kawasaki_daishi",
+   "region": "kanagawa"
   },
   {
    "type": "shuku",
    "name": "神奈川",
-   "eventId": "kanagawa_daimachi"
+   "eventId": "kanagawa_daimachi",
+   "region": "kanagawa"
   },
   {
    "type": "shuku",
    "name": "保土ヶ谷",
-   "eventId": "hodogaya_gonta"
+   "eventId": "hodogaya_gonta",
+   "region": "kanagawa"
   },
   {
    "type": "shuku",
    "name": "戸塚",
-   "eventId": "totsuka_hatsunichi"
+   "eventId": "totsuka_hatsunichi",
+   "region": "kanagawa"
   },
   {
    "type": "shuku",
    "name": "藤沢",
-   "eventId": "fujisawa_yugyoji"
+   "eventId": "fujisawa_yugyoji",
+   "region": "kanagawa"
   },
   {
    "type": "shuku",
    "name": "平塚",
-   "eventId": "hiratsuka_bannyu"
+   "eventId": "hiratsuka_bannyu",
+   "region": "kanagawa"
   },
   {
    "type": "shuku",
    "name": "大磯",
-   "eventId": "oiso_tora"
+   "eventId": "oiso_tora",
+   "region": "kanagawa"
   },
   {
    "type": "event",
-   "name": "大磯の松並木"
+   "name": "大磯の松並木",
+   "region": "kanagawa"
   },
   {
    "type": "shuku",
@@ -77,11 +89,13 @@
     "price": 180,
     "memories": 4
    },
-   "eventId": "odawara_uiro"
+   "eventId": "odawara_uiro",
+   "region": "kanagawa"
   },
   {
    "type": "event",
-   "name": "箱根の山道"
+   "name": "箱根の山道",
+   "region": "kanagawa"
   },
   {
    "type": "shuku",
@@ -93,36 +107,43 @@
     "name": "寄木細工",
     "price": 300,
     "memories": 6
-   }
+   },
+   "region": "kanagawa"
   },
   {
    "type": "scenic",
-   "name": "芦ノ湖と富士"
+   "name": "芦ノ湖と富士",
+   "region": "kanagawa"
   },
   {
    "type": "shuku",
    "name": "三島",
-   "eventId": "mishima_taisha"
+   "eventId": "mishima_taisha",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "沼津",
-   "eventId": "numazu_senbon"
+   "eventId": "numazu_senbon",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "原",
-   "eventId": "hara_fuji"
+   "eventId": "hara_fuji",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "吉原",
-   "eventId": "yoshiwara_hidarifuji"
+   "eventId": "yoshiwara_hidarifuji",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "蒲原",
-   "eventId": "kanbara_yuki"
+   "eventId": "kanbara_yuki",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
@@ -133,21 +154,25 @@
     "price": 110,
     "memories": 3
    },
-   "eventId": "yui_konya"
+   "eventId": "yui_konya",
+   "region": "shizuoka"
   },
   {
    "type": "event",
-   "name": "薩埵峠"
+   "name": "薩埵峠",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "興津",
-   "eventId": "okitsu_seikenji"
+   "eventId": "okitsu_seikenji",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "江尻",
-   "eventId": "ejiri_miho"
+   "eventId": "ejiri_miho",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
@@ -158,11 +183,13 @@
     "price": 80,
     "memories": 3
    },
-   "eventId": "fuchu_sunpu"
+   "eventId": "fuchu_sunpu",
+   "region": "shizuoka"
   },
   {
    "type": "teahouse",
-   "name": "丸子の茶屋"
+   "name": "丸子の茶屋",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
@@ -173,36 +200,43 @@
     "price": 100,
     "memories": 4
    },
-   "eventId": "maruko_tororo"
+   "eventId": "maruko_tororo",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "岡部",
-   "eventId": "okabe_utsunoya"
+   "eventId": "okabe_utsunoya",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "藤枝",
-   "eventId": "fujieda_someimeshi"
+   "eventId": "fujieda_someimeshi",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "島田",
-   "eventId": "shimada_kawakaisho"
+   "eventId": "shimada_kawakaisho",
+   "region": "shizuoka"
   },
   {
    "type": "fork",
    "name": "大井川",
-   "mustStop": true
+   "mustStop": true,
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "金谷",
-   "eventId": "kanaya_ishidatami"
+   "eventId": "kanaya_ishidatami",
+   "region": "shizuoka"
   },
   {
    "type": "event",
-   "name": "小夜の中山"
+   "name": "小夜の中山",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
@@ -213,7 +247,8 @@
     "price": 60,
     "memories": 3
    },
-   "eventId": "nissaka_yonaki"
+   "eventId": "nissaka_yonaki",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
@@ -224,31 +259,37 @@
     "price": 160,
     "memories": 4
    },
-   "eventId": "kakegawa_castle"
+   "eventId": "kakegawa_castle",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "袋井",
-   "eventId": "fukuroi_domanaka"
+   "eventId": "fukuroi_domanaka",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "見附",
-   "eventId": "mitsuke_tenryu"
+   "eventId": "mitsuke_tenryu",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "浜松",
-   "eventId": "hamamatsu_shusse"
+   "eventId": "hamamatsu_shusse",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "舞坂",
-   "eventId": "maisaka_watashi"
+   "eventId": "maisaka_watashi",
+   "region": "shizuoka"
   },
   {
    "type": "event",
-   "name": "浜名の今切"
+   "name": "浜名の今切",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
@@ -260,37 +301,44 @@
     "name": "浜名湖のうなぎ",
     "price": 260,
     "memories": 5
-   }
+   },
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "白須賀",
-   "eventId": "shirasuka_shiomizaka"
+   "eventId": "shirasuka_shiomizaka",
+   "region": "shizuoka"
   },
   {
    "type": "shuku",
    "name": "二川",
-   "eventId": "futagawa_honjin"
+   "eventId": "futagawa_honjin",
+   "region": "aichi"
   },
   {
    "type": "shuku",
    "name": "吉田",
-   "eventId": "yoshida_tezutsu"
+   "eventId": "yoshida_tezutsu",
+   "region": "aichi"
   },
   {
    "type": "shuku",
    "name": "御油",
-   "eventId": "goyu_matsunamiki"
+   "eventId": "goyu_matsunamiki",
+   "region": "aichi"
   },
   {
    "type": "shuku",
    "name": "赤坂",
-   "eventId": "akasaka_hatago"
+   "eventId": "akasaka_hatago",
+   "region": "aichi"
   },
   {
    "type": "shuku",
    "name": "藤川",
-   "eventId": "fujikawa_bohana"
+   "eventId": "fujikawa_bohana",
+   "region": "aichi"
   },
   {
    "type": "shuku",
@@ -301,16 +349,19 @@
     "price": 150,
     "memories": 4
    },
-   "eventId": "okazaki_yahagi"
+   "eventId": "okazaki_yahagi",
+   "region": "aichi"
   },
   {
    "type": "scenic",
-   "name": "岡崎の城下"
+   "name": "岡崎の城下",
+   "region": "aichi"
   },
   {
    "type": "shuku",
    "name": "池鯉鮒",
-   "eventId": "chiryu_umaichi"
+   "eventId": "chiryu_umaichi",
+   "region": "aichi"
   },
   {
    "type": "shuku",
@@ -321,16 +372,19 @@
     "price": 220,
     "memories": 5
    },
-   "eventId": "narumi_arimatsu"
+   "eventId": "narumi_arimatsu",
+   "region": "aichi"
   },
   {
    "type": "shuku",
    "name": "宮",
-   "eventId": "miya_shichiri"
+   "eventId": "miya_shichiri",
+   "region": "aichi"
   },
   {
    "type": "event",
-   "name": "七里の渡し"
+   "name": "七里の渡し",
+   "region": "aichi"
   },
   {
    "type": "shuku",
@@ -341,31 +395,37 @@
     "price": 150,
     "memories": 4
    },
-   "eventId": "kuwana_funatsuki"
+   "eventId": "kuwana_funatsuki",
+   "region": "mie"
   },
   {
    "type": "shuku",
    "name": "四日市",
-   "eventId": "yokkaichi_oiwake"
+   "eventId": "yokkaichi_oiwake",
+   "region": "mie"
   },
   {
    "type": "shuku",
    "name": "石薬師",
-   "eventId": "ishiyakushi_tera"
+   "eventId": "ishiyakushi_tera",
+   "region": "mie"
   },
   {
    "type": "shuku",
    "name": "庄野",
-   "eventId": "shono_haku"
+   "eventId": "shono_haku",
+   "region": "mie"
   },
   {
    "type": "shuku",
    "name": "亀山",
-   "eventId": "kameyama_joka"
+   "eventId": "kameyama_joka",
+   "region": "mie"
   },
   {
    "type": "teahouse",
-   "name": "関の茶屋"
+   "name": "関の茶屋",
+   "region": "mie"
   },
   {
    "type": "shuku",
@@ -376,21 +436,25 @@
     "price": 100,
     "memories": 3
    },
-   "eventId": "seki_machinami"
+   "eventId": "seki_machinami",
+   "region": "mie"
   },
   {
    "type": "shuku",
    "name": "坂下",
-   "eventId": "sakanoshita_fudesute"
+   "eventId": "sakanoshita_fudesute",
+   "region": "mie"
   },
   {
    "type": "event",
-   "name": "鈴鹿峠"
+   "name": "鈴鹿峠",
+   "region": "mie"
   },
   {
    "type": "shuku",
    "name": "土山",
-   "eventId": "tsuchiyama_ame"
+   "eventId": "tsuchiyama_ame",
+   "region": "shiga"
   },
   {
    "type": "shuku",
@@ -401,16 +465,19 @@
     "price": 80,
     "memories": 3
    },
-   "eventId": "minakuchi_kanpyo"
+   "eventId": "minakuchi_kanpyo",
+   "region": "shiga"
   },
   {
    "type": "shuku",
    "name": "石部",
-   "eventId": "ishibe_kyodachi"
+   "eventId": "ishibe_kyodachi",
+   "region": "shiga"
   },
   {
    "type": "scenic",
-   "name": "琵琶湖のほとり"
+   "name": "琵琶湖のほとり",
+   "region": "shiga"
   },
   {
    "type": "shuku",
@@ -421,7 +488,8 @@
     "price": 70,
     "memories": 3
    },
-   "eventId": "kusatsu_gouryu"
+   "eventId": "kusatsu_gouryu",
+   "region": "shiga"
   },
   {
    "type": "shuku",
@@ -432,11 +500,13 @@
     "price": 200,
     "memories": 5
    },
-   "eventId": "otsu_osaka"
+   "eventId": "otsu_osaka",
+   "region": "shiga"
   },
   {
    "type": "goal",
-   "name": "京都 三条大橋"
+   "name": "京都 三条大橋",
+   "region": "kyoto"
   }
  ],
  "forks": [
@@ -446,15 +516,18 @@
    "laneTiles": [
     {
      "type": "event",
-     "name": "島田の川止め宿"
+     "name": "島田の川止め宿",
+     "region": "shizuoka"
     },
     {
      "type": "scenic",
-     "name": "川明けを待つ河原"
+     "name": "川明けを待つ河原",
+     "region": "shizuoka"
     },
     {
      "type": "event",
-     "name": "川越しの朝"
+     "name": "川越しの朝",
+     "region": "shizuoka"
     }
    ],
    "main": {

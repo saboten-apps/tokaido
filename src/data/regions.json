@@ -1,0 +1,90 @@
+{
+  "order": [
+    "tokyo",
+    "kanagawa",
+    "shizuoka",
+    "aichi",
+    "mie",
+    "shiga",
+    "kyoto"
+  ],
+  "regions": {
+    "tokyo": {
+      "name": "東京都",
+      "province": "武蔵",
+      "tagline": "江戸の町。町家が軒を連ね、橋の上は人であふれる。",
+      "sky": "#cfe3ee",
+      "fog": "#cfe3ee",
+      "ground": "#b8a97a",
+      "grass": "#8c9f68",
+      "road": "#b59868",
+      "band": "#f3dcc8"
+    },
+    "kanagawa": {
+      "name": "神奈川県",
+      "province": "武蔵・相模",
+      "tagline": "左手に相模の海。松並木が続き、やがて箱根の山が迫る。",
+      "sky": "#bfe0f0",
+      "fog": "#c8e2ee",
+      "ground": "#c2b27c",
+      "grass": "#8aa468",
+      "road": "#b59868",
+      "band": "#d8ecf4"
+    },
+    "shizuoka": {
+      "name": "静岡県",
+      "province": "伊豆・駿河・遠江",
+      "tagline": "右手に富士。茶畑が広がり、大井川、浜名湖と、水の景色が続く。",
+      "sky": "#b8dcf2",
+      "fog": "#c4e0ee",
+      "ground": "#b9b070",
+      "grass": "#78a35c",
+      "road": "#b29566",
+      "band": "#dcefd0"
+    },
+    "aichi": {
+      "name": "愛知県",
+      "province": "三河・尾張",
+      "tagline": "広い平野と田んぼ。岡崎の城下を過ぎ、宮から伊勢湾を船で渡る。",
+      "sky": "#d3e6e8",
+      "fog": "#d6e6e4",
+      "ground": "#c4b678",
+      "grass": "#9ab466",
+      "road": "#b89b68",
+      "band": "#f1ecc4"
+    },
+    "mie": {
+      "name": "三重県",
+      "province": "伊勢",
+      "tagline": "伊勢路。鳥居をくぐる参宮の旅人。鈴鹿の山が、行く手をふさぐ。",
+      "sky": "#c8d9de",
+      "fog": "#c9d8da",
+      "ground": "#aaa478",
+      "grass": "#6f9660",
+      "road": "#a99163",
+      "band": "#d8e4d8"
+    },
+    "shiga": {
+      "name": "滋賀県",
+      "province": "近江",
+      "tagline": "琵琶湖のほとり。雨の多い土山を越え、京はもうすぐ。",
+      "sky": "#c6dae6",
+      "fog": "#c8dae4",
+      "ground": "#b6ae82",
+      "grass": "#86a868",
+      "road": "#b09867",
+      "band": "#d6e8f0"
+    },
+    "kyoto": {
+      "name": "京都府",
+      "province": "山城",
+      "tagline": "都。東山、五重塔、紅葉。三条大橋が、旅のゴール。",
+      "sky": "#e1dbd2",
+      "fog": "#e0d9ce",
+      "ground": "#b9ad90",
+      "grass": "#8da064",
+      "road": "#b79e72",
+      "band": "#f2d6d0"
+    }
+  }
+}

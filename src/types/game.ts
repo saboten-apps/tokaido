@@ -14,6 +14,9 @@ export type StatDelta = Partial<Stats>
 /** 旅人の身分（旅のあいだ変わらない。持ち味は balance.json の roles） */
 export type RoleId = 'ippan' | 'shonin' | 'ise' | 'hikyaku' | 'geinin' | 'bushi'
 
+/** 県の ID */
+export type RegionId = 'tokyo' | 'kanagawa' | 'shizuoka' | 'aichi' | 'mie' | 'shiga' | 'kyoto'
+
 /** 泊まり方（木賃宿＝安い・回復小、旅籠＝ふつう。評判が高いと本陣に招かれる） */
 export type LodgingId = 'kichin' | 'hatago'
 
@@ -57,6 +60,8 @@ export interface TileDef {
   eventId?: string
   /** 宿場の名物 */
   meibutsu?: Meibutsu
+  /** 県（regions.json のキー。東京・神奈川・静岡・愛知・三重・滋賀・京都） */
+  region?: RegionId
   /** 絵の差し替え用のキー（なければ種類ごとの仮の絵） */
   art?: string
 }

@@ -3,11 +3,12 @@
 import balanceJson from '../data/balance.json'
 import boardJson from '../data/board.json'
 import titlesJson from '../data/titles.json'
+import regionsJson from '../data/regions.json'
 import roadEvents from '../events/road.json'
 import specialEvents from '../events/special.json'
 import shukuEvents from '../events/shuku.json'
 import laneEvents from '../events/lane.json'
-import type { CpuPersonality, CpuPersonalityId, ForkChoiceDef, GameEvent, RoleId, StatDelta, Stats, TileDef, TitleDef } from '../types/game'
+import type { CpuPersonality, CpuPersonalityId, ForkChoiceDef, GameEvent, RegionId, RoleId, StatDelta, Stats, TileDef, TitleDef } from '../types/game'
 
 export interface Range {
   min: number
@@ -102,6 +103,24 @@ export const DEFAULT_CONFIG: GameConfig = {
   events: [...roadEvents, ...specialEvents, ...shukuEvents, ...laneEvents] as GameEvent[],
   titles: titlesJson as TitleDef[],
 }
+
+/** 県の見た目・紹介（regions.json） */
+export interface RegionDef {
+  name: string
+  /** 旧国名 */
+  province: string
+  tagline: string
+  sky: string
+  fog: string
+  ground: string
+  grass: string
+  road: string
+  /** 2D の帯の色 */
+  band: string
+}
+
+export const REGION_ORDER = regionsJson.order as RegionId[]
+export const REGIONS = regionsJson.regions as Record<RegionId, RegionDef>
 
 export function getEvent(config: GameConfig, id: string): GameEvent {
   const e = config.events.find((x) => x.id === id)

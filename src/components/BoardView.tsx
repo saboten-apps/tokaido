@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef } from 'react'
 import { artFor, pieceColors } from '../art/theme'
+import { REGIONS, REGION_ORDER } from '../engine'
 import type { BoardState, Player } from '../types/game'
 import { LANE_Y, MARGIN, SPACING, layoutBoard, type Point } from './boardLayout'
 
@@ -39,6 +40,13 @@ export function BoardView({ board, players, activeId, focusId, positions, jump }
     box.scrollTo?.({ left, behavior: 'smooth' })
   }, [jump, pts])
 
+  // 県ごとの帯（本道のマスの位置から。右が江戸なので、番号が大きいほど左）
+  const bands = REGION_ORDER.flatMap((id) => {
+    const xs = pts.slice(0, board.mainLength).filter((_, i) => board.tiles[i].region === id).map((p) => p.x)
+    if (xs.length === 0) return []
+    return [{ id, x0: Math.min(...xs) - SPACING / 2, x1: Math.max(...xs) + SPACING / 2 }]
+  })
+
   const roads: Array<[Point, Point]> = []
   for (let i = 0; i < board.mainLength - 1; i++) roads.push([pts[i], pts[i + 1]])
   for (const f of board.forks) {
@@ -50,6 +58,12 @@ export function BoardView({ board, players, activeId, focusId, positions, jump }
   return (
     <div className="board-scroll" data-testid="board" ref={scrollRef}>
       <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} role="img" aria-label="東海道の盤面">
+        {bands.map((b) => (
+          <g key={b.id} data-region={b.id}>
+            <rect x={b.x0} y={0} width={b.x1 - b.x0} height={height} fill={REGIONS[b.id].band} opacity={0.7} />
+            <text className="region-name" x={b.x1 - 8} y={18} textAnchor="end">{REGIONS[b.id].name}</text>
+          </g>
+        ))}
         {roads.map(([a, b], i) => (
           <line key={i} x1={a.x} y1={a.y} x2={b.x} y2={b.y} className="road" />
         ))}

@@ -2,9 +2,36 @@
 
 import { DEFAULT_CONFIG, canHurry, getEvent, innCostFor, isChoiceAvailable, isTired, maxFaceFor, type Awaiting, type SessionAction } from '../engine'
 import { pieceColors } from '../art/theme'
+import { choiceChips, forkChips, type Chip } from './choiceText'
 import type { GameState, Player } from '../types/game'
 
 const cfg = DEFAULT_CONFIG
+
+/** 体力のゲージ。疲れる境目（tiredStamina）に印。色は、余裕・注意・疲れ */
+export function StaminaGauge({ value, id, large }: { value: number; id: string; large?: boolean }) {
+  const max = cfg.balance.limits.stamina.max
+  const pct = Math.max(0, Math.min(100, (value / max) * 100))
+  const tired = cfg.balance.travel.tiredStamina
+  const tone = value < tired ? 'low' : value < 50 ? 'mid' : 'high'
+  return (
+    <div className={`gauge ${large ? 'gauge-large' : ''}`} role="meter" aria-label="体力" aria-valuemin={0} aria-valuemax={max} aria-valuenow={value} data-testid={`stamina-gauge-${id}`} data-tone={tone}>
+      <div className={`gauge-fill gauge-${tone}`} style={{ width: `${pct}%` }} />
+      <div className="gauge-mark" style={{ left: `${(tired / max) * 100}%` }} title={`${tired}未満は疲れて、出目が${cfg.balance.travel.tiredMaxFace}まで`} />
+      <span className="gauge-text">体力 {value}</span>
+    </div>
+  )
+}
+
+function Chips({ chips }: { chips: Chip[] }) {
+  if (chips.length === 0) return <span className="chip chip-plain">変化なし</span>
+  return (
+    <>
+      {chips.map((c) => (
+        <span key={c.key} className={`chip chip-${c.tone}`} data-testid="chip">{c.text}</span>
+      ))}
+    </>
+  )
+}
 
 export function PlayerCards({ state, activeId, selfId }: { state: GameState; activeId: string; selfId?: string | null }) {
   return (
@@ -24,12 +51,12 @@ export function PlayerCards({ state, activeId, selfId }: { state: GameState; act
               {p.arrivalRank ? `京都に到着（${p.arrivalRank}番目・${p.arrivedDay}日目）` : pos.name}
               {p.restDays > 0 && `（足止め${p.restDays}日）`}
             </div>
+            <StaminaGauge value={p.stats.stamina} id={p.id} />
             <div className="stats">
               <span>路銀 {p.stats.money}文</span>
-              <span>体力 {p.stats.stamina}</span>
               <span>思い出 {p.stats.memories}</span>
               <span>評判 {p.stats.reputation}</span>
-              <span>宿代 {innCostFor(p, cfg)}文</span>
+              <span>宿代 -{innCostFor(p, cfg)}文</span>
               <span>名物 {p.meibutsu.length}</span>
             </div>
           </div>
@@ -55,6 +82,7 @@ export function ActionPanel({ state, aw, onAct }: ActionProps) {
     return (
       <section className="dock">
         <div className="dock-who">{awPlayer.name}の番{tired ? `（疲れていて、出目は${maxFaceFor(awPlayer, cfg)}まで）` : ''}</div>
+        <StaminaGauge value={awPlayer.stats.stamina} id={`dock-${awPlayer.id}`} large />
         <button className="primary" data-testid="roll" onClick={() => onAct({ type: 'roll' })}>
           サイコロを振る
         </button>
@@ -71,7 +99,7 @@ export function ActionPanel({ state, aw, onAct }: ActionProps) {
               className={awPlayer.lodging === id ? 'on' : ''}
               onClick={() => onAct({ type: 'lodging', value: id })}
             >
-              {cfg.balance.lodging[id].name}<small>{innCostFor(awPlayer, cfg, id)}文・体力+{cfg.balance.lodging[id].stamina}</small>
+              {cfg.balance.lodging[id].name}<small>-{innCostFor(awPlayer, cfg, id)}文・体力+{cfg.balance.lodging[id].stamina}</small>
             </button>
           ))}
         </span>
@@ -89,11 +117,24 @@ export function ActionPanel({ state, aw, onAct }: ActionProps) {
         <small className="modal-who">{awPlayer.name}</small>
         <h2>{ev.title}</h2>
         <p>{ev.description}</p>
-        {ev.choices.map((c, i) => (
-          <button key={i} data-testid="choice" disabled={!isChoiceAvailable(awPlayer, c)} onClick={() => onAct({ type: 'event', choiceIndex: i })}>
-            {c.label}
-          </button>
-        ))}
+        {ev.choices.map((c, i) => {
+          const r = choiceChips(c)
+          return (
+            <button key={i} data-testid="choice" disabled={!isChoiceAvailable(awPlayer, c)} onClick={() => onAct({ type: 'event', choiceIndex: i })}>
+              <span className="choice-label">{c.label}</span>
+              <span className="choice-effects" data-testid="choice-effects">
+                {r.chance !== null && <span className="chip chip-luck">運試し {r.chance}%</span>}
+                <Chips chips={r.success} />
+                {r.fail && (
+                  <>
+                    <span className="chip chip-sep">失敗なら</span>
+                    <Chips chips={r.fail} />
+                  </>
+                )}
+              </span>
+            </button>
+          )
+        })}
       </div>
     )
   }
@@ -119,8 +160,8 @@ export function ActionPanel({ state, aw, onAct }: ActionProps) {
         <small className="modal-who">{awPlayer.name}</small>
         <h2>{state.board.tiles[f.tileIndex].name}</h2>
         <p>どうやって渡る？</p>
-        <button data-testid="route-main" onClick={() => onAct({ type: 'fork', route: 'main' })}>{f.main.label}<small>{f.main.desc}</small></button>
-        <button data-testid="route-lane" onClick={() => onAct({ type: 'fork', route: 'lane' })}>{f.lane.label}<small>{f.lane.desc}</small></button>
+        <button data-testid="route-main" onClick={() => onAct({ type: 'fork', route: 'main' })}><span className="choice-label">{f.main.label}</span><small>{f.main.desc}</small><span className="choice-effects"><Chips chips={forkChips(f.main)} /></span></button>
+        <button data-testid="route-lane" onClick={() => onAct({ type: 'fork', route: 'lane' })}><span className="choice-label">{f.lane.label}</span><small>{f.lane.desc}</small><span className="choice-effects"><Chips chips={forkChips(f.lane)} /></span></button>
       </div>
     )
   }

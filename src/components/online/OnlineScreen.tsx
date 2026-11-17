@@ -2,13 +2,13 @@
 // 進行はすべてサーバーが決める。この画面は、自分の番の行動だけを送り、届いた状態を映す。
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { DEFAULT_CONFIG, ROLE_IDS, ROOM_MAX_PLAYERS, ROOM_MIN_PLAYERS, getAwaiting } from '../../engine'
+import { DEFAULT_CONFIG, REGIONS, ROLE_IDS, ROOM_MAX_PLAYERS, ROOM_MIN_PLAYERS, getAwaiting, regionAt } from '../../engine'
 import { OnlineClient, clearLastRoom, getSavedName, loadLastRoom, newRoomCode, saveLastRoom, saveName, type ReplayBatch } from '../../online/client'
 import { BoardStage, ViewToggle } from '../BoardStage'
 import { useViewMode } from '../viewMode'
 import { MiniMap } from '../MiniMap'
 import { ResultScreen } from '../ResultScreen'
-import { newLogLines, positionAtStep, prefersReducedMotion } from '../feedback'
+import { newLogLines, positionAtStep, prefersReducedMotion, regionEntry } from '../feedback'
 import { ActionPanel, LogPanel, PlayerCards } from '../parts'
 import type { SessionAction } from '../../engine'
 import type { RoomView } from '../../online/protocol'
@@ -245,6 +245,10 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
   const [mode, toggleMode] = useViewMode()
   const [now, setNow] = useState(() => Date.now())
   const prev = useRef<GameState>(game)
+  const gameRef = useRef(game)
+  useEffect(() => {
+    gameRef.current = game
+  })
   const seq = useRef(0)
 
   // 届いた状態の差から、通知を出す
@@ -266,6 +270,16 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
         .flatMap((st) => st.events)
         .flatMap((e) => (e.type === 'rolled' && e.path.length > 0 ? [{ playerId: e.playerId, from: e.from, path: e.path, face: e.face, hurry: e.hurry }] : []))
       if (rolls.length) setQueue((q) => [...q, ...rolls])
+      // 県の境を越えたら、通知（マスの県は変わらないので、いまの盤面で調べられる）
+      for (const r of rolls) {
+        const g = gameRef.current
+        const text = regionEntry(g.board, g.players.find((p) => p.id === r.playerId)?.name ?? '', r.from, r.path[r.path.length - 1])
+        if (text) {
+          const id = ++seq.current
+          setToasts((t) => [...t.slice(-2), { id, text }])
+          setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 4200)
+        }
+      }
     })
   }, [client])
 
@@ -279,10 +293,10 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
           setStep(-1)
         } else setStep((n) => n + 1)
       },
-      step < 0 ? 350 : 120,
+      step < 0 ? (mode === '3d' ? 600 : 350) : mode === '3d' ? 330 : 120,
     )
     return () => clearTimeout(timer)
-  }, [queue, step])
+  }, [queue, step, mode])
 
   // 持ち時間の表示
   useEffect(() => {
@@ -317,6 +331,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
         <span className="day" data-testid="day">{game.day}日目</span>
         <span className="sub">／ {cfg.balance.game.maxDays}日まで</span>
         <ViewToggle mode={mode} onToggle={toggleMode} />
+        <span className="region-badge" data-testid="region-badge">{REGIONS[regionAt(game.board, positions[focusId])].name}</span>
         <span className="turn">{mine ? 'あなたの番' : `${waitingName}の番`}{left !== null && aw ? `（あと${left}秒）` : ''}</span>
       </header>
       {autoSeat && (
