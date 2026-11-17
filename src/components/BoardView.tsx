@@ -62,7 +62,12 @@ export function BoardView({ board, players, activeId, focusId, positions, jump }
             <g key={i} transform={`translate(${p.x},${p.y})`} data-tile={i}>
               <circle r={r} fill={art.fill} stroke={tile.mustStop ? '#f5d76e' : '#fff'} strokeWidth={tile.mustStop ? 4 : 2} />
               {art.image ? (
-                <image href={art.image} x={-r} y={-r} width={r * 2} height={r * 2} />
+                <>
+                  <clipPath id={`clip-${i}`}>
+                    <circle r={r - 1} />
+                  </clipPath>
+                  <image href={art.image} x={-r} y={-r} width={r * 2} height={r * 2} clipPath={`url(#clip-${i})`} preserveAspectRatio="xMidYMid slice" />
+                </>
               ) : (
                 <text className="tile-symbol" dy="0.35em" fontSize={big ? 18 : 14}>
                   {art.symbol}

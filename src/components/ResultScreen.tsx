@@ -10,7 +10,11 @@ export function ResultScreen({ state, onRestart }: { state: GameState; onRestart
   return (
     <div className="result" data-testid="result">
       <h1>旅の終わり</h1>
-      <p>{state.day}日目。道中の得点はこのとおり。</p>
+      <p className="winner" data-testid="winner">
+        優勝は <strong>{state.players.find((p) => p.id === ranking[0].playerId)?.name}</strong>（{ranking[0].total}点）。
+        {humans.length === 1 && ` あなたは${ranking.findIndex((r) => r.playerId === humans[0].id) + 1}位。`}
+      </p>
+      <p className="sub">{state.day}日目に旅が終わりました。</p>
       <table>
         <thead>
           <tr>

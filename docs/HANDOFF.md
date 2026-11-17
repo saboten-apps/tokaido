@@ -87,6 +87,12 @@
 - 旅日記（umaregacya の chronicle を作り直す）
 
 ## 記録（新しいものを上に）
+### 2026-11-17 Claude（絵の取り込み・PWA の準備・結果画面）
+- 絵の差し替え（ROADMAP E）：`scripts/importArt.mjs`（`art-inbox/<マスの名前>.png` → `public/art/*.webp` ＋ `src/art/overrides.json`）、`artFor` がマスの名前か `art` のキーで探す、盤面では円形に切り抜いて表示。仮の画像で、取り込み→表示まで確認（コミットしていない）。`docs/ASSETS.md` に権利の注意。
+- 公開の準備（G の一部）：アイコン（`public/favicon.svg`・png）、`manifest.webmanifest`、`index.html` のメタ。service worker は入れていない（オフライン対応は未）。
+- 結果画面：優勝者と、自分の順位を最初に。表の見出しが折り返さないように。
+- 確認：`npm run check`（単体82件）、`npm run test:e2e`（20件）。
+
 ### 2026-11-17 Claude（遊び方・オンラインの駒のアニメーション）
 - 遊び方の画面（`HowToPlay`。数値は balance.json から読む。タイトルと、遊んでいる途中の「遊び方」から開く）。
 - オンラインの駒の移動アニメーション・サイコロの目（steps の再生）。オンライン e2e を、1回の呼び出しでボタンを押す形にして安定・高速化（約2.6分→約43秒）、通常の速さの動作確認を追加。

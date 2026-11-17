@@ -1,0 +1,15 @@
+{
+  "name": "東海道すごろく",
+  "short_name": "東海道",
+  "description": "江戸・日本橋から京都・三条大橋まで、東海道五十三次を旅するすごろく。",
+  "lang": "ja",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6efe0",
+  "theme_color": "#b03a2e",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
