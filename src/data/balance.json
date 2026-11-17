@@ -1,0 +1,46 @@
+{
+  "game": {
+    "playerCount": 4,
+    "maxDays": 30,
+    "diceFaces": 6,
+    "eventChance": 0.85
+  },
+  "limits": {
+    "money": { "min": 0, "max": 99999 },
+    "stamina": { "min": 0, "max": 100 },
+    "memories": { "min": 0, "max": 999 },
+    "reputation": { "min": 0, "max": 100 }
+  },
+  "start": { "money": 2000, "stamina": 80, "memories": 0, "reputation": 30 },
+  "travel": {
+    "staminaPerStep": 3,
+    "tiredStamina": 20,
+    "tiredMaxFace": 3,
+    "innCost": 200,
+    "innStamina": 25,
+    "campStamina": -10,
+    "campReputation": -1,
+    "teahouseCost": 40,
+    "teahouseStamina": 12,
+    "teahouseMemories": 1,
+    "scenicMemories": 4,
+    "workMoney": 350,
+    "workStamina": -8,
+    "workReputation": 1,
+    "cpuWorkBelowMoney": 260
+  },
+  "scoring": {
+    "moneyPerPoint": 50,
+    "memoriesWeight": 1,
+    "reputationWeight": 0.5,
+    "meibutsuPoints": 8,
+    "arrivedBonus": 20,
+    "arrivalRankBonus": [24, 16, 10, 6, 3, 0]
+  },
+  "cpuPersonalities": [
+    { "id": "steady", "name": "堅実な旅", "weights": { "money": 2, "stamina": 0.6, "memories": 1, "reputation": 1 }, "meibutsuLove": 4, "detourLove": 0.3 },
+    { "id": "gourmet", "name": "食い道楽", "weights": { "money": 0.8, "stamina": 0.5, "memories": 1.6, "reputation": 0.6 }, "meibutsuLove": 14, "detourLove": 0.6 },
+    { "id": "hasty", "name": "急ぎ旅", "weights": { "money": 1.4, "stamina": 0.8, "memories": 0.6, "reputation": 0.8 }, "meibutsuLove": 2, "detourLove": 0.1 },
+    { "id": "social", "name": "人情家", "weights": { "money": 1, "stamina": 0.5, "memories": 1.1, "reputation": 1.8 }, "meibutsuLove": 6, "detourLove": 0.5 }
+  ]
+}

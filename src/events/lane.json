@@ -1,0 +1,24 @@
+[
+  {
+    "id": "kawadome_yado",
+    "title": "川止めの宿",
+    "description": "川止めで、宿は旅人であふれている。相部屋になった。",
+    "weight": 10,
+    "conditions": { "hasFlags": ["lane:13"] },
+    "choices": [
+      { "label": "相部屋の旅人と、国の話で盛り上がる", "effects": { "memories": 4, "reputation": 2 } },
+      { "label": "早めに寝て、体を休める", "effects": { "stamina": 12 } }
+    ]
+  },
+  {
+    "id": "kawadome_shogi",
+    "title": "退屈しのぎの将棋",
+    "description": "水が引くのを待つ間、宿の主人が将棋を指そうと言ってきた。",
+    "weight": 8,
+    "conditions": { "hasFlags": ["lane:13"] },
+    "choices": [
+      { "label": "一局指す", "effects": { "memories": 3 }, "gamble": { "chance": 0.5, "failEffects": { "memories": 2 } } },
+      { "label": "宿の手伝いをして、駄賃をもらう", "effects": { "money": 150, "reputation": 2 } }
+    ]
+  }
+]

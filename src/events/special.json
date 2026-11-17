@@ -1,0 +1,26 @@
+[
+  {
+    "id": "hakone_sekisho",
+    "title": "箱根の関所",
+    "description": "「入り鉄砲に出女」。役人が通行手形をあらためている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      { "label": "手形を見せて、正直に答える", "effects": { "reputation": 3 } },
+      { "label": "役人に茶菓子を差し入れて、和やかに通る", "effects": { "money": -100, "reputation": 1, "memories": 2 } }
+    ]
+  },
+  {
+    "id": "miya_shichiri",
+    "title": "七里の渡しの船",
+    "description": "宮から桑名へは、海を船で渡る。船頭が客を集めている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      { "label": "船旅を楽しむ", "effects": { "money": -120, "memories": 5 } },
+      { "label": "船酔いに備えて、ひと眠りする", "effects": { "money": -120, "stamina": 10 } }
+    ]
+  }
+]

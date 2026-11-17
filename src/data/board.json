@@ -1,0 +1,52 @@
+{
+  "main": [
+    { "type": "start", "name": "日本橋" },
+    { "type": "event", "name": "高輪の大木戸" },
+    { "type": "shuku", "name": "品川", "meibutsu": { "id": "shinagawa_nori", "name": "品川海苔", "price": 120, "memories": 3 } },
+    { "type": "scenic", "name": "六郷の渡し" },
+    { "type": "teahouse", "name": "街道の茶屋" },
+    { "type": "event", "name": "大磯の松並木" },
+    { "type": "shuku", "name": "小田原", "meibutsu": { "id": "odawara_kamaboko", "name": "小田原かまぼこ", "price": 180, "memories": 4 } },
+    { "type": "event", "name": "箱根の山道" },
+    { "type": "shuku", "name": "箱根", "mustStop": true, "eventId": "hakone_sekisho", "meibutsu": { "id": "hakone_yosegi", "name": "寄木細工", "price": 300, "memories": 6 } },
+    { "type": "scenic", "name": "三島から望む富士" },
+    { "type": "event", "name": "薩埵峠" },
+    { "type": "shuku", "name": "府中", "meibutsu": { "id": "abekawa_mochi", "name": "安倍川もち", "price": 80, "memories": 3 } },
+    { "type": "teahouse", "name": "丸子のとろろ汁" },
+    { "type": "fork", "name": "大井川", "mustStop": true },
+    { "type": "event", "name": "金谷の坂" },
+    { "type": "shuku", "name": "浜松", "meibutsu": { "id": "hamana_unagi", "name": "浜名湖のうなぎ", "price": 260, "memories": 5 } },
+    { "type": "event", "name": "浜名の今切" },
+    { "type": "scenic", "name": "岡崎の城下" },
+    { "type": "shuku", "name": "宮", "eventId": "miya_shichiri", "meibutsu": { "id": "atsuta_kishimen", "name": "きしめん", "price": 90, "memories": 3 } },
+    { "type": "event", "name": "七里の渡し" },
+    { "type": "shuku", "name": "桑名", "meibutsu": { "id": "kuwana_hamaguri", "name": "焼き蛤", "price": 150, "memories": 4 } },
+    { "type": "teahouse", "name": "関の茶屋" },
+    { "type": "event", "name": "鈴鹿峠" },
+    { "type": "shuku", "name": "草津", "meibutsu": { "id": "kusatsu_ubagamochi", "name": "うばがもち", "price": 70, "memories": 3 } },
+    { "type": "goal", "name": "京都 三条大橋" }
+  ],
+  "forks": [
+    {
+      "tileIndex": 13,
+      "mergeIndex": 15,
+      "laneTiles": [
+        { "type": "event", "name": "島田の川止め宿" },
+        { "type": "scenic", "name": "川明けを待つ河原" },
+        { "type": "event", "name": "川越しの朝" }
+      ],
+      "main": {
+        "label": "川越し人足を雇う",
+        "desc": "路銀を払って、すぐに渡る（早い）",
+        "story": "肩車の人足に担がれて、大井川を渡った。",
+        "effects": { "money": -300 }
+      },
+      "lane": {
+        "label": "川明けを待つ",
+        "desc": "宿で水が引くのを待つ（遅いが、出会いと思い出）",
+        "story": "川止めの宿で、ほかの旅人たちと語り明かした。",
+        "effects": { "memories": 4 }
+      }
+    }
+  ]
+}
