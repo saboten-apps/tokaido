@@ -52,23 +52,29 @@ function rng(seed: number): () => number {
   }
 }
 
+const QS = new URLSearchParams(window.location.search)
+/** ?stats=1：描画の速さ（FPS）を出す。?lite=1：軽量（アンチエイリアスなし・解像度を落とす） */
+const SHOW_STATS = QS.has('stats')
+const LITE = QS.has('lite')
+
 export default function Board3D({ board, players, activeId, focusId, positions, jump }: Props) {
   const box = useRef<HTMLDivElement | null>(null)
   const live = useRef({ players, activeId, focusId, positions, jump })
   live.current = { players, activeId, focusId, positions, jump }
   const manual = useRef<{ n: number; until: number } | null>(null)
+  const statsEl = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const el = box.current
     if (!el) return
     let renderer: THREE.WebGLRenderer
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: true })
+      renderer = new THREE.WebGLRenderer({ antialias: !LITE })
     } catch {
       el.textContent = '3D 表示にはWebGLが必要です。2D表示に切り替えてください。'
       return
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setPixelRatio(LITE ? 1 : Math.min(window.devicePixelRatio, 2))
     renderer.setClearColor(0xefe3c8)
     el.appendChild(renderer.domElement)
     renderer.domElement.setAttribute('data-testid', 'board3d-canvas')
@@ -201,6 +207,8 @@ export default function Board3D({ board, players, activeId, focusId, positions, 
 
     let raf = 0
     const t0 = performance.now()
+    let frames = 0
+    let lastStat = t0
     const tick = () => {
       const cur = live.current
       const slot = new Map<number, number>()
@@ -223,6 +231,13 @@ export default function Board3D({ board, players, activeId, focusId, positions, 
       camera.lookAt(target.x, 0.5, target.z - 1)
       ready = true
       renderer.render(scene, camera)
+      frames += 1
+      const nowMs = performance.now()
+      if (SHOW_STATS && statsEl.current && nowMs - lastStat >= 500) {
+        statsEl.current.textContent = `${Math.round((frames * 1000) / (nowMs - lastStat))} FPS ／ 描画 ${renderer.info.render.calls} 回 ／ 三角形 ${renderer.info.render.triangles}${LITE ? ' ／ 軽量' : ''}`
+        frames = 0
+        lastStat = nowMs
+      }
       raf = requestAnimationFrame(tick)
     }
     tick()
@@ -244,5 +259,10 @@ export default function Board3D({ board, players, activeId, focusId, positions, 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board.tiles.length, board.mainLength, players.length])
 
-  return <div className="board3d" ref={box} data-testid="board3d" />
+  return (
+    <div className="board3d-wrap">
+      <div className="board3d" ref={box} data-testid="board3d" />
+      {SHOW_STATS && <div className="stats3d" ref={statsEl} data-testid="stats3d" />}
+    </div>
+  )
 }

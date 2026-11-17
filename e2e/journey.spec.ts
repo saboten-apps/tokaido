@@ -165,3 +165,14 @@ test('3D表示に切り替えられて、2Dに戻せる（記憶もされる）'
   await expect(page.getByTestId('board')).toBeVisible()
   expect(errors).toEqual([])
 })
+
+test('3D の描画の速さ（?stats=1）と軽量モード（?lite=1）', async ({ page }) => {
+  await page.goto('/?seed=4&fast=1&stats=1&lite=1')
+  await page.getByTestId('start').click()
+  await page.getByTestId('view-toggle').click()
+  await expect(page.getByTestId('board3d-canvas')).toBeVisible({ timeout: 15_000 })
+  await expect(page.getByTestId('stats3d')).toContainText('FPS', { timeout: 10_000 })
+  await expect(page.getByTestId('stats3d')).toContainText('軽量')
+  // 次のテストに、3D の記憶が残らないように、2D に戻す
+  await page.getByTestId('view-toggle').click()
+})
