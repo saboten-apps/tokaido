@@ -14,6 +14,7 @@ interface Props {
   state: GameState
   onChange: (s: GameState) => void
   cpuDelayMs: number
+  onHowTo?: () => void
 }
 
 interface Anim {
@@ -31,7 +32,7 @@ interface Toast {
 const STEP_MS = 120
 let toastSeq = 0
 
-export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
+export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
   const [lastRoll, setLastRoll] = useState<{ name: string; face: number } | null>(null)
   const [anim, setAnim] = useState<Anim | null>(null)
   const [dice, setDice] = useState<{ face: number; hurry: boolean; name: string } | null>(null)
@@ -107,6 +108,7 @@ export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
         <span className="day" data-testid="day">{state.day}日目</span>
         <span className="sub">／ {cfg.balance.game.maxDays}日まで</span>
         <span className="turn">{active.name}の番</span>
+        {onHowTo && <button className="linkish" data-testid="open-howto" onClick={onHowTo}>遊び方</button>}
         {lastRoll && <span className="roll" data-testid="last-roll">🎲 {lastRoll.name}：{lastRoll.face}</span>}
       </header>
 

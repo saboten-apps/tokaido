@@ -1,14 +1,17 @@
 import { expect, test, type Page } from '@playwright/test'
 
-/** 自分の番なら、見えているボタンを1つ押す（振る／選ぶ／買う／分かれ道） */
-async function step(page: Page): Promise<void> {
-  for (const id of ['roll', 'choice', 'buy', 'route-lane']) {
-    const btn = page.getByTestId(id).locator('visible=true').and(page.locator(':not([disabled])')).first()
-    if (await btn.isVisible().catch(() => false)) {
-      await btn.click()
-      return
+/** 自分の番なら、見えているボタンを1つ押す（振る／選ぶ／買う／分かれ道）。1回の呼び出しで押す（再描画に負けない） */
+async function step(page: Page): Promise<boolean> {
+  return page.evaluate(() => {
+    for (const id of ['roll', 'choice', 'buy', 'route-lane']) {
+      const el = [...document.querySelectorAll<HTMLButtonElement>(`[data-testid="${id}"]`)].find((e) => !e.disabled && e.offsetParent !== null)
+      if (el) {
+        el.click()
+        return true
+      }
     }
-  }
+    return false
+  })
 }
 
 test('2人がオンラインの部屋で、最後まで遊べる', async ({ browser }) => {
@@ -18,7 +21,7 @@ test('2人がオンラインの部屋で、最後まで遊べる', async ({ brow
   const b = await ctxB.newPage()
 
   // A が部屋をつくる（2人部屋）
-  await a.goto('/')
+  await a.goto('/?fast=1')
   await a.getByTestId('go-online').click()
   await a.getByTestId('online-name').fill('花子')
   await a.getByTestId('online-capacity').selectOption('2')
@@ -28,7 +31,7 @@ test('2人がオンラインの部屋で、最後まで遊べる', async ({ brow
   expect(code).toMatch(/^[A-HJ-NP-Z2-9]{5}$/)
 
   // B が招待リンクで入る
-  await b.goto(`/?room=${code}`)
+  await b.goto(`/?room=${code}&fast=1`)
   await expect(b.getByTestId('online-code')).toHaveValue(code)
   await b.getByTestId('online-name').fill('太郎')
   await b.getByTestId('online-join').click()
@@ -54,11 +57,13 @@ test('2人がオンラインの部屋で、最後まで遊べる', async ({ brow
   await expect(a.getByTestId('role-p1')).toHaveText('飛脚')
 
   // 最後まで、それぞれの番に進める
-  for (let i = 0; i < 1500; i++) {
+  const t0 = Date.now()
+  while (Date.now() - t0 < 240_000) {
     if ((await a.getByTestId('result').isVisible()) && (await b.getByTestId('result').isVisible())) break
     await step(a)
     await step(b)
-    await a.waitForTimeout(25)
+    // 押したあと、サーバーの返事（次の状態）を少し待つ
+    await a.waitForTimeout(40)
   }
   await expect(a.getByTestId('result')).toBeVisible()
   await expect(b.getByTestId('result')).toBeVisible()
@@ -77,4 +82,31 @@ test('存在しない部屋には入れない', async ({ browser }) => {
   await p.getByTestId('online-join').click()
   await expect(p.getByTestId('conn-status')).toContainText('切断', { timeout: 15_000 })
   await ctx.close()
+})
+
+test('通常の速さでは、駒が動き終わってから、次の操作ができる', async ({ browser }) => {
+  const ctxA = await browser.newContext()
+  const ctxB = await browser.newContext()
+  const a = await ctxA.newPage()
+  const b = await ctxB.newPage()
+  await a.goto('/')
+  await a.getByTestId('go-online').click()
+  await a.getByTestId('online-name').fill('花子')
+  await a.getByTestId('online-capacity').selectOption('2')
+  await a.getByTestId('online-create').click()
+  const code = (await a.getByTestId('room-code').innerText()).trim()
+  await b.goto(`/?room=${code}`)
+  await b.getByTestId('online-name').fill('太郎')
+  await b.getByTestId('online-join').click()
+  await a.getByTestId('ready').click()
+  await b.getByTestId('ready').click()
+  await a.getByTestId('online-start').click()
+  await a.getByTestId('roll').click()
+  // 2人の画面に、サイコロの目が出る
+  await expect(a.getByTestId('dice-pop')).toBeVisible()
+  await expect(b.getByTestId('dice-pop')).toBeVisible()
+  // 動いているあいだは、操作の欄が隠れている。終われば、次の判断（または B の番）になる
+  await expect(a.getByTestId('dice-pop')).toBeHidden({ timeout: 10_000 })
+  await ctxA.close()
+  await ctxB.close()
 })

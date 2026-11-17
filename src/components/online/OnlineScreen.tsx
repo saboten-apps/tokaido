@@ -7,7 +7,7 @@ import { OnlineClient, clearLastRoom, getSavedName, loadLastRoom, newRoomCode, s
 import { BoardView } from '../BoardView'
 import { MiniMap } from '../MiniMap'
 import { ResultScreen } from '../ResultScreen'
-import { newLogLines } from '../feedback'
+import { newLogLines, positionAtStep, prefersReducedMotion } from '../feedback'
 import { ActionPanel, LogPanel, PlayerCards } from '../parts'
 import type { SessionAction } from '../../engine'
 import type { RoomView } from '../../online/protocol'
@@ -213,6 +213,14 @@ export function OnlineScreen({ onExit }: { onExit: () => void }) {
   )
 }
 
+interface Roll {
+  playerId: string
+  from: number
+  path: number[]
+  face: number
+  hurry: boolean
+}
+
 interface GameProps {
   client: OnlineClient
   game: GameState
@@ -227,7 +235,9 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
   const aw = getAwaiting(game)
   const active = game.players[game.turnCtl.activeIndex]
   const mine = aw !== null && aw.playerId === selfPlayerId
-  const [dice, setDice] = useState<{ face: number; hurry: boolean; name: string } | null>(null)
+  // 駒の動き：サーバーから届いた進行の記録（steps）の、サイコロの動きを、順番に1マスずつ再生する
+  const [queue, setQueue] = useState<Roll[]>([])
+  const [step, setStep] = useState(-1)
   const [toasts, setToasts] = useState<Array<{ id: number; text: string }>>([])
   const [jump, setJump] = useState<{ index: number; n: number } | null>(null)
   const [message, setMessage] = useState<string | null>(null)
@@ -246,17 +256,31 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
     }
   }, [game])
 
-  // サイコロの目：サーバーから届いた進行の記録（steps）から
+  const animate = useRef(!prefersReducedMotion() && !new URLSearchParams(window.location.search).has('fast'))
   useEffect(() => {
     return client.onBatch((batch: ReplayBatch) => {
-      const rolled = batch.steps.flatMap((s) => s.events).filter((e) => e.type === 'rolled').at(-1)
-      if (rolled && rolled.type === 'rolled') {
-        const who = game.players.find((p) => p.id === rolled.playerId)
-        setDice({ face: rolled.face, hurry: rolled.hurry, name: who?.name ?? '' })
-        setTimeout(() => setDice(null), 1200)
-      }
+      if (!animate.current) return
+      const rolls: Roll[] = batch.steps
+        .flatMap((st) => st.events)
+        .flatMap((e) => (e.type === 'rolled' && e.path.length > 0 ? [{ playerId: e.playerId, from: e.from, path: e.path, face: e.face, hurry: e.hurry }] : []))
+      if (rolls.length) setQueue((q) => [...q, ...rolls])
     })
-  }, [client, game.players])
+  }, [client])
+
+  useEffect(() => {
+    if (queue.length === 0) return
+    const cur = queue[0]
+    const timer = setTimeout(
+      () => {
+        if (step >= cur.path.length - 1) {
+          setQueue((q) => q.slice(1))
+          setStep(-1)
+        } else setStep((n) => n + 1)
+      },
+      step < 0 ? 350 : 120,
+    )
+    return () => clearTimeout(timer)
+  }, [queue, step])
 
   // 持ち時間の表示
   useEffect(() => {
@@ -272,7 +296,16 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
 
   const positions: Record<string, number> = {}
   for (const p of game.players) positions[p.id] = game.board.playerStates[p.id].position
-  const focusId = (mine ? selfPlayerId : (aw?.playerId ?? active.id)) ?? active.id
+  // 再生中の駒は、動きの途中の場所に。順番待ちの駒は、動き出す前の場所に
+  const seen = new Set<string>()
+  queue.forEach((r, i) => {
+    if (seen.has(r.playerId)) return
+    seen.add(r.playerId)
+    positions[r.playerId] = i === 0 ? positionAtStep(r.from, r.path, step) : r.from
+  })
+  const busy = queue.length > 0
+  const dice = queue[0] ? { face: queue[0].face, hurry: queue[0].hurry, name: game.players.find((p) => p.id === queue[0].playerId)?.name ?? '' } : null
+  const focusId = (queue[0]?.playerId ?? (mine ? selfPlayerId : (aw?.playerId ?? active.id))) ?? active.id
   const waitingName = aw ? game.players.find((p) => p.id === aw.playerId)?.name : active.name
 
   return (
@@ -292,7 +325,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
       <MiniMap board={game.board} players={game.players} positions={positions} focusId={focusId} onJump={(index) => setJump({ index, n: (jump?.n ?? 0) + 1 })} />
       <BoardView board={game.board} players={game.players} activeId={active.id} focusId={focusId} positions={positions} jump={jump} />
       <PlayerCards state={game} activeId={active.id} selfId={selfPlayerId} />
-      {mine ? <ActionPanel state={game} aw={aw} onAct={act} /> : <p className="waiting" data-testid="waiting">{waitingName}の行動を待っています…</p>}
+      {mine && !busy ? <ActionPanel state={game} aw={aw} onAct={act} /> : mine ? null : <p className="waiting" data-testid="waiting">{waitingName}の行動を待っています…</p>}
       {message && <p className="conn-error" role="alert">{message}</p>}
       {dice && (
         <div className="dice-pop" data-testid="dice-pop" role="status" aria-live="polite">

@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { DEFAULT_CONFIG, MAX_PLAYERS, MIN_PLAYERS, ROLE_IDS, createGame, runUntilHuman } from './engine'
 import { deleteSavedGame, loadGame, saveGame } from './storage/saveGame'
 import { GameScreen } from './components/GameScreen'
+import { HowToPlay } from './components/HowToPlay'
 import { OnlineScreen } from './components/online/OnlineScreen'
 import { ResultScreen } from './components/ResultScreen'
 import type { GameState, RoleId } from './types/game'
@@ -13,6 +14,7 @@ const CPU_DELAY_MS = params.get('fast') ? 0 : 450
 
 export default function App() {
   const [state, setState] = useState<GameState | null>(null)
+  const [howto, setHowto] = useState(false)
   const [online, setOnline] = useState(() => new URLSearchParams(window.location.search).has('room'))
   const [saved, setSaved] = useState(() => loadGame())
   const [names, setNames] = useState<string[]>(['あなた', '旅人2', '旅人3', '旅人4'])
@@ -32,14 +34,23 @@ export default function App() {
     update(runUntilHuman(g).state)
   }
 
+  const howtoDialog = howto ? <HowToPlay onClose={() => setHowto(false)} /> : null
   if (online) return <OnlineScreen onExit={() => setOnline(false)} />
   if (state?.phase === 'finished') {
     return <ResultScreen state={state} onRestart={() => { setState(null); setSaved(null) }} />
   }
-  if (state) return <GameScreen state={state} onChange={update} cpuDelayMs={CPU_DELAY_MS} />
+  if (state) {
+    return (
+      <>
+        <GameScreen state={state} onChange={update} cpuDelayMs={CPU_DELAY_MS} onHowTo={() => setHowto(true)} />
+        {howtoDialog}
+      </>
+    )
+  }
 
   return (
     <div className="title">
+      {howtoDialog}
       <h1>東海道すごろく</h1>
       <p className="lead">江戸・日本橋から京都・三条大橋へ。路銀をやりくりし、名物を味わい、思い出を集める旅。</p>
       <label>
@@ -80,6 +91,7 @@ export default function App() {
       </label>
       <button className="primary" data-testid="start" onClick={start}>旅に出る</button>
       <button data-testid="go-online" onClick={() => setOnline(true)}>オンラインで遊ぶ</button>
+      <button data-testid="open-howto" className="linkish" onClick={() => setHowto(true)}>遊び方</button>
       {saved && (
         <button data-testid="continue" onClick={() => setState(saved)}>
           続きから（{saved.day}日目）

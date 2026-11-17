@@ -131,3 +131,16 @@ test('身分を選べて、説明が出て、札に身分が出る', async ({ pa
   // CPU の身分も、札に出る
   await expect(page.getByTestId('role-p1')).not.toHaveText('飛脚')
 })
+
+test('遊び方が、タイトルでも、遊んでいる途中でも開ける', async ({ page }) => {
+  await page.goto('/?seed=2&fast=1')
+  await page.getByTestId('open-howto').click()
+  await expect(page.getByTestId('howto')).toContainText('めざすところ')
+  await expect(page.getByTestId('howto')).toContainText('飛脚')
+  await page.getByTestId('howto-close').click()
+  await expect(page.getByTestId('howto')).toHaveCount(0)
+  await page.getByTestId('start').click()
+  await page.getByTestId('open-howto').click()
+  await expect(page.getByTestId('howto')).toContainText('得点')
+  await page.getByTestId('howto-close').click()
+})

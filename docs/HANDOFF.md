@@ -40,7 +40,8 @@
 - **ローカルで動作確認済み**：`npm run test:e2e:online`（`wrangler dev --local` に、2つのブラウザでつなぎ、部屋づくり→招待リンクで入室→身分の選択→準備→開始→最後まで→同じ結果、を確認。約3分）。
 - 構成：`src/engine/room.ts`（ロビー・席・身分・持ち時間・切断・自動プレイ）／`src/online/protocol.ts`（通信の形式。行動は厳しく検証）／`roomServer.ts`（認証・重複送信の防止・猶予・アラーム。純粋な関数）／`client.ts`（WebSocket・つなぎ直し・ack・再送）／`worker/`（`index.ts` が入口、`roomDO.ts` が Durable Object）／`wrangler.jsonc`。画面は `src/components/online/OnlineScreen.tsx`（入口・ロビー・対戦・結果）と、共有部品 `src/components/parts.tsx`。umaregacya のものを旅向けに作り替えた（1ターンの年数・人生の目標を外し、身分の選択を足した）。
 - 遊び方：タイトル画面の「オンラインで遊ぶ」→ 部屋をつくる → コード（5文字）か招待リンク（`/?room=CODE`）を伝える。席が余れば CPU が埋める。持ち時間は1人45秒、続けて2回切らすと CPU が代わりに進める（「自分で続ける」で戻れる）。切断しても、8秒の猶予のあとに自動プレイで進み、つなぎ直せば席に戻れる。
-- **未**：オンラインでの駒の移動アニメーション（いまは届いた状態を、すぐ映す。サイコロの目と通知は出る）。同じ画面での演出の共通化。
+- オンラインでも、駒の移動アニメーション・サイコロの目・通知が出る（サーバーから届く進行の記録 `steps` を順番に再生。`?fast=1` か「動きを減らす」設定で省略）。
+- **未**：ひとり用とオンラインの演出コードの共通化（いまは `GameScreen` と `OnlineScreen` に、同じ形の再生処理が2つある）。
 - **デプロイするには**（ユーザーが決めてから）：Cloudflare の Worker 名（`wrangler.jsonc` の `name`、いまは `tokaido-sugoroku`）と認証情報（トークン）が要る。`npm run build` → `npx wrangler versions upload --assets dist`（プレビュー）、`npx wrangler deploy`（本番。ユーザーの指示があるときだけ）。Durable Object は SQLite 方式（`migrations`）。**この環境には認証情報がないので、デプロイは未実施**。
 - 注意：Claude のプレビューページ（静的な1枚）では、オンラインは動かない（Worker がないため）。
 
@@ -86,6 +87,11 @@
 - 旅日記（umaregacya の chronicle を作り直す）
 
 ## 記録（新しいものを上に）
+### 2026-11-17 Claude（遊び方・オンラインの駒のアニメーション）
+- 遊び方の画面（`HowToPlay`。数値は balance.json から読む。タイトルと、遊んでいる途中の「遊び方」から開く）。
+- オンラインの駒の移動アニメーション・サイコロの目（steps の再生）。オンライン e2e を、1回の呼び出しでボタンを押す形にして安定・高速化（約2.6分→約43秒）、通常の速さの動作確認を追加。
+- 確認：`npm run check`（単体79件）、`npm run test:e2e`（20件）、`npm run test:e2e:online`（3件）。
+
 ### 2026-11-17 Claude（ROADMAP D2：オンライン対戦）
 - 部屋・通信・サーバー処理・クライアント・Worker・画面を移植。`parts.tsx` に画面の部品を切り出し（ひとり用とオンラインで共有）。lint から `.wrangler` を除外。
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
