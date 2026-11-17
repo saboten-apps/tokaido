@@ -4,7 +4,7 @@ import { goalIndex, innCostFor, isTired, maxFaceFor, recordCamp } from './board'
 import { isChoiceAvailable } from './events'
 import { earnedTitles } from './titles'
 import { rankPlayers } from './scoring'
-import { SessionError, autoAct, getAwaiting, runUntilHuman, submitAction } from './session'
+import { SessionError, advanceOne, autoAct, getAwaiting, runUntilHuman, submitAction } from './session'
 import { createGame } from './setup'
 import { simulateGames } from './simulate'
 import type { GameState, RoleId } from '../types/game'
@@ -302,5 +302,34 @@ describe('宿場をめざす・スタンプ', () => {
       expect(sc.stamps).toBe(p.visited.length * cfg.balance.scoring.stampPoints)
       expect(sc.total).toBe(sc.money + sc.memories + sc.reputation + sc.meibutsu + sc.stamps + sc.arrival)
     }
+  })
+})
+
+describe('同じ宿での語らい', () => {
+  function bothAt(name: string, second?: string): GameState {
+    const g = createGame({ seed: 11, playerCount: 2, includeHuman: false }, cfg)
+    const idx = (n: string) => g.board.tiles.findIndex((t) => t.name === n)
+    g.board.playerStates.p0.position = idx(name)
+    g.board.playerStates.p1.position = idx(second ?? name)
+    for (const p of g.players) p.restDays = 1
+    return g
+  }
+  const dayEnds = (g: GameState) => advanceOne(advanceOne(g, cfg).state, cfg).state
+
+  it('同じ宿場に泊まった旅人は、思い出が増え、道中記と旅日記に残る', () => {
+    const g = bothAt('品川')
+    const after = dayEnds(g)
+    expect(after.day).toBe(2)
+    const gain = cfg.balance.lodging.shared.memories
+    expect(after.players[0].stats.memories - g.players[0].stats.memories).toBe(gain)
+    expect(after.players[1].stats.memories - g.players[1].stats.memories).toBe(gain)
+    expect(after.log.some((l) => l.message.includes('花を咲かせた'))).toBe(true)
+    expect(after.diary.some((d) => d.kind === 'inn' && d.text.includes('語り合った'))).toBe(true)
+  })
+
+  it('別々の宿場なら、語らいはない', () => {
+    const g = bothAt('品川', '川崎')
+    const after = dayEnds(g)
+    expect(after.log.some((l) => l.message.includes('花を咲かせた'))).toBe(false)
   })
 })

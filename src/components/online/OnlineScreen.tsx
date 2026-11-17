@@ -2,7 +2,7 @@
 // 進行はすべてサーバーが決める。この画面は、自分の番の行動だけを送り、届いた状態を映す。
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { DEFAULT_CONFIG, REGIONS, ROLE_IDS, ROOM_MAX_PLAYERS, ROOM_MIN_PLAYERS, getAwaiting, regionAt } from '../../engine'
+import { DEFAULT_CONFIG, REGIONS, ROLE_IDS, ROOM_MAX_PLAYERS, ROOM_MIN_PLAYERS, getAwaiting, regionAt, weatherOn, WEATHER_ICON, WEATHER_LABEL } from '../../engine'
 import { OnlineClient, clearLastRoom, getSavedName, loadLastRoom, newRoomCode, saveLastRoom, saveName, type ReplayBatch } from '../../online/client'
 import { BoardStage, ViewToggle } from '../BoardStage'
 import { useViewMode } from '../viewMode'
@@ -254,6 +254,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
   const [jump, setJump] = useState<{ index: number; n: number } | null>(null)
   const [message, setMessage] = useState<string | null>(null)
   const [mode, toggleMode] = useViewMode()
+  const weather = weatherOn(game.seed, game.day, cfg)
   const [speed, toggleSpeed] = useSpeed()
   const [now, setNow] = useState(() => Date.now())
   const prev = useRef<GameState>(game)
@@ -359,6 +360,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
         <ViewToggle mode={mode} onToggle={toggleMode} />
         {mode === '3d' && <button className="linkish" data-testid="speed-toggle" onClick={toggleSpeed} title="演出の速さ">速さ：{SPEED_LABEL[speed]}</button>}
         <span className="region-badge" data-testid="region-badge">{REGIONS[regionAt(game.board, positions[focusId])].name}</span>
+        <span className="weather" data-testid="weather" data-weather={weather} title={weather === 'rain' ? `雨の日は、歩くと体力が1歩ごとに${cfg.balance.weather.rainStaminaPerStep}余分に減る` : '今日の天気'}>{WEATHER_ICON[weather]} {WEATHER_LABEL[weather]}</span>
         <span className="turn">{mine ? 'あなたの番' : `${waitingName}の番`}{left !== null && aw ? `（あと${left}秒）` : ''}</span>
       </header>
       {autoSeat && (
@@ -368,7 +370,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
         </div>
       )}
       <MiniMap board={game.board} players={game.players} positions={positions} focusId={focusId} onJump={(index) => setJump({ index, n: (jump?.n ?? 0) + 1 })} />
-      <BoardStage mode={mode} board={game.board} players={game.players} activeId={active.id} focusId={focusId} positions={positions} jump={jump} travel={travel} />
+      <BoardStage mode={mode} board={game.board} players={game.players} activeId={active.id} focusId={focusId} positions={positions} jump={jump} travel={travel} weather={weather} />
       <PlaceCard board={game.board} index={positions[focusId] ?? 0} />
       <PlayerCards state={game} activeId={active.id} selfId={selfPlayerId} />
       {game.players.find((p) => p.id === selfPlayerId) && <StampBook player={game.players.find((p) => p.id === selfPlayerId)!} />}

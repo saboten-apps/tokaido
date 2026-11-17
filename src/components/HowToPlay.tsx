@@ -22,7 +22,11 @@ export function HowToPlay({ onClose }: { onClose: () => void }) {
           <li><strong>早足で振る</strong>：目に+{t.hurryBonus}マス。そのかわり体力を余分に使います（体力{t.hurryMinStamina}以上のとき）。</li>
           <li><strong>働いて稼ぐ</strong>：進まずに、路銀（+{t.workMoney}文）を稼ぎます。路銀が尽きても脱落しません。</li>
           <li><strong>泊まり方</strong>：宿場で日が終わると宿に泊まり、体力が戻ります。木賃宿は安く、旅籠はふつうです。</li>
+          <li><strong>同じ宿</strong>：同じ宿場に泊まった旅人どうしは、夜に語らって思い出が+{b.lodging.shared.memories}増えます。</li>
         </ul>
+
+        <h3>天気</h3>
+        <p>日ごとに天気が変わります（画面上の ☀☁☔）。<strong>雨の日</strong>は、歩くと1歩ごとに体力が{b.weather.rainStaminaPerStep}余分に減ります。雨をやり過ごして働くのも、ひとつの手です。雨の日は、場面も雨の景色になります。</p>
 
         <h3>能力値</h3>
         <ul>

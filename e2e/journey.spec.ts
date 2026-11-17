@@ -394,3 +394,9 @@ test('演出の速さを切り替えられ、次回も覚えている', async ({
   await page.getByTestId('continue').click()
   await expect(page.getByTestId('speed-toggle')).toContainText('はやい')
 })
+
+test('天気：画面の上に、今日の天気が出る', async ({ page }) => {
+  await page.goto('/?seed=4&fast=1')
+  await page.getByTestId('start').click()
+  await expect(page.getByTestId('weather')).toHaveText(/晴れ|くもり|雨/)
+})

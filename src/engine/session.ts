@@ -9,6 +9,7 @@ import { chooseCpuBuyMeibutsu, chooseCpuChoice, chooseCpuLodging, chooseCpuMove,
 import { applyChoice, drawEvent, isChoiceAvailable, markEventUsed } from './events'
 import { chance, createRng, type Rng } from './rng'
 import { applyDelta, formatDelta } from './stats'
+import { weatherOn } from './weather'
 import type { DiaryKind, ForkDef, GameEvent, GameState, LodgingId, Player, TileType } from '../types/game'
 
 /** 人間の行動 */
@@ -102,6 +103,8 @@ export function getAwaiting(state: GameState): Awaiting | null {
 function endOfDay(c: Ctx): void {
   const { s, config } = c
   const t = config.balance.travel
+  const slept = new Map<number, Player[]>()
+  const sleptAt = (p: Player, idx: number) => slept.set(idx, [...(slept.get(idx) ?? []), p])
   for (const p of s.players) {
     if (hasArrived(p)) continue
     const tile = s.board.tiles[s.board.playerStates[p.id].position]
@@ -110,6 +113,7 @@ function endOfDay(c: Ctx): void {
       const h = config.balance.lodging.honjin
       p.stats = applyDelta(p.stats, { stamina: h.stamina, memories: h.memories }, config.balance.limits)
       recordCamp(p, false)
+      sleptAt(p, s.board.playerStates[p.id].position)
       log(s, p, `${p.name}は評判を聞きつけた${tile.name}の${h.name}に招かれ、手厚くもてなされた。（思い出+${h.memories}）`)
       note(s, p, 'inn', `${h.name}に招かれ、手厚くもてなされた。`)
       continue
@@ -119,10 +123,22 @@ function endOfDay(c: Ctx): void {
     if (inTown && p.stats.money >= cost) {
       p.stats = applyDelta(p.stats, { money: -cost, stamina: config.balance.lodging[lodging].stamina }, config.balance.limits)
       recordCamp(p, false)
+      sleptAt(p, s.board.playerStates[p.id].position)
     } else {
       p.stats = applyDelta(p.stats, { stamina: t.campStamina, reputation: t.campReputation }, config.balance.limits)
       recordCamp(p, true)
       log(s, p, `${p.name}は${tile.type === 'shuku' ? '宿代が足りず、' : ''}野宿した。${p.flags.includes('camped2') ? '（野宿が続いて、足が重い）' : ''}`)
+    }
+  }
+  // 同じ宿に泊まった旅人どうしは、夜に語らう
+  for (const [idx, group] of slept) {
+    if (group.length < 2) continue
+    const g = config.balance.lodging.shared.memories
+    for (const p of group) {
+      p.stats = applyDelta(p.stats, { memories: g }, config.balance.limits)
+      const others = group.filter((q) => q.id !== p.id).map((q) => q.name).join('・')
+      log(s, p, `${p.name}は${s.board.tiles[idx].name}の宿で、${others}と旅の話に花を咲かせた。（思い出+${g}）`)
+      note(s, p, 'inn', `${s.board.tiles[idx].name}の宿で、${others}と語り合った。`)
     }
   }
   c.events.push({ type: 'day_end', day: s.day })
@@ -295,8 +311,9 @@ function doRoll(c: Ctx, forcedFace?: number, hurry = false, stroll = false): voi
   pb.position = to
   syncLaneFlag(s.board, p, to)
   const extra = hurry ? (getRole(config, p.role).hurryStamina ?? config.balance.travel.hurryStamina) : 0
-  p.stats = applyDelta(p.stats, { stamina: -path.length * config.balance.travel.staminaPerStep - extra }, config.balance.limits)
-  log(s, p, `${p.name}は${hurry ? '早足で' : stroll ? '宿場をめざして' : ''}「${face}」を出して、${s.board.tiles[to].name}へ。`)
+  const rain = weatherOn(s.seed, s.day, config) === 'rain' ? config.balance.weather.rainStaminaPerStep : 0
+  p.stats = applyDelta(p.stats, { stamina: -path.length * (config.balance.travel.staminaPerStep + rain) - extra }, config.balance.limits)
+  log(s, p, `${p.name}は${hurry ? '早足で' : stroll ? '宿場をめざして' : ''}「${face}」を出して、${s.board.tiles[to].name}へ。${rain ? '（雨の道で、足がきつい）' : ''}`)
   c.events.push({ type: 'rolled', playerId: p.id, face, from, to, path, hurry, ...(stroll ? { stroll } : {}) })
   land(c, p, to)
 }

@@ -1,7 +1,7 @@
 // 旅の画面：盤面・旅人の札・行動・判断（出来事／名物／分かれ道）・道中記。CPU の番は、少しずつ進めて見せる。
 
 import { useEffect, useState } from 'react'
-import { DEFAULT_CONFIG, REGIONS, advanceOne, getAwaiting, regionAt, submitAction, type SessionAction, type SessionResult } from '../engine'
+import { DEFAULT_CONFIG, REGIONS, advanceOne, getAwaiting, regionAt, submitAction, weatherOn, WEATHER_ICON, WEATHER_LABEL, type SessionAction, type SessionResult } from '../engine'
 import { BoardStage, ViewToggle } from './BoardStage'
 import { useViewMode } from './viewMode'
 import { SPEED_FACTOR, SPEED_LABEL, useSpeed } from './speed'
@@ -56,6 +56,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
   const aw = busy ? null : awRaw
   const active = state.players[state.turnCtl.activeIndex]
   const human = state.players.find((p) => p.isHuman)
+  const weather = weatherOn(state.seed, state.day, cfg)
 
   // 駒の見かけの位置（動いている駒だけ、1マスずつ）
   const positions: Record<string, number> = {}
@@ -131,6 +132,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
         <span className="day" data-testid="day">{state.day}日目</span>
         <span className="sub">／ {cfg.balance.game.maxDays}日まで</span>
         <span className="region-badge" data-testid="region-badge">{REGIONS[regionAt(state.board, positions[(awPlayer ?? (active.isHuman ? active : human) ?? active).id])].name}</span>
+        <span className="weather" data-testid="weather" data-weather={weather} title={weather === 'rain' ? `雨の日は、歩くと体力が1歩ごとに${cfg.balance.weather.rainStaminaPerStep}余分に減る` : '今日の天気'}>{WEATHER_ICON[weather]} {WEATHER_LABEL[weather]}</span>
         <span className="turn">{active.name}の番</span>
         <ViewToggle mode={mode} onToggle={toggleMode} />
         {mode === '3d' && <button className="linkish" data-testid="speed-toggle" onClick={toggleSpeed} title="演出の速さ">速さ：{SPEED_LABEL[speed]}</button>}
@@ -153,6 +155,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
         focusId={anim?.playerId ?? (awPlayer ?? (active.isHuman ? active : human) ?? active).id}
         positions={positions}
         jump={jump}
+        weather={weather}
         travel={anim && mode === '3d' && anim.step === 0 ? { id: String(anim.id), playerId: anim.playerId, via: anim.via, ms: travelMs(anim.via.length, SPEED_FACTOR[speed]) } : null}
       />
 

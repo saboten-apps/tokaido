@@ -59,6 +59,12 @@ export interface Balance {
     hurryStamina: number
     hurryMinStamina: number
   }
+  /** 天気：雨とくもりの出る確率（のこりは晴れ）。雨の日は、1歩ごとの体力が rainStaminaPerStep 増える */
+  weather: {
+    rainChance: number
+    cloudyChance: number
+    rainStaminaPerStep: number
+  }
   scoring: {
     moneyPerPoint: number
     memoriesWeight: number
@@ -74,6 +80,8 @@ export interface Balance {
     kichin: { name: string; costRate: number; stamina: number }
     hatago: { name: string; costRate: number; stamina: number }
     honjin: { name: string; reputationAt: number; stamina: number; memories: number }
+    /** 同じ宿に泊まった旅人どうし：語らって、思い出が増える */
+    shared: { memories: number }
   }
   /** 評判の効果：goodAt 以上で宿代が goodInnRate 倍、badBelow 未満で badInnRate 倍 */
   reputation: { goodAt: number; goodInnRate: number; badBelow: number; badInnRate: number }

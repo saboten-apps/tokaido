@@ -10,6 +10,7 @@ import scenesJson from '../data/scenes.json'
 import { PrintCard } from './parts'
 import { fadeMs } from './speed'
 import { MOODS, addWeather, buildMotifs, makeCtx, makePiece, type Mood } from './sceneKit'
+import type { Weather } from '../engine'
 import type { BoardState, Player } from '../types/game'
 
 interface SceneDef {
@@ -28,6 +29,8 @@ interface Props {
   jump?: { index: number; n: number } | null
   /** 旅人が道を歩いているあいだ（歩いて遠ざかり、通る場所の名前が順に点く）。着いたら、次の場面へ */
   travel?: { id: string; playerId: string; via: string[]; ms: number } | null
+  /** 今日の天気。雨の日は、晴れ・朝・夕の場面が雨の景色になる */
+  weather?: Weather
 }
 
 const QS = new URLSearchParams(window.location.search)
@@ -52,7 +55,7 @@ function rng(seed: number): () => number {
   }
 }
 
-export default function SceneStage({ board, players, activeId, focusId, positions, jump, travel }: Props) {
+export default function SceneStage({ board, players, activeId, focusId, positions, jump, travel, weather }: Props) {
   const box = useRef<HTMLDivElement | null>(null)
   const statsEl = useRef<HTMLDivElement | null>(null)
   const live = useRef({ players, activeId, focusId, positions })
@@ -105,7 +108,8 @@ export default function SceneStage({ board, players, activeId, focusId, position
     const el = box.current
     if (!el || shown === null) return
     const tile = board.tiles[shown]
-    const def: SceneDef = SCENES[tile.name] ?? { motifs: ['street'], mood: 'day' }
+    const base: SceneDef = SCENES[tile.name] ?? { motifs: ['street'], mood: 'day' }
+    const def: SceneDef = weather === 'rain' && (base.mood === 'day' || base.mood === 'morning' || base.mood === 'dusk') ? { ...base, mood: 'rain' } : base
     const region = REGIONS[regionAt(board, shown)]
     const mood = MOODS[def.mood]
 
@@ -256,7 +260,7 @@ export default function SceneStage({ board, players, activeId, focusId, position
     }
     // 場面を作り直すのは、止まる場所が変わったとき（旅人の位置・手番は live から読む）
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shown, players.length])
+  }, [shown, players.length, weather])
 
   const tile = shown !== null ? board.tiles[shown] : null
   const no = shown !== null ? shukuNumber(board, shown) : null

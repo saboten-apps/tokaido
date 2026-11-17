@@ -1,6 +1,6 @@
 // 画面の部品。ひとり用の旅（GameScreen）と、オンラインの旅（OnlineScreen）で共有する。
 
-import { DEFAULT_CONFIG, HIROSHIGE, PLACES, REGIONS, canHurry, getEvent, innCostFor, isChoiceAvailable, isTired, maxFaceFor, nextShukuAhead, regionAt, shukuNumber, type Awaiting, type SessionAction } from '../engine'
+import { DEFAULT_CONFIG, HIROSHIGE, PLACES, REGIONS, canHurry, getEvent, innCostFor, isChoiceAvailable, isTired, maxFaceFor, nextShukuAhead, regionAt, shukuNumber, weatherOn, type Awaiting, type SessionAction } from '../engine'
 import { pieceColors } from '../art/theme'
 import { useEffect, useState } from 'react'
 import { choiceChips, forkChips, type Chip } from './choiceText'
@@ -110,7 +110,7 @@ export function ActionPanel({ state, aw, onAct }: ActionProps) {
   if (aw.kind === 'roll') {
     return (
       <section className="dock">
-        <div className="dock-who">{awPlayer.name}の番{tired ? `（疲れていて、出目は${maxFaceFor(awPlayer, cfg)}まで）` : ''}</div>
+        <div className="dock-who">{awPlayer.name}の番{tired ? `（疲れていて、出目は${maxFaceFor(awPlayer, cfg)}まで）` : ''}{weatherOn(state.seed, state.day, cfg) === 'rain' ? `（雨：歩くと1歩ごとに体力-${cfg.balance.weather.rainStaminaPerStep}余分。働けば影響なし）` : ''}</div>
         <StaminaGauge value={awPlayer.stats.stamina} id={`dock-${awPlayer.id}`} large />
         <button className="primary" data-testid="roll" onClick={() => onAct({ type: 'roll' })}>
           サイコロを振る

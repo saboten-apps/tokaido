@@ -3,6 +3,7 @@
 import { Suspense, lazy } from 'react'
 import { BoardView } from './BoardView'
 import type { ViewMode } from './viewMode'
+import type { Weather } from '../engine'
 import type { BoardState, Player } from '../types/game'
 
 const SceneStage = lazy(() => import('./SceneStage'))
@@ -14,6 +15,8 @@ interface Props {
   focusId: string | null
   positions: Record<string, number>
   jump: { index: number; n: number } | null
+  /** 今日の天気（場面の空に出る。雨なら雨の景色） */
+  weather?: Weather
   /** 場面（3D）で、旅人が道を歩いているあいだ。通る場所の名前と、かける時間 */
   travel?: { id: string; playerId: string; via: string[]; ms: number } | null
 }

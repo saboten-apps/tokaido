@@ -49,6 +49,11 @@
     "hurryStamina": 10,
     "hurryMinStamina": 35
   },
+  "weather": {
+    "rainChance": 0.2,
+    "cloudyChance": 0.2,
+    "rainStaminaPerStep": 1
+  },
   "scoring": {
     "moneyPerPoint": 50,
     "memoriesWeight": 1,
@@ -144,6 +149,9 @@
       "name": "本陣",
       "reputationAt": 60,
       "stamina": 30,
+      "memories": 2
+    },
+    "shared": {
       "memories": 2
     }
   },
