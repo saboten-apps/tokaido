@@ -48,7 +48,12 @@ async function loadManifest(): Promise<Manifest> {
 
 async function saveImage(buf: Buffer | string, name: string): Promise<string> {
   await mkdir(OUT, { recursive: true })
-  await sharp(buf).resize({ width: WIDTH, withoutEnlargement: true }).webp({ quality: 80 }).toFile(join(OUT, `${name}.webp`))
+  // 美術館の撮影には、紙のふちと、（一部は）色見本が写っている。絵の部分だけを残す：ふちを少し、色見本つき（縦に長い）は下を大きく切る
+  const input = sharp(buf)
+  const { width = 0, height = 0 } = await input.metadata()
+  const bottom = width / height < 1.42 ? 0.2 : 0.035
+  const crop = { left: Math.round(width * 0.035), top: Math.round(height * 0.035), width: Math.round(width * 0.93), height: Math.round(height * (1 - 0.035 - bottom)) }
+  await input.extract(crop).resize({ width: WIDTH, withoutEnlargement: true }).webp({ quality: 80 }).toFile(join(OUT, `${name}.webp`))
   return `/${basename(OUT)}/${encodeURIComponent(name)}.webp`
 }
 
