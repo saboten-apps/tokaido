@@ -14,6 +14,8 @@ interface Props {
   focusId: string | null
   positions: Record<string, number>
   jump: { index: number; n: number } | null
+  /** 場面（3D）で、旅人が道を歩いているあいだ。通る場所の名前と、かける時間 */
+  travel?: { id: string; playerId: string; via: string[]; ms: number } | null
 }
 
 export function ViewToggle({ mode, onToggle }: { mode: ViewMode; onToggle: () => void }) {

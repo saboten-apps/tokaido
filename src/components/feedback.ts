@@ -35,3 +35,20 @@ export function regionEntry(board: BoardState, who: string, from: number, to: nu
   const r = REGIONS[b]
   return `${who}は${r.name}（${r.province}）に入った。${r.tagline}`
 }
+
+/** 場面（3D）で、旅人が道を歩いて遠ざかる時間（ミリ秒）。通る宿場が多いほど、長い。 */
+export function travelMs(viaCount: number): number {
+  return Math.min(3600, Math.max(1400, 900 + viaCount * 380))
+}
+
+/**
+ * 動きの各段階の長さ（ミリ秒）。
+ * 地図（2D）：はじめ350 → 1マスごとに120。
+ * 場面（3D）：サイコロ（step -1）1700 → 道を歩く（step 0）travelMs → 次の土地に着く（step 1）1900。
+ */
+export function phaseDelay(mode: '2d' | '3d', step: number, viaCount: number): number {
+  if (mode === '2d') return step < 0 ? 350 : 120
+  if (step < 0) return 1700
+  if (step === 0) return travelMs(viaCount)
+  return 1900
+}

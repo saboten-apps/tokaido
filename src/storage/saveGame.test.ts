@@ -72,4 +72,26 @@ describe('セーブと読み込み', () => {
     expect(loaded.players.every((p) => p.role === 'ippan' && p.lodging === 'hatago')).toBe(true)
     expect(loaded.diary).toEqual([])
   })
+
+  it('v3 のセーブ（県のない古い盤面）を読むと、盤面が最新に作り直され、旅人の位置は、マスの名前で保たれる', () => {
+    const g = createGame({ seed: 8, playerCount: 3 })
+    const kusatsuOld = g.board.tiles.findIndex((t) => t.name === '草津')
+    g.board.playerStates.p0.position = kusatsuOld
+    const v3 = structuredClone(g) as unknown as Record<string, unknown>
+    // 古い盤面：県がなく、マスの並びも違う（先頭に、いまはないマスを1つ足した）
+    const tiles = (v3.board as { tiles: Array<Record<string, unknown>> }).tiles
+    for (const t of tiles) delete t.region
+    tiles.unshift({ type: 'event', name: '昔だけのマス' })
+    ;(v3.board as { playerStates: Record<string, { position: number }> }).playerStates.p0.position = kusatsuOld + 1
+    const storage = createMemoryStorage()
+    storage.setItem(SAVE_KEY, JSON.stringify({ schemaVersion: 3, savedAt: '2026-11-17', state: v3 }))
+    const loaded = loadGame(storage)!
+    expect(loaded.schemaVersion).toBe(SCHEMA_VERSION)
+    expect(loaded.board.tiles.every((t) => t.region)).toBe(true)
+    const here = loaded.board.tiles[loaded.board.playerStates.p0.position]
+    expect(here.name).toBe('草津')
+    expect(here.region).toBe('shiga')
+    // 位置を持たない旅人（ありえないが）は、日本橋に
+    expect(loaded.board.playerStates.p1.position).toBe(0)
+  })
 })

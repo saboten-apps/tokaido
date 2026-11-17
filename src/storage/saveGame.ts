@@ -1,7 +1,9 @@
 // セーブデータの保存・読み込み。ゲームの状態を保存するのは、このモジュールだけ（エンジンは localStorage を触らない）。
 // umaregacya の saveGame.ts の仕組み（封筒・段階的な移行）を写した。
 
-import { SCHEMA_VERSION, type GameState } from '../types/game'
+import { createInitialBoardState } from '../engine/board'
+import { DEFAULT_CONFIG } from '../engine/config'
+import { SCHEMA_VERSION, type GameState, type Player } from '../types/game'
 
 export const SAVE_KEY = 'tokaido-sugoroku:save'
 
@@ -37,6 +39,31 @@ export const MIGRATIONS: Record<number, (state: Record<string, unknown>) => Reco
       flags: Array.isArray(p.flags) && !(p.flags as string[]).includes('role:ippan') ? [...(p.flags as string[]), 'role:ippan'] : p.flags,
     })),
   }),
+  // v3 → v4：盤面（マスの県・名物・専用イベントなど）は、設定から作るもの。保存されていた古い盤面を、最新の設定で作り直す。
+  // 旅人の位置は、マスの名前で対応づける（見つからなければ日本橋へ）
+  3: (state) => {
+    const board = (state.board ?? {}) as { tiles?: Array<{ name: string }>; playerStates?: Record<string, { position: number; route?: string }> }
+    const oldNames = (board.tiles ?? []).map((t) => t.name)
+    const players = (state.players as Player[]) ?? []
+    const fresh = createInitialBoardState(players, DEFAULT_CONFIG)
+    const mapIdx = (i: number | undefined): number => {
+      const name = oldNames[i ?? 0]
+      const k = fresh.tiles.findIndex((t) => t.name === name)
+      return k >= 0 ? k : 0
+    }
+    const playerStates = { ...fresh.playerStates }
+    for (const p of players) {
+      const old = board.playerStates?.[p.id]
+      if (old) playerStates[p.id] = { ...old, position: mapIdx(old.position) } as (typeof playerStates)[string]
+    }
+    const turnCtl = state.turnCtl as { awaiting?: { tileIndex?: number } | null } | undefined
+    const awaiting = turnCtl?.awaiting
+    return {
+      ...state,
+      board: { ...fresh, playerStates },
+      turnCtl: awaiting && turnCtl ? { ...turnCtl, awaiting: { ...awaiting, tileIndex: mapIdx(awaiting.tileIndex) } } : state.turnCtl,
+    }
+  },
 }
 
 function defaultStorage(): SaveStorage | null {

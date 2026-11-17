@@ -2,7 +2,9 @@
 
 import { DEFAULT_CONFIG, PLACES, REGIONS, canHurry, getEvent, innCostFor, isChoiceAvailable, isTired, maxFaceFor, regionAt, shukuNumber, type Awaiting, type SessionAction } from '../engine'
 import { pieceColors } from '../art/theme'
+import { useEffect, useState } from 'react'
 import { choiceChips, forkChips, type Chip } from './choiceText'
+import { prefersReducedMotion } from './feedback'
 import type { GameState, Player } from '../types/game'
 
 const cfg = DEFAULT_CONFIG
@@ -198,6 +200,41 @@ export function PlaceCard({ board, index }: { board: GameState['board']; index: 
       )}
       {!info && <p className="place-tagline">{region.tagline}</p>}
     </details>
+  )
+}
+
+/** サイコロ：大きく、ころがってから、出目を見せる。何マス進むかも出す。毎回、作り直す（key を変える）こと */
+export function DicePop({ face, hurry, name, steps }: { face: number; hurry: boolean; name: string; steps: number }) {
+  const [shown, setShown] = useState(() => (prefersReducedMotion() ? face : 1 + Math.floor(Math.random() * 6)))
+  const [rolling, setRolling] = useState(() => !prefersReducedMotion())
+  useEffect(() => {
+    if (!rolling) return
+    let i = 0
+    const t = setInterval(() => {
+      i += 1
+      if (i >= 10) {
+        clearInterval(t)
+        setShown(face)
+        setRolling(false)
+      } else {
+        setShown(1 + Math.floor(Math.random() * cfg.balance.game.diceFaces))
+      }
+    }, 70)
+    return () => clearInterval(t)
+  }, [face, rolling])
+  return (
+    <div className="dice-pop" data-testid="dice-pop" role="status" aria-live="polite">
+      <div className={`dice-face ${rolling ? 'rolling' : 'settled'}`} data-testid="dice-face">{rolling ? shown : face}</div>
+      <div className="dice-note">
+        {name}
+        {rolling ? '　……' : hurry ? `　早足 ${face}＋${cfg.balance.travel.hurryBonus}` : ''}
+      </div>
+      {!rolling && (
+        <div className="dice-steps" data-testid="dice-steps">
+          {steps > 0 ? `${steps}マス進む` : 'その場にとどまる'}
+        </div>
+      )}
+    </div>
   )
 }
 

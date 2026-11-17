@@ -5,8 +5,8 @@ import { DEFAULT_CONFIG, REGIONS, advanceOne, getAwaiting, regionAt, submitActio
 import { BoardStage, ViewToggle } from './BoardStage'
 import { useViewMode } from './viewMode'
 import { MiniMap } from './MiniMap'
-import { ActionPanel, LogPanel, PlaceCard, PlayerCards } from './parts'
-import { newLogLines, positionAtStep, prefersReducedMotion, regionEntry } from './feedback'
+import { ActionPanel, DicePop, LogPanel, PlaceCard, PlayerCards } from './parts'
+import { newLogLines, phaseDelay, positionAtStep, prefersReducedMotion, regionEntry, travelMs } from './feedback'
 import type { GameState } from '../types/game'
 
 const cfg = DEFAULT_CONFIG
@@ -23,6 +23,9 @@ interface Anim {
   from: number
   path: number[]
   step: number
+  /** 通った場所の名前（出発の場所から、着いた場所まで）。場面の道中の表示に使う */
+  via: string[]
+  id: number
 }
 
 interface Toast {
@@ -30,15 +33,13 @@ interface Toast {
   text: string
 }
 
-/** 1マス進むのにかける時間。3D は、道を歩かず、場面を切り替える（ワープ）。サイコロの目を見せてから、暗転して、次の土地へ */
-const STEP_MS = { '2d': 120, '3d': 1500 } as const
-const START_MS = { '2d': 350, '3d': 1000 } as const
+let animSeq = 0
 let toastSeq = 0
 
 export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
   const [lastRoll, setLastRoll] = useState<{ name: string; face: number } | null>(null)
   const [anim, setAnim] = useState<Anim | null>(null)
-  const [dice, setDice] = useState<{ face: number; hurry: boolean; name: string } | null>(null)
+  const [dice, setDice] = useState<{ face: number; hurry: boolean; name: string; steps: number; id: number } | null>(null)
   const [toasts, setToasts] = useState<Toast[]>([])
   const [arrival, setArrival] = useState<{ rank: number; day: number } | null>(null)
   const [jump, setJump] = useState<{ index: number; n: number } | null>(null)
@@ -63,11 +64,12 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
       const name = prev.players.find((p) => p.id === rolled.playerId)!.name
       setLastRoll({ name, face: rolled.face })
       if (animate && rolled.path.length > 0) {
-        // 場面の表示（3D）では、通った道は見せず、着いた場所へ一度に移る
-        const path = mode === '3d' ? [rolled.to] : rolled.path
-        setAnim({ playerId: rolled.playerId, from: rolled.from, path, step: -1 })
-        setDice({ face: rolled.face, hurry: rolled.hurry, name })
-        setTimeout(() => setDice(null), 1000)
+        // 地図（2D）：通ったマスを1つずつ。場面（3D）：サイコロ → 道を歩いて遠ざかる（通る宿場の名前を順に出す）→ 次の土地へ着く
+        const path = mode === '3d' ? [rolled.from, rolled.to] : rolled.path
+        const via = [prev.board.tiles[rolled.from].name, ...rolled.path.map((i) => prev.board.tiles[i].name)]
+        setAnim({ playerId: rolled.playerId, from: rolled.from, path, step: -1, via, id: ++animSeq })
+        setDice({ face: rolled.face, hurry: rolled.hurry, name, steps: rolled.path.length, id: animSeq })
+        setTimeout(() => setDice(null), mode === '3d' ? phaseDelay('3d', -1, 0) - 100 : 1000)
       }
     }
     const arrived = out.events.find((e) => e.type === 'arrived')
@@ -98,7 +100,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
     if (!anim) return
     const timer = setTimeout(
       () => setAnim(anim.step >= anim.path.length - 1 ? null : { ...anim, step: anim.step + 1 }),
-      anim.step < 0 ? START_MS[mode] : STEP_MS[mode],
+      phaseDelay(mode, anim.step, anim.via.length),
     )
     return () => clearTimeout(timer)
   }, [anim, mode])
@@ -145,20 +147,17 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
         focusId={anim?.playerId ?? (awPlayer ?? (active.isHuman ? active : human) ?? active).id}
         positions={positions}
         jump={jump}
+        travel={anim && mode === '3d' && anim.step === 0 ? { id: String(anim.id), playerId: anim.playerId, via: anim.via, ms: travelMs(anim.via.length) } : null}
       />
 
-      <PlaceCard board={state.board} index={state.board.playerStates[(awPlayer ?? (active.isHuman ? active : human) ?? active).id].position} />
+      {/* 解説は、いま画面に出ている場所（動いている途中は、まだ着いていない場所）に合わせる */}
+      <PlaceCard board={state.board} index={positions[anim?.playerId ?? (awPlayer ?? (active.isHuman ? active : human) ?? active).id]} />
 
       <PlayerCards state={state} activeId={active.id} />
 
       <ActionPanel state={state} aw={aw} onAct={act} />
 
-      {dice && (
-        <div className="dice-pop" data-testid="dice-pop" role="status" aria-live="polite">
-          <div className="dice-face">{dice.face}</div>
-          <div className="dice-note">{dice.name}{dice.hurry ? `　早足＋${cfg.balance.travel.hurryBonus}` : ''}</div>
-        </div>
-      )}
+      {dice && <DicePop key={dice.id} face={dice.face} hurry={dice.hurry} name={dice.name} steps={dice.steps} />}
       <div className="toasts" aria-live="polite">
         {toasts.map((t) => (
           <div key={t.id} className="toast">{t.text}</div>

@@ -284,3 +284,21 @@ test('3D は場面：止まった土地の場面に切り替わる（ワープ�
   await expect(page.getByTestId('scene-caption')).toContainText('京都 三条大橋', { timeout: 30_000 })
   await expect(page.getByTestId('scene-caption')).toContainText('見学中')
 })
+
+test('場面：サイコロがころがって出目と進むマス数が出る → 道を歩いて通る宿場が点く → 次の土地に着く', async ({ browser }) => {
+  const ctx = await browser.newContext()
+  const page = await ctx.newPage()
+  await page.goto('/?seed=4')
+  await page.getByTestId('start').click()
+  await expect(page.getByTestId('scene-caption')).toContainText('日本橋', { timeout: 30_000 })
+  await page.getByTestId('roll').click()
+  // 大きなサイコロが出て、ころがったあと、出目と「◯マス進む」が出る
+  await expect(page.getByTestId('dice-face')).toBeVisible()
+  await expect(page.getByTestId('dice-steps')).toContainText('マス進む', { timeout: 10_000 })
+  // 旅人が道を歩く：通る場所の名前が並ぶ（出発地は日本橋）
+  await expect(page.getByTestId('travel-strip')).toBeVisible({ timeout: 15_000 })
+  await expect(page.getByTestId('travel-strip')).toContainText('日本橋')
+  // 着いた土地の場面に変わる
+  await expect(page.getByTestId('scene-caption')).not.toContainText('日本橋', { timeout: 30_000 })
+  await ctx.close()
+})

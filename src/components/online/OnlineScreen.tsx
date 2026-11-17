@@ -8,8 +8,8 @@ import { BoardStage, ViewToggle } from '../BoardStage'
 import { useViewMode } from '../viewMode'
 import { MiniMap } from '../MiniMap'
 import { ResultScreen } from '../ResultScreen'
-import { newLogLines, positionAtStep, prefersReducedMotion, regionEntry } from '../feedback'
-import { ActionPanel, LogPanel, PlaceCard, PlayerCards } from '../parts'
+import { newLogLines, phaseDelay, positionAtStep, prefersReducedMotion, regionEntry, travelMs } from '../feedback'
+import { ActionPanel, DicePop, LogPanel, PlaceCard, PlayerCards } from '../parts'
 import type { SessionAction } from '../../engine'
 import type { RoomView } from '../../online/protocol'
 import type { GameState } from '../../types/game'
@@ -215,9 +215,14 @@ export function OnlineScreen({ onExit }: { onExit: () => void }) {
 }
 
 interface Roll {
+  id: number
   playerId: string
   from: number
+  /** 地図（2D）：通ったマス。場面（3D）：[出発, 到着] */
   path: number[]
+  /** 通った場所の名前（出発から到着まで） */
+  via: string[]
+  steps: number
   face: number
   hurry: boolean
 }
@@ -246,6 +251,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
   const [now, setNow] = useState(() => Date.now())
   const prev = useRef<GameState>(game)
   const modeRef = useRef<'2d' | '3d'>('2d')
+  const rollSeq = useRef(0)
   const gameRef = useRef(game)
   useEffect(() => {
     gameRef.current = game
@@ -270,7 +276,12 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
       if (!animate.current) return
       const rolls: Roll[] = batch.steps
         .flatMap((st) => st.events)
-        .flatMap((e) => (e.type === 'rolled' && e.path.length > 0 ? [{ playerId: e.playerId, from: e.from, path: modeRef.current === '3d' ? [e.to] : e.path, face: e.face, hurry: e.hurry }] : []))
+        .flatMap((e): Roll[] => {
+          if (e.type !== 'rolled' || e.path.length === 0) return []
+          const tiles = gameRef.current.board.tiles
+          const via = [tiles[e.from].name, ...e.path.map((i) => tiles[i].name)]
+          return [{ id: ++rollSeq.current, playerId: e.playerId, from: e.from, path: modeRef.current === '3d' ? [e.from, e.to] : e.path, via, steps: e.path.length, face: e.face, hurry: e.hurry }]
+        })
       if (rolls.length) setQueue((q) => [...q, ...rolls])
       // 県の境を越えたら、通知（マスの県は変わらないので、いまの盤面で調べられる）
       for (const r of rolls) {
@@ -295,7 +306,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
           setStep(-1)
         } else setStep((n) => n + 1)
       },
-      step < 0 ? (mode === '3d' ? 1000 : 350) : mode === '3d' ? 1500 : 120,
+      phaseDelay(mode, step, cur.via.length),
     )
     return () => clearTimeout(timer)
   }, [queue, step, mode])
@@ -322,7 +333,10 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
     positions[r.playerId] = i === 0 ? positionAtStep(r.from, r.path, step) : r.from
   })
   const busy = queue.length > 0
-  const dice = queue[0] ? { face: queue[0].face, hurry: queue[0].hurry, name: game.players.find((p) => p.id === queue[0].playerId)?.name ?? '' } : null
+  const head = queue[0]
+  // サイコロは、地図では動きの間ずっと、場面では「サイコロ」の段階だけ
+  const dice = head && (mode === '2d' || step < 0) ? { id: head.id, face: head.face, hurry: head.hurry, steps: head.steps, name: game.players.find((p) => p.id === head.playerId)?.name ?? '' } : null
+  const travel = head && mode === '3d' && step === 0 ? { id: String(head.id), playerId: head.playerId, via: head.via, ms: travelMs(head.via.length) } : null
   const focusId = (queue[0]?.playerId ?? (mine ? selfPlayerId : (aw?.playerId ?? active.id))) ?? active.id
   const waitingName = aw ? game.players.find((p) => p.id === aw.playerId)?.name : active.name
 
@@ -343,17 +357,12 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
         </div>
       )}
       <MiniMap board={game.board} players={game.players} positions={positions} focusId={focusId} onJump={(index) => setJump({ index, n: (jump?.n ?? 0) + 1 })} />
-      <BoardStage mode={mode} board={game.board} players={game.players} activeId={active.id} focusId={focusId} positions={positions} jump={jump} />
-      <PlaceCard board={game.board} index={game.board.playerStates[focusId]?.position ?? 0} />
+      <BoardStage mode={mode} board={game.board} players={game.players} activeId={active.id} focusId={focusId} positions={positions} jump={jump} travel={travel} />
+      <PlaceCard board={game.board} index={positions[focusId] ?? 0} />
       <PlayerCards state={game} activeId={active.id} selfId={selfPlayerId} />
       {mine && !busy ? <ActionPanel state={game} aw={aw} onAct={act} /> : mine ? null : <p className="waiting" data-testid="waiting">{waitingName}の行動を待っています…</p>}
       {message && <p className="conn-error" role="alert">{message}</p>}
-      {dice && (
-        <div className="dice-pop" data-testid="dice-pop" role="status" aria-live="polite">
-          <div className="dice-face">{dice.face}</div>
-          <div className="dice-note">{dice.name}{dice.hurry ? `　早足＋${cfg.balance.travel.hurryBonus}` : ''}</div>
-        </div>
-      )}
+      {dice && <DicePop key={dice.id} face={dice.face} hurry={dice.hurry} name={dice.name} steps={dice.steps} />}
       <div className="toasts" aria-live="polite">
         {toasts.map((t) => (
           <div key={t.id} className="toast">{t.text}</div>

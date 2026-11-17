@@ -1,7 +1,7 @@
 // ゲーム全体の型定義。ゲームの状態はすべて GameState に集約する（保存・オンラインで、そのまま送れる形）。
 
 /** セーブデータ・GameState の構造バージョン。構造を変えたら上げて、storage/saveGame.ts の MIGRATIONS に移行を書く */
-export const SCHEMA_VERSION = 3
+export const SCHEMA_VERSION = 4
 
 /** 旅人の能力値。money＝路銀（文）、stamina＝体力、memories＝思い出、reputation＝評判 */
 export type StatKey = 'money' | 'stamina' | 'memories' | 'reputation'

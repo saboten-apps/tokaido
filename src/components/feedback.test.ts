@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { createGame } from '../engine'
-import { indexFromRatio, newLogLines, positionAtStep, regionEntry } from './feedback'
+import { indexFromRatio, newLogLines, phaseDelay, positionAtStep, regionEntry, travelMs } from './feedback'
 
 describe('演出の補助', () => {
   it('駒は出発のマスから、通ったマスを1つずつ進む', () => {
@@ -33,5 +33,19 @@ describe('演出の補助', () => {
     expect(regionEntry(g.board, '花子', hakone - 1, hakone)).toBeNull()
     expect(regionEntry(g.board, '花子', hakone, mishima)).toContain('静岡県')
     expect(regionEntry(g.board, '花子', hakone, mishima)).toContain('伊豆・駿河・遠江')
+  })
+
+  it('道を歩く時間は、通る宿場が多いほど長く、短すぎず、長すぎない', () => {
+    expect(travelMs(1)).toBe(1400)
+    expect(travelMs(3)).toBeGreaterThan(travelMs(1))
+    expect(travelMs(30)).toBe(3600)
+  })
+
+  it('場面では、サイコロ → 道を歩く → 着く、の3段階。地図では、これまでの短い間', () => {
+    expect(phaseDelay('3d', -1, 4)).toBe(1700)
+    expect(phaseDelay('3d', 0, 4)).toBe(travelMs(4))
+    expect(phaseDelay('3d', 1, 4)).toBe(1900)
+    expect(phaseDelay('2d', -1, 4)).toBe(350)
+    expect(phaseDelay('2d', 2, 4)).toBe(120)
   })
 })
