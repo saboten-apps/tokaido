@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { DEFAULT_CONFIG, PLACES, earnedTitles, rankPlayers } from '../engine'
-import { PrintCard } from './parts'
+import { PrintCard, StampBook } from './parts'
 import type { GameState } from '../types/game'
 
 export function ResultScreen({ state, onRestart }: { state: GameState; onRestart: () => void }) {
@@ -19,7 +19,7 @@ export function ResultScreen({ state, onRestart }: { state: GameState; onRestart
       <table>
         <thead>
           <tr>
-            <th>順位</th><th>旅人</th><th>路銀</th><th>思い出</th><th>評判</th><th>名物</th><th>到着</th><th>合計</th>
+            <th>順位</th><th>旅人</th><th>路銀</th><th>思い出</th><th>評判</th><th>名物</th><th>スタンプ</th><th>到着</th><th>合計</th>
           </tr>
         </thead>
         <tbody>
@@ -27,7 +27,7 @@ export function ResultScreen({ state, onRestart }: { state: GameState; onRestart
             const p = state.players.find((x) => x.id === r.playerId)!
             return (
               <tr key={r.playerId} className={p.isHuman ? 'me' : ''}>
-                <td>{i + 1}</td><td>{p.name}<small className="role-sub"> {DEFAULT_CONFIG.balance.roles[p.role].name}</small></td><td>{r.money}</td><td>{r.memories}</td><td>{r.reputation}</td><td>{r.meibutsu}</td><td>{r.arrival}</td>
+                <td>{i + 1}</td><td>{p.name}<small className="role-sub"> {DEFAULT_CONFIG.balance.roles[p.role].name}</small></td><td>{r.money}</td><td>{r.memories}</td><td>{r.reputation}</td><td>{r.meibutsu}</td><td>{r.stamps}</td><td>{r.arrival}</td>
                 <td className="total" data-testid={`total-${r.playerId}`}>{r.total}</td>
               </tr>
             )
@@ -63,6 +63,7 @@ export function ResultScreen({ state, onRestart }: { state: GameState; onRestart
           </ol>
         </section>
       )}
+      {me && <StampBook player={me} open />}
       {me && (
         <section className="diary notebook" data-testid="notebook">
           <h2>旅の手帖（訪ねた場所）</h2>

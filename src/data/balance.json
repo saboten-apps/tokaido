@@ -54,6 +54,7 @@
     "memoriesWeight": 1,
     "reputationWeight": 0.5,
     "meibutsuPoints": 8,
+    "stampPoints": 1,
     "arrivedBonus": 20,
     "arrivalRankBonus": [
       58,
@@ -76,7 +77,8 @@
       },
       "meibutsuLove": 4,
       "detourLove": 0.3,
-      "hurryLove": 0.15
+      "hurryLove": 0.15,
+      "strollLove": 0.3
     },
     {
       "id": "gourmet",
@@ -89,7 +91,8 @@
       },
       "meibutsuLove": 14,
       "detourLove": 0.6,
-      "hurryLove": 0.1
+      "hurryLove": 0.1,
+      "strollLove": 0.3
     },
     {
       "id": "hasty",
@@ -102,7 +105,8 @@
       },
       "meibutsuLove": 2,
       "detourLove": 0.1,
-      "hurryLove": 0.8
+      "hurryLove": 0.8,
+      "strollLove": 0.1
     },
     {
       "id": "social",
@@ -115,7 +119,8 @@
       },
       "meibutsuLove": 6,
       "detourLove": 0.5,
-      "hurryLove": 0.2
+      "hurryLove": 0.2,
+      "strollLove": 0.3
     }
   ],
   "reputation": {
@@ -189,7 +194,7 @@
       "personality": "hasty",
       "start": {
         "stamina": 20,
-        "money": 340
+        "money": 560
       },
       "workMoneyBonus": 0,
       "workMemories": 0,
@@ -202,7 +207,7 @@
       "desc": "芸を見せて旅をする。「働く」と、路銀に加えて思い出も増える。路銀は少なめ。",
       "personality": "gourmet",
       "start": {
-        "money": -700,
+        "money": -820,
         "reputation": 5
       },
       "workMoneyBonus": 0,

@@ -43,6 +43,7 @@ function createPlayer(id: string, name: string, personality: CpuPersonalityId | 
     role,
     stats: applyDelta(clampStats({ ...config.balance.start }, config.balance.limits), def.start, config.balance.limits),
     meibutsu: [],
+    visited: [],
     flags: [`role:${role}`],
     usedOnceEvents: [],
     lodging: 'hatago',

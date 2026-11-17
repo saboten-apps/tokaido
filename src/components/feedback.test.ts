@@ -99,3 +99,13 @@ describe('演出の補助', () => {
     }
   })
 })
+
+describe('演出の速さ', () => {
+  it('倍率をかけると、待ち時間が変わる（はやい＝短い、ゆっくり＝長い）', () => {
+    expect(phaseDelay('3d', -1, 4, 0.5)).toBeLessThan(phaseDelay('3d', -1, 4))
+    expect(phaseDelay('3d', 1, 4, 1.5)).toBeGreaterThan(phaseDelay('3d', 1, 4))
+    expect(travelMs(3, 0.5)).toBeLessThan(travelMs(3))
+    // 地図（2D）は、倍率に関係なく短いまま
+    expect(phaseDelay('2d', 0, 4, 1.5)).toBe(120)
+  })
+})

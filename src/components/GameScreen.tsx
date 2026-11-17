@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react'
 import { DEFAULT_CONFIG, REGIONS, advanceOne, getAwaiting, regionAt, submitAction, type SessionAction, type SessionResult } from '../engine'
 import { BoardStage, ViewToggle } from './BoardStage'
 import { useViewMode } from './viewMode'
+import { SPEED_FACTOR, SPEED_LABEL, useSpeed } from './speed'
 import { MiniMap } from './MiniMap'
-import { ActionPanel, CutIn, DicePop, LogPanel, PlaceCard, PlayerCards } from './parts'
+import { ActionPanel, CutIn, DicePop, LogPanel, PlaceCard, PlayerCards, StampBook } from './parts'
 import { useCutins } from './useCutins'
 import { cutinsFromTransition, newLogLines, phaseDelay, positionAtStep, prefersReducedMotion, regionEntry, travelMs } from './feedback'
 import type { GameState } from '../types/game'
@@ -40,11 +41,12 @@ let toastSeq = 0
 export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
   const [lastRoll, setLastRoll] = useState<{ name: string; face: number } | null>(null)
   const [anim, setAnim] = useState<Anim | null>(null)
-  const [dice, setDice] = useState<{ face: number; hurry: boolean; name: string; steps: number; id: number } | null>(null)
+  const [dice, setDice] = useState<{ face: number; hurry: boolean; stroll: boolean; name: string; steps: number; id: number } | null>(null)
   const [toasts, setToasts] = useState<Toast[]>([])
   const [arrival, setArrival] = useState<{ rank: number; day: number } | null>(null)
   const [jump, setJump] = useState<{ index: number; n: number } | null>(null)
   const [mode, toggleMode] = useViewMode()
+  const [speed, toggleSpeed] = useSpeed()
   // 演出は、CPU の番を待たない（?fast=1）ときと、動きを減らす設定のときは省く
   const animate = cpuDelayMs > 0 && !prefersReducedMotion()
   // カットイン：動き（サイコロ・道を歩く）が終わってから、1つずつ。出ているあいだは、操作の欄を出さない
@@ -71,7 +73,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
         const path = mode === '3d' ? [rolled.from, rolled.to] : rolled.path
         const via = [prev.board.tiles[rolled.from].name, ...rolled.path.map((i) => prev.board.tiles[i].name)]
         setAnim({ playerId: rolled.playerId, from: rolled.from, path, step: -1, via, id: ++animSeq })
-        setDice({ face: rolled.face, hurry: rolled.hurry, name, steps: rolled.path.length, id: animSeq })
+        setDice({ face: rolled.face, hurry: rolled.hurry, stroll: Boolean(rolled.stroll), name, steps: rolled.path.length, id: animSeq })
       }
     }
     cuts.push(cutinsFromTransition(prev, out.state))
@@ -103,10 +105,10 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
     if (!anim) return
     const timer = setTimeout(
       () => setAnim(anim.step >= anim.path.length - 1 ? null : { ...anim, step: anim.step + 1 }),
-      phaseDelay(mode, anim.step, anim.via.length),
+      phaseDelay(mode, anim.step, anim.via.length, SPEED_FACTOR[speed]),
     )
     return () => clearTimeout(timer)
-  }, [anim, mode])
+  }, [anim, mode, speed])
 
   // 自動で進める場面（CPU の番・足止め）は、動きが終わってから、間をあけて1つずつ進める
   useEffect(() => {
@@ -131,6 +133,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
         <span className="region-badge" data-testid="region-badge">{REGIONS[regionAt(state.board, positions[(awPlayer ?? (active.isHuman ? active : human) ?? active).id])].name}</span>
         <span className="turn">{active.name}の番</span>
         <ViewToggle mode={mode} onToggle={toggleMode} />
+        {mode === '3d' && <button className="linkish" data-testid="speed-toggle" onClick={toggleSpeed} title="演出の速さ">速さ：{SPEED_LABEL[speed]}</button>}
         {onHowTo && <button className="linkish" data-testid="open-howto" onClick={onHowTo}>遊び方</button>}
         {lastRoll && <span className="roll" data-testid="last-roll">🎲 {lastRoll.name}：{lastRoll.face}</span>}
       </header>
@@ -150,7 +153,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
         focusId={anim?.playerId ?? (awPlayer ?? (active.isHuman ? active : human) ?? active).id}
         positions={positions}
         jump={jump}
-        travel={anim && mode === '3d' && anim.step === 0 ? { id: String(anim.id), playerId: anim.playerId, via: anim.via, ms: travelMs(anim.via.length) } : null}
+        travel={anim && mode === '3d' && anim.step === 0 ? { id: String(anim.id), playerId: anim.playerId, via: anim.via, ms: travelMs(anim.via.length, SPEED_FACTOR[speed]) } : null}
       />
 
       {/* 解説は、いま画面に出ている場所（動いている途中は、まだ着いていない場所）に合わせる */}
@@ -158,10 +161,12 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
 
       <PlayerCards state={state} activeId={active.id} />
 
+      {(awPlayer?.isHuman ? awPlayer : human) && <StampBook player={(awPlayer?.isHuman ? awPlayer : human)!} />}
+
       <ActionPanel state={state} aw={aw} onAct={act} />
 
       {cuts.cut && <CutIn item={cuts.cut} />}
-      {dice && <DicePop key={dice.id} face={dice.face} hurry={dice.hurry} name={dice.name} steps={dice.steps} onDone={() => setDice((d) => (d && d.id === dice.id ? null : d))} />}
+      {dice && <DicePop key={dice.id} face={dice.face} hurry={dice.hurry} stroll={dice.stroll} name={dice.name} steps={dice.steps} onDone={() => setDice((d) => (d && d.id === dice.id ? null : d))} />}
       <div className="toasts" aria-live="polite">
         {toasts.map((t) => (
           <div key={t.id} className="toast">{t.text}</div>

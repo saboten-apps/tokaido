@@ -94,4 +94,18 @@ describe('セーブと読み込み', () => {
     // 位置を持たない旅人（ありえないが）は、日本橋に
     expect(loaded.board.playerStates.p1.position).toBe(0)
   })
+
+  it('v4 のセーブ（スタンプなし）を読むと、いる宿場だけ押したことになり、空の旅人は空のまま', () => {
+    const g = createGame({ seed: 9, playerCount: 2 })
+    const shinagawa = g.board.tiles.findIndex((t) => t.name === '品川')
+    g.board.playerStates.p0.position = shinagawa
+    const v4 = structuredClone(g) as unknown as Record<string, unknown>
+    for (const p of v4.players as Array<Record<string, unknown>>) delete p.visited
+    const storage = createMemoryStorage()
+    storage.setItem(SAVE_KEY, JSON.stringify({ schemaVersion: 4, savedAt: '2026-11-17', state: v4 }))
+    const loaded = loadGame(storage)!
+    expect(loaded.schemaVersion).toBe(SCHEMA_VERSION)
+    expect(loaded.players[0].visited).toEqual(['品川'])
+    expect(loaded.players[1].visited).toEqual([])
+  })
 })

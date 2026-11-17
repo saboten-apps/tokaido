@@ -18,6 +18,7 @@ export function HowToPlay({ onClose }: { onClose: () => void }) {
         <h3>1日の流れ</h3>
         <ul>
           <li><strong>サイコロを振る</strong>：出た目の数だけ進みます。箱根・新居の関所と大井川では、目が余っても必ず止まります。</li>
+          <li><strong>宿場をめざす</strong>：出目の分だけ進みますが、宿場に着いたらそこで止まります（出目の残りは使いません）。止まると<strong>スタンプ</strong>・名物・宿が手に入ります。ただし、先へは進めません。</li>
           <li><strong>早足で振る</strong>：目に+{t.hurryBonus}マス。そのかわり体力を余分に使います（体力{t.hurryMinStamina}以上のとき）。</li>
           <li><strong>働いて稼ぐ</strong>：進まずに、路銀（+{t.workMoney}文）を稼ぎます。路銀が尽きても脱落しません。</li>
           <li><strong>泊まり方</strong>：宿場で日が終わると宿に泊まり、体力が戻ります。木賃宿は安く、旅籠はふつうです。</li>
@@ -33,13 +34,13 @@ export function HowToPlay({ onClose }: { onClose: () => void }) {
 
         <h3>止まったマス</h3>
         <ul>
-          <li><strong>宿場</strong>：その宿場の話が一度だけ起きます。名物があれば買えます（思い出と得点）。</li>
+          <li><strong>宿場</strong>：スタンプを押せます。その宿場の話が一度だけ起きます。名物があれば買えます（思い出と得点）。</li>
           <li><strong>出来事・名所・茶屋</strong>：道中の出会いや景色、ひと休み。</li>
           <li><strong>大井川</strong>：人足を雇ってすぐ渡るか、川明けを待つ脇道へ進むかを選びます。</li>
         </ul>
 
         <h3>得点</h3>
-        <p>路銀 {s.moneyPerPoint}文＝1点／思い出×{s.memoriesWeight}／評判×{s.reputationWeight}／名物 1つ{s.meibutsuPoints}点／京都に着くと{s.arrivedBonus}点＋到着順（1番目 +{s.arrivalRankBonus[0]}点、2番目 +{s.arrivalRankBonus[1]}点…）。</p>
+        <p>路銀 {s.moneyPerPoint}文＝1点／思い出×{s.memoriesWeight}／評判×{s.reputationWeight}／名物 1つ{s.meibutsuPoints}点／宿場スタンプ 1つ{s.stampPoints}点（止まった宿場だけ。通り過ぎただけでは押せません）／京都に着くと{s.arrivedBonus}点＋到着順（1番目 +{s.arrivalRankBonus[0]}点、2番目 +{s.arrivalRankBonus[1]}点…）。</p>
 
         <h3>旅人の身分</h3>
         <ul>

@@ -269,3 +269,38 @@ describe('旅人の身分', () => {
     expect(isChoiceAvailable(ippan, choice)).toBe(false)
   })
 })
+
+describe('宿場をめざす・スタンプ', () => {
+  it('めざすと、通り過ぎずに宿場で止まり、スタンプが押される。宿場のスタンプは重ならない', () => {
+    // 品川（日本橋から2マス先）の手前で、大きな目が出る種を探す
+    for (let seed = 1; seed < 200; seed++) {
+      const s0 = soloHuman(seed)
+      const r = submitAction(s0, 'p0', { type: 'stroll' }, cfg)
+      const ev = r.events.find((e) => e.type === 'rolled')
+      if (!ev || ev.type !== 'rolled' || ev.face < 3) continue
+      expect(ev.stroll).toBe(true)
+      expect(ev.path.at(-1)).toBe(r.state.board.tiles.findIndex((t) => t.name === '品川'))
+      expect(r.state.players[0].visited).toEqual(['品川'])
+      expect(r.state.log.some((l) => l.message.includes('スタンプ'))).toBe(true)
+      return
+    }
+    throw new Error('3以上が出る種が見つからない')
+  })
+
+  it('通常の「振る」でも、宿場に止まればスタンプが付く。宿場でないマスでは付かない', () => {
+    const base = soloHuman(3)
+    const r = submitAction(base, 'p0', { type: 'roll' }, cfg, undefined, 1)
+    expect(r.state.players[0].visited).toEqual([])
+    const r2 = submitAction(base, 'p0', { type: 'roll' }, cfg, undefined, 2)
+    expect(r2.state.players[0].visited).toEqual(['品川'])
+  })
+
+  it('スタンプは得点になる', () => {
+    const s = playOut(createGame({ seed: 5, playerCount: 2, includeHuman: false }, cfg))
+    for (const p of s.players) {
+      const sc = rankPlayers(s, cfg).find((r) => r.playerId === p.id)!
+      expect(sc.stamps).toBe(p.visited.length * cfg.balance.scoring.stampPoints)
+      expect(sc.total).toBe(sc.money + sc.memories + sc.reputation + sc.meibutsu + sc.stamps + sc.arrival)
+    }
+  })
+})

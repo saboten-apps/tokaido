@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createInitialBoardState, goalIndex, nextTileIndex, pathFrom, regionAt, shukuNumber } from './board'
+import { createInitialBoardState, goalIndex, nextShukuAhead, nextTileIndex, pathFrom, regionAt, shukuNumber, strollPath } from './board'
 import { DEFAULT_CONFIG, REGIONS, REGION_ORDER } from './config'
 
 const board = createInitialBoardState([], DEFAULT_CONFIG)
@@ -111,5 +111,31 @@ describe('宿場の番号', () => {
     const no = (name: string) => shukuNumber(board, board.tiles.findIndex((t) => t.name === name))
     expect([no('品川'), no('箱根'), no('袋井'), no('草津'), no('大津')]).toEqual([1, 10, 27, 52, 53])
     expect(no('日本橋')).toBeNull()
+  })
+})
+
+describe('宿場をめざす', () => {
+  const shinagawa = board.tiles.findIndex((t) => t.name === '品川')
+
+  it('宿場に着いたら、出目が余っても、そこで止まる', () => {
+    expect(pathFrom(board, 0, 6, undefined).length).toBe(6)
+    const path = strollPath(board, 0, 6, undefined)
+    expect(path.at(-1)).toBe(shinagawa)
+    expect(path.length).toBe(shinagawa)
+  })
+
+  it('出目が足りなければ、宿場の手前までしか進まない', () => {
+    expect(strollPath(board, 0, 1, undefined)).toEqual([1])
+  })
+
+  it('いちばん近い先の宿場までの、マス数と名前', () => {
+    expect(nextShukuAhead(board, 0)).toEqual({ name: '品川', distance: shinagawa, index: shinagawa })
+    const next = nextShukuAhead(board, shinagawa)!
+    expect(next.distance).toBeGreaterThan(0)
+    expect(board.tiles[next.index].type).toBe('shuku')
+  })
+
+  it('京都の先には宿場がない', () => {
+    expect(nextShukuAhead(board, goalIndex(board))).toBeNull()
   })
 })

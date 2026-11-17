@@ -8,6 +8,7 @@ import { pieceColors } from '../art/theme'
 import { REGIONS, regionAt, shukuNumber } from '../engine'
 import scenesJson from '../data/scenes.json'
 import { PrintCard } from './parts'
+import { fadeMs } from './speed'
 import { MOODS, addWeather, buildMotifs, makeCtx, makePiece, type Mood } from './sceneKit'
 import type { BoardState, Player } from '../types/game'
 
@@ -33,7 +34,6 @@ const QS = new URLSearchParams(window.location.search)
 /** ?stats=1：描画の速さ（FPS）を出す。?lite=1：軽量（アンチエイリアスなし・解像度を落とす） */
 const SHOW_STATS = QS.has('stats')
 const LITE = QS.has('lite')
-const FADE_MS = 900
 
 function hash(s: string): number {
   let h = 2166136261
@@ -93,10 +93,11 @@ export default function SceneStage({ board, players, activeId, focusId, position
     }
     if (want === shown) return
     setFade(true)
+    const fade = fadeMs()
     const t = setTimeout(() => {
       setShown(want)
       setFade(false)
-    }, FADE_MS)
+    }, fade)
     return () => clearTimeout(t)
   }, [want, shown])
 

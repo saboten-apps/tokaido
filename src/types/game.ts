@@ -1,7 +1,7 @@
 // ゲーム全体の型定義。ゲームの状態はすべて GameState に集約する（保存・オンラインで、そのまま送れる形）。
 
 /** セーブデータ・GameState の構造バージョン。構造を変えたら上げて、storage/saveGame.ts の MIGRATIONS に移行を書く */
-export const SCHEMA_VERSION = 4
+export const SCHEMA_VERSION = 5
 
 /** 旅人の能力値。money＝路銀（文）、stamina＝体力、memories＝思い出、reputation＝評判 */
 export type StatKey = 'money' | 'stamina' | 'memories' | 'reputation'
@@ -34,6 +34,8 @@ export interface CpuPersonality {
   detourLove: number
   /** 早足で進む気の強さ（0〜1。体力に余裕があるとき） */
   hurryLove: number
+  /** 宿場をめざして、通り過ぎずに止まる気の強さ（0〜1） */
+  strollLove: number
 }
 
 /**
@@ -109,6 +111,8 @@ export interface Player {
   stats: Stats
   /** 買った名物の ID */
   meibutsu: string[]
+  /** 止まった宿場（マスの名前）。スタンプ。通り過ぎただけでは付かない */
+  visited: string[]
   flags: string[]
   usedOnceEvents: string[]
   /** 身分 */
@@ -213,6 +217,7 @@ export interface DiaryEntry {
 export interface TitleCondition {
   minMemories?: number
   minMeibutsu?: number
+  minStamps?: number
   minReputation?: number
   minMoney?: number
   arrivalRank?: number
@@ -250,6 +255,7 @@ export interface ScoreBreakdown {
   memories: number
   reputation: number
   meibutsu: number
+  stamps: number
   arrival: number
   total: number
 }

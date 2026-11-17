@@ -359,3 +359,38 @@ test('広重の図：その場所の題名が出る（絵がなければ「準�
   await expect(page.getByTestId('print-card')).toContainText('保永堂版・第1図')
   await expect(page.getByTestId('print-missing')).toBeVisible()
 })
+
+test('宿場をめざす：近い宿場までの案内が出て、押すと宿場で止まり、スタンプが付く', async ({ page }) => {
+  await page.goto('/?seed=4&fast=1')
+  await page.getByTestId('start').click()
+  // 日本橋の次の宿場は品川（2マス先）
+  await expect(page.getByTestId('stroll')).toContainText('品川')
+  await expect(page.getByTestId('stamp-count')).toHaveText('0')
+  await page.getByTestId('stroll').click()
+  await expect(page.getByTestId('log')).toContainText('宿場をめざして')
+  await expect(page.getByTestId('log')).toContainText('品川のスタンプを押した')
+  await expect(page.getByTestId('stamp-count')).toHaveText('1')
+})
+
+test('宿場スタンプ帳：開くと、押した宿場の名前と、まだの宿場が見える', async ({ page }) => {
+  await page.goto('/?seed=4&fast=1')
+  await page.getByTestId('start').click()
+  await page.getByTestId('stroll').click()
+  await page.getByTestId('stampbook').locator('summary').click()
+  await expect(page.getByTestId('stamp-got')).toHaveCount(1)
+  await expect(page.getByTestId('stampbook')).toContainText('品川')
+  await expect(page.getByTestId('stampbook').locator('li')).toHaveCount(53)
+})
+
+test('演出の速さを切り替えられ、次回も覚えている', async ({ page }) => {
+  await page.goto('/?seed=4')
+  await page.getByTestId('start').click()
+  await page.getByTestId('view-toggle').click() // 速さの切り替えは、場面（3D）のときに出る
+  const t = page.getByTestId('speed-toggle')
+  await expect(t).toContainText('ふつう')
+  await t.click()
+  await expect(t).toContainText('はやい')
+  await page.reload()
+  await page.getByTestId('continue').click()
+  await expect(page.getByTestId('speed-toggle')).toContainText('はやい')
+})

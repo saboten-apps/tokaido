@@ -37,8 +37,8 @@ export function regionEntry(board: BoardState, who: string, from: number, to: nu
 }
 
 /** 場面（3D）で、旅人が道を歩いて遠ざかる時間（ミリ秒）。通る宿場が多いほど、長い。 */
-export function travelMs(viaCount: number): number {
-  return Math.min(5600, Math.max(2600, 1800 + viaCount * 600))
+export function travelMs(viaCount: number, factor = 1): number {
+  return Math.round(Math.min(5600, Math.max(2600, 1800 + viaCount * 600)) * factor)
 }
 
 /**
@@ -46,11 +46,11 @@ export function travelMs(viaCount: number): number {
  * 地図（2D）：はじめ350 → 1マスごとに120。
  * 場面（3D）：サイコロ（step -1）1900 → 道を歩く（step 0）travelMs → 次の土地に着く（step 1）3200。
  */
-export function phaseDelay(mode: '2d' | '3d', step: number, viaCount: number): number {
+export function phaseDelay(mode: '2d' | '3d', step: number, viaCount: number, factor = 1): number {
   if (mode === '2d') return step < 0 ? 350 : 120
-  if (step < 0) return 1900
-  if (step === 0) return travelMs(viaCount)
-  return 3200
+  if (step < 0) return Math.round(1900 * factor)
+  if (step === 0) return travelMs(viaCount, factor)
+  return Math.round(3200 * factor)
 }
 
 /** カットイン（イベントの場面に入るときの、画面を横切る帯） */

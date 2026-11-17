@@ -1,6 +1,6 @@
 // 画面の部品。ひとり用の旅（GameScreen）と、オンラインの旅（OnlineScreen）で共有する。
 
-import { DEFAULT_CONFIG, HIROSHIGE, PLACES, REGIONS, canHurry, getEvent, innCostFor, isChoiceAvailable, isTired, maxFaceFor, regionAt, shukuNumber, type Awaiting, type SessionAction } from '../engine'
+import { DEFAULT_CONFIG, HIROSHIGE, PLACES, REGIONS, canHurry, getEvent, innCostFor, isChoiceAvailable, isTired, maxFaceFor, nextShukuAhead, regionAt, shukuNumber, type Awaiting, type SessionAction } from '../engine'
 import { pieceColors } from '../art/theme'
 import { useEffect, useState } from 'react'
 import { choiceChips, forkChips, type Chip } from './choiceText'
@@ -8,6 +8,30 @@ import { prefersReducedMotion, type CutItem } from './feedback'
 import type { GameState, Player } from '../types/game'
 
 const cfg = DEFAULT_CONFIG
+
+/** 宿場の名前（江戸から数えた順）。スタンプ帳の並び */
+const SHUKU_NAMES: string[] = cfg.board.main.filter((t) => t.type === 'shuku').map((t) => t.name)
+
+/** 宿場スタンプ帳：止まった宿場に印が付く。押すと広い範囲が見られる。通り過ぎただけでは付かない */
+export function StampBook({ player, open }: { player: Player; open?: boolean }) {
+  const got = new Set(player.visited)
+  return (
+    <details className="stampbook" data-testid="stampbook" open={open}>
+      <summary>
+        宿場スタンプ帳 <strong data-testid="stamp-count">{got.size}</strong>/{SHUKU_NAMES.length}
+        <small>　止まった宿場に印が付きます（1つ＝{cfg.balance.scoring.stampPoints}点）</small>
+      </summary>
+      <ol className="stamps">
+        {SHUKU_NAMES.map((n, i) => (
+          <li key={n} className={got.has(n) ? 'got' : ''} data-testid={got.has(n) ? 'stamp-got' : undefined} title={got.has(n) ? `${n}（${i + 1}番目）` : `${i + 1}番目の宿場`}>
+            <span className="stamp-no">{i + 1}</span>
+            <span className="stamp-name">{got.has(n) ? n : '？'}</span>
+          </li>
+        ))}
+      </ol>
+    </details>
+  )
+}
 
 /** 体力のゲージ。疲れる境目（tiredStamina）に印。色は、余裕・注意・疲れ */
 export function StaminaGauge({ value, id, large }: { value: number; id: string; large?: boolean }) {
@@ -60,6 +84,7 @@ export function PlayerCards({ state, activeId, selfId }: { state: GameState; act
               <span>評判 {p.stats.reputation}</span>
               <span>宿代 -{innCostFor(p, cfg)}文</span>
               <span>名物 {p.meibutsu.length}</span>
+              <span data-testid={`stamps-${p.id}`}>スタンプ {p.visited.length}/{SHUKU_NAMES.length}</span>
             </div>
           </div>
         )
@@ -79,6 +104,8 @@ export function ActionPanel({ state, aw, onAct }: ActionProps) {
   const awPlayer: Player | null = aw ? (state.players.find((p) => p.id === aw.playerId) ?? null) : null
   if (!aw || !awPlayer) return null
   const tired = isTired(awPlayer, cfg)
+  const pbs = state.board.playerStates[awPlayer.id]
+  const ahead = pbs ? nextShukuAhead(state.board, pbs.position, pbs.route) : null
 
   if (aw.kind === 'roll') {
     return (
@@ -88,6 +115,11 @@ export function ActionPanel({ state, aw, onAct }: ActionProps) {
         <button className="primary" data-testid="roll" onClick={() => onAct({ type: 'roll' })}>
           サイコロを振る
         </button>
+        {ahead && (
+          <button data-testid="stroll" disabled={ahead.distance > maxFaceFor(awPlayer, cfg)} onClick={() => onAct({ type: 'stroll' })}>
+            宿場をめざす（{ahead.name}まで{ahead.distance}マス{awPlayer.visited.includes(ahead.name) ? '' : '・スタンプ'}。通り過ぎずに止まる）
+          </button>
+        )}
         <button data-testid="hurry" disabled={!canHurry(awPlayer, cfg)} onClick={() => onAct({ type: 'hurry' })}>
           早足で振る（+{cfg.balance.travel.hurryBonus}マス・体力-{cfg.balance.roles[awPlayer.role].hurryStamina ?? cfg.balance.travel.hurryStamina}）
         </button>
@@ -277,7 +309,7 @@ export const DICE_ROLL_MS = 700
 export const DICE_HOLD_MS = 1000
 
 /** サイコロ：大きく、ころがってから、出目を見せる。何マス進むかも出す。毎回、作り直す（key を変える）こと */
-export function DicePop({ face, hurry, name, steps, onDone }: { face: number; hurry: boolean; name: string; steps: number; onDone?: () => void }) {
+export function DicePop({ face, hurry, stroll, name, steps, onDone }: { face: number; hurry: boolean; stroll?: boolean; name: string; steps: number; onDone?: () => void }) {
   const [shown, setShown] = useState(() => (prefersReducedMotion() ? face : 1 + Math.floor(Math.random() * 6)))
   const [rolling, setRolling] = useState(() => !prefersReducedMotion())
   useEffect(() => {
@@ -305,11 +337,12 @@ export function DicePop({ face, hurry, name, steps, onDone }: { face: number; hu
       <div className={`dice-face ${rolling ? 'rolling' : 'settled'}`} data-testid="dice-face">{rolling ? shown : face}</div>
       <div className="dice-note">
         {name}
-        {rolling ? '　……' : hurry ? `　早足 ${face}＋${cfg.balance.travel.hurryBonus}` : ''}
+        {rolling ? '　……' : hurry ? `　早足 ${face}＋${cfg.balance.travel.hurryBonus}` : stroll ? '　宿場をめざす' : ''}
       </div>
       {!rolling && (
         <div className="dice-steps" data-testid="dice-steps">
           {steps > 0 ? `${steps}マス進む` : 'その場にとどまる'}
+          {stroll && steps < face && steps > 0 ? `（出目の${face - steps}は使わず、宿場で止まる）` : ''}
         </div>
       )}
     </div>

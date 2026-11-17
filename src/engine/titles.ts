@@ -6,6 +6,7 @@ import type { Player, TitleCondition, TitleDef } from '../types/game'
 function met(p: Player, c: TitleCondition): boolean {
   if (c.minMemories !== undefined && p.stats.memories < c.minMemories) return false
   if (c.minMeibutsu !== undefined && p.meibutsu.length < c.minMeibutsu) return false
+  if (c.minStamps !== undefined && p.visited.length < c.minStamps) return false
   if (c.minReputation !== undefined && p.stats.reputation < c.minReputation) return false
   if (c.minMoney !== undefined && p.stats.money < c.minMoney) return false
   if (c.arrivalRank !== undefined && p.arrivalRank !== c.arrivalRank) return false

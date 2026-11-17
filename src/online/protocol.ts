@@ -121,6 +121,8 @@ export function cleanAction(raw: unknown): SessionAction | null {
       return { type: 'roll' }
     case 'hurry':
       return { type: 'hurry' }
+    case 'stroll':
+      return { type: 'stroll' }
     case 'work':
       return { type: 'work' }
     case 'lodging':

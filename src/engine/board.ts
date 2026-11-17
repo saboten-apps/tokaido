@@ -65,6 +65,28 @@ export function pathFrom(board: BoardState, pos: number, steps: number, route: '
   return path
 }
 
+/**
+ * 「宿場をめざす」の道のり：pathFrom と同じだが、宿場（または京都）に着いたら、そこで止まる。
+ * 通り過ぎずに宿場で止まれば、スタンプ・名物・宿が手に入る（そのかわり、出目の残りは使わない）。
+ */
+export function strollPath(board: BoardState, pos: number, steps: number, route: 'main' | 'lane' | undefined): number[] {
+  const path = pathFrom(board, pos, steps, route)
+  const k = path.findIndex((i) => board.tiles[i].type === 'shuku')
+  return k >= 0 ? path.slice(0, k + 1) : path
+}
+
+/** いまの位置から、いちばん近い先の宿場までのマス数と名前（本道のうえ。なければ null） */
+export function nextShukuAhead(board: BoardState, pos: number, route?: 'main' | 'lane'): { name: string; distance: number; index: number } | null {
+  let cur = pos
+  for (let d = 1; d <= board.mainLength; d++) {
+    const nx = nextTileIndex(board, cur, d === 1 ? route : undefined)
+    if (nx === null) return null
+    cur = nx
+    if (board.tiles[cur].type === 'shuku') return { name: board.tiles[cur].name, distance: d, index: cur }
+  }
+  return null
+}
+
 /** 疲れているか：体力が少ない、または野宿が続いている */
 export function isTired(player: Player, config: GameConfig): boolean {
   return player.stats.stamina < config.balance.travel.tiredStamina || player.flags.includes('camped2')

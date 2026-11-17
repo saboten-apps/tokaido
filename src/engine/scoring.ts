@@ -9,8 +9,9 @@ export function scorePlayer(player: Player, config: GameConfig): ScoreBreakdown 
   const memories = Math.round(player.stats.memories * s.memoriesWeight)
   const reputation = Math.round(player.stats.reputation * s.reputationWeight)
   const meibutsu = player.meibutsu.length * s.meibutsuPoints
+  const stamps = player.visited.length * s.stampPoints
   const arrival = player.arrivalRank === null ? 0 : s.arrivedBonus + (s.arrivalRankBonus[player.arrivalRank - 1] ?? 0)
-  return { playerId: player.id, money, memories, reputation, meibutsu, arrival, total: money + memories + reputation + meibutsu + arrival }
+  return { playerId: player.id, money, memories, reputation, meibutsu, stamps, arrival, total: money + memories + reputation + meibutsu + stamps + arrival }
 }
 
 /** 得点の高い順。同点なら先に着いた順 */

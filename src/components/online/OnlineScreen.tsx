@@ -6,10 +6,11 @@ import { DEFAULT_CONFIG, REGIONS, ROLE_IDS, ROOM_MAX_PLAYERS, ROOM_MIN_PLAYERS, 
 import { OnlineClient, clearLastRoom, getSavedName, loadLastRoom, newRoomCode, saveLastRoom, saveName, type ReplayBatch } from '../../online/client'
 import { BoardStage, ViewToggle } from '../BoardStage'
 import { useViewMode } from '../viewMode'
+import { SPEED_FACTOR, SPEED_LABEL, useSpeed } from '../speed'
 import { MiniMap } from '../MiniMap'
 import { ResultScreen } from '../ResultScreen'
 import { cutinsFromTransition, newLogLines, phaseDelay, positionAtStep, prefersReducedMotion, regionEntry, travelMs } from '../feedback'
-import { ActionPanel, CutIn, DicePop, LogPanel, PlaceCard, PlayerCards } from '../parts'
+import { ActionPanel, CutIn, DicePop, LogPanel, PlaceCard, PlayerCards, StampBook } from '../parts'
 import { useCutins } from '../useCutins'
 import type { SessionAction } from '../../engine'
 import type { RoomView } from '../../online/protocol'
@@ -226,6 +227,7 @@ interface Roll {
   steps: number
   face: number
   hurry: boolean
+  stroll: boolean
 }
 
 interface GameProps {
@@ -252,6 +254,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
   const [jump, setJump] = useState<{ index: number; n: number } | null>(null)
   const [message, setMessage] = useState<string | null>(null)
   const [mode, toggleMode] = useViewMode()
+  const [speed, toggleSpeed] = useSpeed()
   const [now, setNow] = useState(() => Date.now())
   const prev = useRef<GameState>(game)
   const modeRef = useRef<'2d' | '3d'>('2d')
@@ -287,7 +290,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
           if (e.type !== 'rolled' || e.path.length === 0) return []
           const tiles = gameRef.current.board.tiles
           const via = [tiles[e.from].name, ...e.path.map((i) => tiles[i].name)]
-          return [{ id: ++rollSeq.current, playerId: e.playerId, from: e.from, path: modeRef.current === '3d' ? [e.from, e.to] : e.path, via, steps: e.path.length, face: e.face, hurry: e.hurry }]
+          return [{ id: ++rollSeq.current, playerId: e.playerId, from: e.from, path: modeRef.current === '3d' ? [e.from, e.to] : e.path, via, steps: e.path.length, face: e.face, hurry: e.hurry, stroll: Boolean(e.stroll) }]
         })
       if (rolls.length) setQueue((q) => [...q, ...rolls])
       // 県の境を越えたら、通知（マスの県は変わらないので、いまの盤面で調べられる）
@@ -313,10 +316,10 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
           setStep(-1)
         } else setStep((n) => n + 1)
       },
-      phaseDelay(mode, step, cur.via.length),
+      phaseDelay(mode, step, cur.via.length, SPEED_FACTOR[speed]),
     )
     return () => clearTimeout(timer)
-  }, [queue, step, mode])
+  }, [queue, step, mode, speed])
 
   // 持ち時間の表示
   useEffect(() => {
@@ -342,8 +345,8 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
   const busy = queue.length > 0 || cuts.busy
   const head = queue[0]
   // サイコロは、地図では動きの間ずっと、場面では「サイコロ」の段階だけ
-  const dice = head && (mode === '2d' || step < 0) ? { id: head.id, face: head.face, hurry: head.hurry, steps: head.steps, name: game.players.find((p) => p.id === head.playerId)?.name ?? '' } : null
-  const travel = head && mode === '3d' && step === 0 ? { id: String(head.id), playerId: head.playerId, via: head.via, ms: travelMs(head.via.length) } : null
+  const dice = head && (mode === '2d' || step < 0) ? { id: head.id, face: head.face, hurry: head.hurry, stroll: head.stroll, steps: head.steps, name: game.players.find((p) => p.id === head.playerId)?.name ?? '' } : null
+  const travel = head && mode === '3d' && step === 0 ? { id: String(head.id), playerId: head.playerId, via: head.via, ms: travelMs(head.via.length, SPEED_FACTOR[speed]) } : null
   const focusId = (queue[0]?.playerId ?? (mine ? selfPlayerId : (aw?.playerId ?? active.id))) ?? active.id
   const waitingName = aw ? game.players.find((p) => p.id === aw.playerId)?.name : active.name
 
@@ -354,6 +357,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
         <span className="day" data-testid="day">{game.day}日目</span>
         <span className="sub">／ {cfg.balance.game.maxDays}日まで</span>
         <ViewToggle mode={mode} onToggle={toggleMode} />
+        {mode === '3d' && <button className="linkish" data-testid="speed-toggle" onClick={toggleSpeed} title="演出の速さ">速さ：{SPEED_LABEL[speed]}</button>}
         <span className="region-badge" data-testid="region-badge">{REGIONS[regionAt(game.board, positions[focusId])].name}</span>
         <span className="turn">{mine ? 'あなたの番' : `${waitingName}の番`}{left !== null && aw ? `（あと${left}秒）` : ''}</span>
       </header>
@@ -367,10 +371,11 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
       <BoardStage mode={mode} board={game.board} players={game.players} activeId={active.id} focusId={focusId} positions={positions} jump={jump} travel={travel} />
       <PlaceCard board={game.board} index={positions[focusId] ?? 0} />
       <PlayerCards state={game} activeId={active.id} selfId={selfPlayerId} />
+      {game.players.find((p) => p.id === selfPlayerId) && <StampBook player={game.players.find((p) => p.id === selfPlayerId)!} />}
       {mine && !busy ? <ActionPanel state={game} aw={aw} onAct={act} /> : mine ? null : <p className="waiting" data-testid="waiting">{waitingName}の行動を待っています…</p>}
       {message && <p className="conn-error" role="alert">{message}</p>}
       {cuts.cut && <CutIn item={cuts.cut} />}
-      {dice && <DicePop key={dice.id} face={dice.face} hurry={dice.hurry} name={dice.name} steps={dice.steps} />}
+      {dice && <DicePop key={dice.id} face={dice.face} hurry={dice.hurry} stroll={dice.stroll} name={dice.name} steps={dice.steps} />}
       <div className="toasts" aria-live="polite">
         {toasts.map((t) => (
           <div key={t.id} className="toast">{t.text}</div>

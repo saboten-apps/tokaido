@@ -66,5 +66,21 @@
     "when": {
       "minMoney": 500
     }
+  },
+  {
+    "id": "juku_meguri",
+    "name": "宿場めぐり",
+    "desc": "20の宿場に止まり、スタンプを押した。",
+    "when": {
+      "minStamps": 20
+    }
+  },
+  {
+    "id": "juku_tsu",
+    "name": "宿場の通",
+    "desc": "30の宿場に止まり、スタンプを押した。",
+    "when": {
+      "minStamps": 30
+    }
   }
 ]

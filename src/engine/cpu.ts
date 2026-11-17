@@ -1,11 +1,11 @@
 // CPU の判断。旅の流儀（性格）ごとの重みで選択肢を評価する（umaregacya の cpu.ts を旅向けに作り替え）。
 
 import { getPersonality, type GameConfig } from './config'
-import { canHurry, innCostFor } from './board'
+import { canHurry, innCostFor, nextShukuAhead } from './board'
 import { isChoiceAvailable } from './events'
 import { STAT_KEYS } from './stats'
 import type { Rng } from './rng'
-import type { CpuPersonality, EventChoice, ForkDef, GameEvent, LodgingId, Meibutsu, Player, StatDelta } from '../types/game'
+import type { BoardState, CpuPersonality, EventChoice, ForkDef, GameEvent, LodgingId, Meibutsu, Player, StatDelta } from '../types/game'
 
 /** 路銀は桁が大きいので、評価では 100文 = 1 として扱う */
 const MONEY_SCALE = 100
@@ -61,13 +61,21 @@ export function chooseCpuLodging(player: Player, config: GameConfig): LodgingId 
   return player.stats.money < config.balance.travel.innCost * 4 ? 'kichin' : 'hatago'
 }
 
-export type CpuMove = 'work' | 'hurry' | 'roll'
+export type CpuMove = 'work' | 'hurry' | 'stroll' | 'roll'
 
 /** 手番の動き：路銀が少なければ働く。体力に余裕があれば、流儀に応じて早足 */
-export function chooseCpuMove(player: Player, config: GameConfig, rng: Rng): CpuMove {
+export function chooseCpuMove(player: Player, config: GameConfig, rng: Rng, board?: BoardState): CpuMove {
   if (shouldCpuWork(player, config)) return 'work'
   if (canHurry(player, config) && player.stats.stamina >= config.balance.travel.hurryMinStamina + 15) {
     if (rng.next() < personalityOf(player, config).hurryLove) return 'hurry'
+  }
+  if (board) {
+    const ahead = nextShukuAhead(board, board.playerStates[player.id].position, board.playerStates[player.id].route)
+    const unvisited = ahead !== null && !player.visited.includes(ahead.name)
+    // 近い宿場があるとき、とくに初めての宿場なら、流儀に応じて「めざす」
+    if (ahead && ahead.distance >= 2 && ahead.distance <= config.balance.game.diceFaces) {
+      if (rng.next() < personalityOf(player, config).strollLove * (unvisited ? 1 : 0.5)) return 'stroll'
+    }
   }
   return 'roll'
 }

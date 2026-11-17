@@ -64,6 +64,17 @@ export const MIGRATIONS: Record<number, (state: Record<string, unknown>) => Reco
       turnCtl: awaiting && turnCtl ? { ...turnCtl, awaiting: { ...awaiting, tileIndex: mapIdx(awaiting.tileIndex) } } : state.turnCtl,
     }
   },
+  // v4 → v5：宿場のスタンプ（visited）が加わった。旧データは、いまいる宿場だけ押したことにする
+  4: (state) => {
+    const board = (state.board ?? {}) as { tiles?: Array<{ name: string; type: string }>; playerStates?: Record<string, { position: number }> }
+    return {
+      ...state,
+      players: ((state.players as Array<Record<string, unknown>>) || []).map((p) => {
+        const tile = board.tiles?.[board.playerStates?.[p.id as string]?.position ?? 0]
+        return { ...p, visited: Array.isArray(p.visited) ? p.visited : tile?.type === 'shuku' ? [tile.name] : [] }
+      }),
+    }
+  },
 }
 
 function defaultStorage(): SaveStorage | null {

@@ -64,6 +64,8 @@ export interface Balance {
     memoriesWeight: number
     reputationWeight: number
     meibutsuPoints: number
+    /** 宿場のスタンプ1つあたりの得点 */
+    stampPoints: number
     arrivedBonus: number
     arrivalRankBonus: number[]
   }
