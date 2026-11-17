@@ -224,3 +224,11 @@ button small { font-size: 12px; opacity: 0.8; }
 .weather { font-size: 13px; padding: 1px 8px; border-radius: 999px; background: #eaf3fb; color: #35597a; }
 .weather[data-weather='rain'] { background: #dfe8f3; color: #274a73; font-weight: 700; }
 .weather[data-weather='sunny'] { background: #fff3d6; color: #8a5a00; }
+
+/* スタンプを押した瞬間 */
+.stamp-pop { position: fixed; inset: 0; display: grid; place-items: center; pointer-events: none; z-index: 60; }
+.stamp-seal { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 14px 26px; border: 5px solid #c0392b; border-radius: 14px; color: #c0392b; background: rgba(253, 236, 234, 0.92); font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif; transform: rotate(-6deg); box-shadow: 0 6px 24px rgba(0,0,0,.35); animation: stamp-down 1.7s cubic-bezier(.2,1.4,.4,1) forwards; }
+.stamp-seal strong { font-size: 34px; letter-spacing: .1em; }
+.stamp-seal small { font-size: 12px; opacity: .8; }
+@keyframes stamp-down { 0% { opacity: 0; transform: rotate(-6deg) scale(2.4); } 18% { opacity: 1; transform: rotate(-6deg) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: rotate(-6deg) scale(1); } }
+@media (prefers-reduced-motion: reduce) { .stamp-seal { animation: cutin-fade 1.2s ease forwards; } }

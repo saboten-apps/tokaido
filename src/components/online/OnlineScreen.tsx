@@ -6,11 +6,12 @@ import { DEFAULT_CONFIG, REGIONS, ROLE_IDS, ROOM_MAX_PLAYERS, ROOM_MIN_PLAYERS, 
 import { OnlineClient, clearLastRoom, getSavedName, loadLastRoom, newRoomCode, saveLastRoom, saveName, type ReplayBatch } from '../../online/client'
 import { BoardStage, ViewToggle } from '../BoardStage'
 import { useViewMode } from '../viewMode'
+import { useStampPop } from '../useStampPop'
 import { SPEED_FACTOR, SPEED_LABEL, useSpeed } from '../speed'
 import { MiniMap } from '../MiniMap'
 import { ResultScreen } from '../ResultScreen'
 import { cutinsFromTransition, newLogLines, phaseDelay, positionAtStep, prefersReducedMotion, regionEntry, travelMs } from '../feedback'
-import { ActionPanel, CutIn, DicePop, LogPanel, PlaceCard, PlayerCards, StampBook } from '../parts'
+import { ActionPanel, CutIn, DicePop, LogPanel, PlaceCard, PlayerCards, StampBook, StampPop } from '../parts'
 import { useCutins } from '../useCutins'
 import type { SessionAction } from '../../engine'
 import type { RoomView } from '../../online/protocol'
@@ -255,6 +256,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
   const [message, setMessage] = useState<string | null>(null)
   const [mode, toggleMode] = useViewMode()
   const weather = weatherOn(game.seed, game.day, cfg)
+  const [stampPop, closeStampPop] = useStampPop(game, selfPlayerId ? [selfPlayerId] : [], queue.length > 0)
   const [speed, toggleSpeed] = useSpeed()
   const [now, setNow] = useState(() => Date.now())
   const prev = useRef<GameState>(game)
@@ -377,6 +379,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
       {mine && !busy ? <ActionPanel state={game} aw={aw} onAct={act} /> : mine ? null : <p className="waiting" data-testid="waiting">{waitingName}の行動を待っています…</p>}
       {message && <p className="conn-error" role="alert">{message}</p>}
       {cuts.cut && <CutIn item={cuts.cut} />}
+      {stampPop && <StampPop key={stampPop.key} name={stampPop.name} count={stampPop.count} onDone={closeStampPop} />}
       {dice && <DicePop key={dice.id} face={dice.face} hurry={dice.hurry} stroll={dice.stroll} name={dice.name} steps={dice.steps} />}
       <div className="toasts" aria-live="polite">
         {toasts.map((t) => (

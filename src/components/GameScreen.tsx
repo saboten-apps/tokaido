@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react'
 import { DEFAULT_CONFIG, REGIONS, advanceOne, getAwaiting, regionAt, submitAction, weatherOn, WEATHER_ICON, WEATHER_LABEL, type SessionAction, type SessionResult } from '../engine'
 import { BoardStage, ViewToggle } from './BoardStage'
 import { useViewMode } from './viewMode'
+import { useStampPop } from './useStampPop'
 import { SPEED_FACTOR, SPEED_LABEL, useSpeed } from './speed'
 import { MiniMap } from './MiniMap'
-import { ActionPanel, CutIn, DicePop, LogPanel, PlaceCard, PlayerCards, StampBook } from './parts'
+import { ActionPanel, CutIn, DicePop, LogPanel, PlaceCard, PlayerCards, StampBook, StampPop } from './parts'
 import { useCutins } from './useCutins'
 import { cutinsFromTransition, newLogLines, phaseDelay, positionAtStep, prefersReducedMotion, regionEntry, travelMs } from './feedback'
 import type { GameState } from '../types/game'
@@ -57,6 +58,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
   const active = state.players[state.turnCtl.activeIndex]
   const human = state.players.find((p) => p.isHuman)
   const weather = weatherOn(state.seed, state.day, cfg)
+  const [stampPop, closeStampPop] = useStampPop(state, state.players.filter((p) => p.isHuman).map((p) => p.id), anim !== null)
 
   // 駒の見かけの位置（動いている駒だけ、1マスずつ）
   const positions: Record<string, number> = {}
@@ -169,6 +171,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
       <ActionPanel state={state} aw={aw} onAct={act} />
 
       {cuts.cut && <CutIn item={cuts.cut} />}
+      {stampPop && <StampPop key={stampPop.key} name={stampPop.name} count={stampPop.count} onDone={closeStampPop} />}
       {dice && <DicePop key={dice.id} face={dice.face} hurry={dice.hurry} stroll={dice.stroll} name={dice.name} steps={dice.steps} onDone={() => setDice((d) => (d && d.id === dice.id ? null : d))} />}
       <div className="toasts" aria-live="polite">
         {toasts.map((t) => (

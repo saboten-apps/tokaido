@@ -12,6 +12,23 @@ const cfg = DEFAULT_CONFIG
 /** 宿場の名前（江戸から数えた順）。スタンプ帳の並び */
 const SHUKU_NAMES: string[] = cfg.board.main.filter((t) => t.type === 'shuku').map((t) => t.name)
 
+/** スタンプを押した瞬間の演出（宿場の名前を、赤い印で）。しばらくして消える */
+export function StampPop({ name, count, onDone }: { name: string; count: number; onDone: () => void }) {
+  useEffect(() => {
+    const t = setTimeout(onDone, prefersReducedMotion() ? 1200 : 1700)
+    return () => clearTimeout(t)
+  }, [onDone])
+  return (
+    <div className="stamp-pop" data-testid="stamp-pop" role="status" aria-live="polite">
+      <div className="stamp-seal">
+        <small>宿場スタンプ</small>
+        <strong>{name}</strong>
+        <small>{count}/{SHUKU_NAMES.length}</small>
+      </div>
+    </div>
+  )
+}
+
 /** 宿場スタンプ帳：止まった宿場に印が付く。押すと広い範囲が見られる。通り過ぎただけでは付かない */
 export function StampBook({ player, open }: { player: Player; open?: boolean }) {
   const got = new Set(player.visited)
