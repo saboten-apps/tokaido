@@ -7,11 +7,30 @@ import roadEvents from '../events/road.json'
 import specialEvents from '../events/special.json'
 import shukuEvents from '../events/shuku.json'
 import laneEvents from '../events/lane.json'
-import type { CpuPersonality, CpuPersonalityId, ForkChoiceDef, GameEvent, Stats, TileDef, TitleDef } from '../types/game'
+import type { CpuPersonality, CpuPersonalityId, ForkChoiceDef, GameEvent, RoleId, StatDelta, Stats, TileDef, TitleDef } from '../types/game'
 
 export interface Range {
   min: number
   max: number
+}
+
+/** 身分の持ち味 */
+export interface RoleDef {
+  name: string
+  desc: string
+  /** CPU がこの身分のとき、判断に使う流儀 */
+  personality: CpuPersonalityId
+  /** 開始時の能力値への加減 */
+  start: StatDelta
+  /** 「働く」で、路銀に足す額・思い出に足す量 */
+  workMoneyBonus: number
+  workMemories: number
+  /** 名所・茶屋で、思い出に足す量 */
+  scenicBonus: number
+  /** 早足の体力の消費（null なら、travel.hurryStamina） */
+  hurryStamina: number | null
+  /** 宿代にかける倍率 */
+  innRate: number
 }
 
 export interface Balance {
@@ -53,6 +72,7 @@ export interface Balance {
   }
   /** 評判の効果：goodAt 以上で宿代が goodInnRate 倍、badBelow 未満で badInnRate 倍 */
   reputation: { goodAt: number; goodInnRate: number; badBelow: number; badInnRate: number }
+  roles: Record<RoleId, RoleDef>
   cpuPersonalities: CpuPersonality[]
 }
 
@@ -93,4 +113,12 @@ export function getPersonality(config: GameConfig, id: CpuPersonalityId): CpuPer
   const p = config.balance.cpuPersonalities.find((x) => x.id === id)
   if (!p) throw new Error(`Unknown personality: ${id}`)
   return p
+}
+
+export const ROLE_IDS = Object.keys(DEFAULT_CONFIG.balance.roles) as RoleId[]
+
+export function getRole(config: GameConfig, id: RoleId): RoleDef {
+  const r = config.balance.roles[id]
+  if (!r) throw new Error(`Unknown role: ${id}`)
+  return r
 }

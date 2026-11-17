@@ -84,3 +84,7 @@ button small { font-size: 12px; opacity: 0.8; }
 .diary-tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
 .diary-tabs button { flex-direction: row; padding: 4px 12px; margin: 0; }
 .diary-tabs button.on { background: #f3d9cf; border-color: var(--accent); }
+
+.role-chip { font-size: 11px; background: #efe3c8; border: 1px solid #d8c7a2; border-radius: 4px; padding: 0 6px; }
+.role-desc { color: #6b5a48; line-height: 1.5; }
+.role-sub { color: #8a7660; font-size: 11px; }

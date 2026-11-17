@@ -4,7 +4,7 @@
 // 乱数は state.rngState から決まるので、同じ状態と同じ行動なら、同じ結果になる。
 
 import { canHurry, forkAt, innCostFor, invitedToHonjin, pathFrom, recordCamp, rollFace, syncLaneFlag } from './board'
-import { DEFAULT_CONFIG, getEvent, type GameConfig } from './config'
+import { DEFAULT_CONFIG, getEvent, getRole, type GameConfig } from './config'
 import { chooseCpuBuyMeibutsu, chooseCpuChoice, chooseCpuLodging, chooseCpuMove, chooseCpuRoute, shouldCpuWork } from './cpu'
 import { applyChoice, drawEvent, isChoiceAvailable, markEventUsed } from './events'
 import { chance, createRng, type Rng } from './rng'
@@ -258,14 +258,15 @@ function land(c: Ctx, p: Player, idx: number): void {
     }
     case 'teahouse': {
       if (p.stats.money >= t.teahouseCost) {
-        p.stats = applyDelta(p.stats, { money: -t.teahouseCost, stamina: t.teahouseStamina, memories: t.teahouseMemories }, config.balance.limits)
+        p.stats = applyDelta(p.stats, { money: -t.teahouseCost, stamina: t.teahouseStamina, memories: t.teahouseMemories + getRole(config, p.role).scenicBonus }, config.balance.limits)
         log(s, p, `${p.name}は${tile.name}でひと休み。（路銀-${t.teahouseCost}文 / 体力+${t.teahouseStamina}）`)
       }
       return endTurn(c)
     }
     case 'scenic': {
-      p.stats = applyDelta(p.stats, { memories: t.scenicMemories }, config.balance.limits)
-      log(s, p, `${p.name}は${tile.name}を眺めた。（思い出+${t.scenicMemories}）`)
+      const gain = t.scenicMemories + getRole(config, p.role).scenicBonus
+      p.stats = applyDelta(p.stats, { memories: gain }, config.balance.limits)
+      log(s, p, `${p.name}は${tile.name}を眺めた。（思い出+${gain}）`)
       return endTurn(c)
     }
     default:
@@ -286,7 +287,7 @@ function doRoll(c: Ctx, forcedFace?: number, hurry = false): void {
   const to = path.at(-1) ?? from
   pb.position = to
   syncLaneFlag(s.board, p, to)
-  const extra = hurry ? config.balance.travel.hurryStamina : 0
+  const extra = hurry ? (getRole(config, p.role).hurryStamina ?? config.balance.travel.hurryStamina) : 0
   p.stats = applyDelta(p.stats, { stamina: -path.length * config.balance.travel.staminaPerStep - extra }, config.balance.limits)
   log(s, p, `${p.name}は${hurry ? '早足で' : ''}「${face}」を出して、${s.board.tiles[to].name}へ。`)
   c.events.push({ type: 'rolled', playerId: p.id, face, from, to, path, hurry })
@@ -297,9 +298,11 @@ function doWork(c: Ctx): void {
   const { s, config } = c
   const t = config.balance.travel
   const p = activePlayer(s)
-  p.stats = applyDelta(p.stats, { money: t.workMoney, stamina: t.workStamina, reputation: t.workReputation }, config.balance.limits)
-  log(s, p, `${p.name}は一日働いて、路銀を${t.workMoney}文稼いだ。`)
-  c.events.push({ type: 'worked', playerId: p.id, money: t.workMoney })
+  const role = getRole(config, p.role)
+  const earned = t.workMoney + role.workMoneyBonus
+  p.stats = applyDelta(p.stats, { money: earned, stamina: t.workStamina, reputation: t.workReputation, memories: role.workMemories }, config.balance.limits)
+  log(s, p, `${p.name}は一日働いて、路銀を${earned}文稼いだ。${role.workMemories ? `（思い出+${role.workMemories}）` : ''}`)
+  c.events.push({ type: 'worked', playerId: p.id, money: earned })
   endTurn(c)
 }
 

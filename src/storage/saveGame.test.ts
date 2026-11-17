@@ -45,4 +45,31 @@ describe('セーブと読み込み', () => {
     expect(loaded.players.every((p) => p.lodging === 'hatago')).toBe(true)
     expect(loaded.players).toHaveLength(v1.players instanceof Array ? v1.players.length : 0)
   })
+
+  it('v2 のセーブを読むと、身分が「ふつうの旅人」に補われる', () => {
+    const v2 = structuredClone(createGame({ seed: 6 })) as unknown as Record<string, unknown>
+    for (const p of v2.players as Array<Record<string, unknown>>) {
+      delete p.role
+      p.flags = []
+    }
+    const storage = createMemoryStorage()
+    storage.setItem(SAVE_KEY, JSON.stringify({ schemaVersion: 2, savedAt: '2026-11-17', state: v2 }))
+    const loaded = loadGame(storage)!
+    expect(loaded.schemaVersion).toBe(SCHEMA_VERSION)
+    expect(loaded.players.every((p) => p.role === 'ippan' && p.flags.includes('role:ippan'))).toBe(true)
+  })
+
+  it('v1 から v3 まで、続けて移行できる', () => {
+    const v1 = structuredClone(createGame({ seed: 7 })) as unknown as Record<string, unknown>
+    delete v1.diary
+    for (const p of v1.players as Array<Record<string, unknown>>) {
+      delete p.lodging
+      delete p.role
+    }
+    const storage = createMemoryStorage()
+    storage.setItem(SAVE_KEY, JSON.stringify({ schemaVersion: 1, savedAt: '2026-11-17', state: v1 }))
+    const loaded = loadGame(storage)!
+    expect(loaded.players.every((p) => p.role === 'ippan' && p.lodging === 'hatago')).toBe(true)
+    expect(loaded.diary).toEqual([])
+  })
 })

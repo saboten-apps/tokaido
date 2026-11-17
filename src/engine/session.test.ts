@@ -7,7 +7,7 @@ import { rankPlayers } from './scoring'
 import { SessionError, autoAct, getAwaiting, runUntilHuman, submitAction } from './session'
 import { createGame } from './setup'
 import { simulateGames } from './simulate'
-import type { GameState } from '../types/game'
+import type { GameState, RoleId } from '../types/game'
 
 const cfg = DEFAULT_CONFIG
 
@@ -218,5 +218,54 @@ describe('宿の格・本陣・旅日記・称号', () => {
     expect(earnedTitles({ ...first, arrivalRank: null }, cfg)).toEqual([])
     const noble = { ...first, stats: { ...first.stats, memories: 120 } }
     expect(earnedTitles(noble, cfg).map((t) => t.id)).toContain('omoide_bukuro')
+  })
+})
+
+describe('旅人の身分', () => {
+  const make = (role: RoleId) => runUntilHuman(createGame({ seed: 3, humanNames: ['あなた'], humanRoles: [role], playerCount: 2 }, cfg), cfg).state
+
+  it('開始時の能力値に、身分の持ち味が反映される', () => {
+    const base = cfg.balance.start
+    const ippan = make('ippan').players[0].stats
+    expect(ippan.money).toBe(base.money + cfg.balance.roles.ippan.start.money!)
+    const shonin = make('shonin').players[0].stats
+    expect(shonin.money).toBe(base.money + cfg.balance.roles.shonin.start.money!)
+    expect(shonin.stamina).toBe(base.stamina + cfg.balance.roles.shonin.start.stamina!)
+    expect(make('hikyaku').players[0].stats.stamina).toBe(base.stamina + cfg.balance.roles.hikyaku.start.stamina!)
+  })
+
+  it('CPU の身分は、重ならずに配られ、流儀は身分から決まる', () => {
+    const g = createGame({ seed: 5, includeHuman: false, playerCount: 6 }, cfg)
+    expect(new Set(g.players.map((p) => p.role)).size).toBe(6)
+    for (const p of g.players) expect(p.personality).toBe(cfg.balance.roles[p.role].personality)
+  })
+
+  it('商人は「働く」で多く稼ぎ、旅芸人は思い出も増える', () => {
+    const t = cfg.balance.travel
+    const shonin = submitAction(make('shonin'), 'p0', { type: 'work' }, cfg).state.players[0]
+    expect(shonin.stats.money).toBe(make('shonin').players[0].stats.money + t.workMoney + cfg.balance.roles.shonin.workMoneyBonus)
+    const geinin = submitAction(make('geinin'), 'p0', { type: 'work' }, cfg).state.players[0]
+    expect(geinin.stats.memories).toBe(cfg.balance.roles.geinin.workMemories)
+  })
+
+  it('飛脚は、早足の体力の消費が小さい', () => {
+    const fast = (role: RoleId) => {
+      const s = make(role)
+      const before = s.players[0].stats.stamina
+      const out = submitAction(s, 'p0', { type: 'hurry' }, cfg, undefined, 3).state.players[0]
+      return before - out.stats.stamina
+    }
+    expect(fast('hikyaku')).toBeLessThan(fast('ippan'))
+  })
+
+  it('武士は宿代が高く、関所で手形を示す選択肢がある', () => {
+    const bushi = make('bushi').players[0]
+    const ippan = make('ippan').players[0]
+    ippan.stats.reputation = bushi.stats.reputation
+    expect(innCostFor(bushi, cfg)).toBeGreaterThan(innCostFor(ippan, cfg))
+    const e = cfg.events.find((x) => x.id === 'hakone_sekisho')!
+    const choice = e.choices.find((c) => c.requires?.hasFlags?.includes('role:bushi'))!
+    expect(isChoiceAvailable(bushi, choice)).toBe(true)
+    expect(isChoiceAvailable(ippan, choice)).toBe(false)
   })
 })

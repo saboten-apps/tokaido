@@ -28,6 +28,15 @@ export const MIGRATIONS: Record<number, (state: Record<string, unknown>) => Reco
     players: ((state.players as Array<Record<string, unknown>>) || []).map((p) => ({ ...p, lodging: p.lodging ?? 'hatago' })),
     diary: Array.isArray(state.diary) ? state.diary : [],
   }),
+  // v2 → v3：旅人の身分（role）が加わった。旧データは、特別な持ち味のない「ふつうの旅人」
+  2: (state) => ({
+    ...state,
+    players: ((state.players as Array<Record<string, unknown>>) || []).map((p) => ({
+      ...p,
+      role: p.role ?? 'ippan',
+      flags: Array.isArray(p.flags) && !(p.flags as string[]).includes('role:ippan') ? [...(p.flags as string[]), 'role:ippan'] : p.flags,
+    })),
+  }),
 }
 
 function defaultStorage(): SaveStorage | null {

@@ -69,10 +69,10 @@
       "id": "steady",
       "name": "堅実な旅",
       "weights": {
-        "money": 2,
+        "money": 1.3,
         "stamina": 0.6,
-        "memories": 1.2,
-        "reputation": 1
+        "memories": 1.35,
+        "reputation": 1.1
       },
       "meibutsuLove": 4,
       "detourLove": 0.3,
@@ -140,6 +140,89 @@
       "reputationAt": 60,
       "stamina": 30,
       "memories": 2
+    }
+  },
+  "roles": {
+    "ippan": {
+      "name": "ふつうの旅人",
+      "desc": "特別な持ち味はない、ごくふつうの旅人。",
+      "personality": "steady",
+      "start": {
+        "money": 300
+      },
+      "workMoneyBonus": 0,
+      "workMemories": 0,
+      "scenicBonus": 0,
+      "hurryStamina": null,
+      "innRate": 1.0
+    },
+    "shonin": {
+      "name": "商人",
+      "desc": "商いで旅をする。路銀は多めだが、荷が重く体力は少なめ。「働く」と、多く稼げる。",
+      "personality": "steady",
+      "start": {
+        "money": 200,
+        "stamina": -10
+      },
+      "workMoneyBonus": 60,
+      "workMemories": 0,
+      "scenicBonus": 0,
+      "hurryStamina": null,
+      "innRate": 1.0
+    },
+    "ise": {
+      "name": "伊勢参りの旅人",
+      "desc": "信心の旅。人柄がよく知られ、評判が高め。名所や茶屋で、思い出が増えやすい。",
+      "personality": "social",
+      "start": {
+        "reputation": 4
+      },
+      "workMoneyBonus": 0,
+      "workMemories": 0,
+      "scenicBonus": 0,
+      "hurryStamina": null,
+      "innRate": 1.0
+    },
+    "hikyaku": {
+      "name": "飛脚",
+      "desc": "足が自慢。体力が多く、早足の体力の消費が小さい。そのかわり、路銀は少なめ。",
+      "personality": "hasty",
+      "start": {
+        "stamina": 20,
+        "money": 260
+      },
+      "workMoneyBonus": 0,
+      "workMemories": 0,
+      "scenicBonus": 0,
+      "hurryStamina": 4,
+      "innRate": 1.0
+    },
+    "geinin": {
+      "name": "旅芸人",
+      "desc": "芸を見せて旅をする。「働く」と、路銀に加えて思い出も増える。路銀は少なめ。",
+      "personality": "gourmet",
+      "start": {
+        "money": -500,
+        "reputation": 5
+      },
+      "workMoneyBonus": 0,
+      "workMemories": 2,
+      "scenicBonus": 0,
+      "hurryStamina": null,
+      "innRate": 1.0
+    },
+    "bushi": {
+      "name": "武士",
+      "desc": "お役目の旅。路銀は多く、関所は手形を示して通れる。そのかわり、宿代は高め。",
+      "personality": "steady",
+      "start": {
+        "money": 950
+      },
+      "workMoneyBonus": 0,
+      "workMemories": 0,
+      "scenicBonus": 0,
+      "hurryStamina": null,
+      "innRate": 1.25
     }
   }
 }

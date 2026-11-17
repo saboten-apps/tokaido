@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react'
-import { DEFAULT_CONFIG, MAX_PLAYERS, MIN_PLAYERS, createGame, runUntilHuman } from './engine'
+import { DEFAULT_CONFIG, MAX_PLAYERS, MIN_PLAYERS, ROLE_IDS, createGame, runUntilHuman } from './engine'
 import { deleteSavedGame, loadGame, saveGame } from './storage/saveGame'
 import { GameScreen } from './components/GameScreen'
 import { ResultScreen } from './components/ResultScreen'
-import type { GameState } from './types/game'
+import type { GameState, RoleId } from './types/game'
 
 const params = new URLSearchParams(window.location.search)
 const seedParam = params.get('seed')
@@ -15,6 +15,7 @@ export default function App() {
   const [saved, setSaved] = useState(() => loadGame())
   const [names, setNames] = useState<string[]>(['あなた', '旅人2', '旅人3', '旅人4'])
   const [humans, setHumans] = useState(1)
+  const [roles, setRoles] = useState<RoleId[]>(['ippan', 'ippan', 'ippan', 'ippan'])
   const [count, setCount] = useState(DEFAULT_CONFIG.balance.game.playerCount)
 
   const update = useCallback((s: GameState) => {
@@ -25,7 +26,7 @@ export default function App() {
 
   const start = () => {
     const humanNames = names.slice(0, humans).map((n, i) => n.trim() || (i === 0 ? 'あなた' : `旅人${i + 1}`))
-    const g = createGame({ humanNames, playerCount: Math.max(count, humans), seed: seedParam ? Number(seedParam) : undefined })
+    const g = createGame({ humanNames, humanRoles: roles.slice(0, humans), playerCount: Math.max(count, humans), seed: seedParam ? Number(seedParam) : undefined })
     update(runUntilHuman(g).state)
   }
 
@@ -58,6 +59,12 @@ export default function App() {
         <label key={i}>
           {humans > 1 ? `${i + 1}人目の名前` : '名前'}
           <input data-testid={`name-${i}`} value={n} maxLength={8} onChange={(e) => setNames((cur) => cur.map((x, j) => (j === i ? e.target.value : x)))} />
+          <select data-testid={`role-${i}`} aria-label={`${n}の身分`} value={roles[i]} onChange={(e) => setRoles((cur) => cur.map((x, j) => (j === i ? (e.target.value as RoleId) : x)))}>
+            {ROLE_IDS.map((id) => (
+              <option key={id} value={id}>{DEFAULT_CONFIG.balance.roles[id].name}</option>
+            ))}
+          </select>
+          <small className="role-desc" data-testid={`role-desc-${i}`}>{DEFAULT_CONFIG.balance.roles[roles[i]].desc}</small>
         </label>
       ))}
       <label>

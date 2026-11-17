@@ -33,6 +33,18 @@
         "addFlags": [
           "sekisho:kao"
         ]
+      },
+      {
+        "label": "武士として、通行手形を示し、滞りなく通る",
+        "effects": {
+          "memories": 1,
+          "stamina": 6
+        },
+        "requires": {
+          "hasFlags": [
+            "role:bushi"
+          ]
+        }
       }
     ]
   },
@@ -93,6 +105,18 @@
         "addFlags": [
           "sekisho:kao"
         ]
+      },
+      {
+        "label": "武士として、通行手形を示し、滞りなく通る",
+        "effects": {
+          "memories": 1,
+          "stamina": 6
+        },
+        "requires": {
+          "hasFlags": [
+            "role:bushi"
+          ]
+        }
       }
     ]
   },

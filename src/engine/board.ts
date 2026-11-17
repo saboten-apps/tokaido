@@ -101,7 +101,7 @@ export function syncLaneFlag(board: BoardState, player: Player, pos: number): vo
 
 /** 宿代。泊まり方の割合と、評判の割引・割増（balance.json の lodging・reputation）をかけたもの */
 export function innCostFor(player: Player, config: GameConfig, lodging: LodgingId = player.lodging): number {
-  const base = config.balance.travel.innCost * config.balance.lodging[lodging].costRate
+  const base = config.balance.travel.innCost * config.balance.lodging[lodging].costRate * config.balance.roles[player.role].innRate
   const r = config.balance.reputation
   if (player.stats.reputation >= r.goodAt) return Math.round(base * r.goodInnRate)
   if (player.stats.reputation < r.badBelow) return Math.round(base * r.badInnRate)

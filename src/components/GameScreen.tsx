@@ -135,6 +135,7 @@ export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
               <div className="pname">
                 <span className="dot" style={{ background: pieceColors[i % pieceColors.length] }} />
                 {p.name}
+                <span className="role-chip" data-testid={`role-${p.id}`}>{cfg.balance.roles[p.role].name}</span>
                 {!p.isHuman && <span className="cpu">CPU</span>}
               </div>
               <div className="where">

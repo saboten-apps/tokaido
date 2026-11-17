@@ -22,7 +22,7 @@ export function ResultScreen({ state, onRestart }: { state: GameState; onRestart
             const p = state.players.find((x) => x.id === r.playerId)!
             return (
               <tr key={r.playerId} className={p.isHuman ? 'me' : ''}>
-                <td>{i + 1}</td><td>{p.name}</td><td>{r.money}</td><td>{r.memories}</td><td>{r.reputation}</td><td>{r.meibutsu}</td><td>{r.arrival}</td>
+                <td>{i + 1}</td><td>{p.name}<small className="role-sub"> {DEFAULT_CONFIG.balance.roles[p.role].name}</small></td><td>{r.money}</td><td>{r.memories}</td><td>{r.reputation}</td><td>{r.meibutsu}</td><td>{r.arrival}</td>
                 <td className="total" data-testid={`total-${r.playerId}`}>{r.total}</td>
               </tr>
             )

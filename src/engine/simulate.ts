@@ -4,7 +4,7 @@ import { DEFAULT_CONFIG, type GameConfig } from './config'
 import { rankPlayers } from './scoring'
 import { runUntilHuman } from './session'
 import { createGame } from './setup'
-import type { CpuPersonalityId, GameState } from '../types/game'
+import type { GameState } from '../types/game'
 
 export interface SimulationStats {
   games: number
@@ -17,8 +17,8 @@ export interface SimulationStats {
   workRate: number
   /** 野宿した回数（1人1旅あたり） */
   campsPerPlayer: number
-  /** 流儀ごとの勝率 */
-  winRateByPersonality: Record<string, number>
+  /** 身分ごとの勝率（その身分が席にいた旅のうち、勝った割合。席の取り合いを均すため、全員が同じ強さなら 1/人数） */
+  winRateByRole: Record<string, number>
   laneRate: number
 }
 
@@ -35,10 +35,10 @@ export function simulateGames(games: number, startSeed = 1, config: GameConfig =
     days += end.day
     const ranking = rankPlayers(end, config)
     const winner = end.players.find((p) => p.id === ranking[0].playerId)!
-    wins[winner.personality!] = (wins[winner.personality!] ?? 0) + 1
+    wins[winner.role] = (wins[winner.role] ?? 0) + 1
     for (const p of end.players) {
       players += 1
-      seats[p.personality as CpuPersonalityId] = (seats[p.personality as CpuPersonalityId] ?? 0) + 1
+      seats[p.role] = (seats[p.role] ?? 0) + 1
       if (p.arrivedDay !== null) {
         arrived += 1
         arrivalDays += p.arrivedDay
@@ -53,8 +53,8 @@ export function simulateGames(games: number, startSeed = 1, config: GameConfig =
       if (l.message.includes('川明けを待つ')) lanes += 1
     }
   }
-  const winRateByPersonality: Record<string, number> = {}
-  for (const k of Object.keys(seats)) winRateByPersonality[k] = (wins[k] ?? 0) / games
+  const winRateByRole: Record<string, number> = {}
+  for (const k of Object.keys(seats)) winRateByRole[k] = (wins[k] ?? 0) / seats[k]
   return {
     games,
     avgDays: days / games,
@@ -64,7 +64,7 @@ export function simulateGames(games: number, startSeed = 1, config: GameConfig =
     avgMeibutsu: meibutsu / players,
     workRate: works / Math.max(1, works + rolls),
     campsPerPlayer: camps / players,
-    winRateByPersonality,
+    winRateByRole,
     laneRate: lanes / players,
   }
 }

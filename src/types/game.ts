@@ -1,7 +1,7 @@
 // ゲーム全体の型定義。ゲームの状態はすべて GameState に集約する（保存・オンラインで、そのまま送れる形）。
 
 /** セーブデータ・GameState の構造バージョン。構造を変えたら上げて、storage/saveGame.ts の MIGRATIONS に移行を書く */
-export const SCHEMA_VERSION = 2
+export const SCHEMA_VERSION = 3
 
 /** 旅人の能力値。money＝路銀（文）、stamina＝体力、memories＝思い出、reputation＝評判 */
 export type StatKey = 'money' | 'stamina' | 'memories' | 'reputation'
@@ -10,6 +10,9 @@ export type Stats = Record<StatKey, number>
 
 /** 能力値の変化量（未指定は変化なし） */
 export type StatDelta = Partial<Stats>
+
+/** 旅人の身分（旅のあいだ変わらない。持ち味は balance.json の roles） */
+export type RoleId = 'ippan' | 'shonin' | 'ise' | 'hikyaku' | 'geinin' | 'bushi'
 
 /** 泊まり方（木賃宿＝安い・回復小、旅籠＝ふつう。評判が高いと本陣に招かれる） */
 export type LodgingId = 'kichin' | 'hatago'
@@ -103,6 +106,8 @@ export interface Player {
   meibutsu: string[]
   flags: string[]
   usedOnceEvents: string[]
+  /** 身分 */
+  role: RoleId
   /** 泊まり方の好み（宿場で日が終わるときに使う） */
   lodging: LodgingId
   /** 足止めの残り日数（川止め・寝込みなど。0 なら動ける） */

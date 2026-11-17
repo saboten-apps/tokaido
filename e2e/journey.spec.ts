@@ -120,3 +120,14 @@ test('同じ端末で2人が順番に遊べて、結果に2人の旅日記が出
   await page.getByTestId('diary-tab-p1').click()
   await expect(page.getByTestId('diary')).toContainText('太郎の東海道')
 })
+
+test('身分を選べて、説明が出て、札に身分が出る', async ({ page }) => {
+  await page.goto('/?seed=3&fast=1')
+  await expect(page.getByTestId('role-desc-0')).toContainText('ごくふつう')
+  await page.getByTestId('role-0').selectOption('hikyaku')
+  await expect(page.getByTestId('role-desc-0')).toContainText('足が自慢')
+  await page.getByTestId('start').click()
+  await expect(page.getByTestId('role-p0')).toHaveText('飛脚')
+  // CPU の身分も、札に出る
+  await expect(page.getByTestId('role-p1')).not.toHaveText('飛脚')
+})

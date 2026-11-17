@@ -1,10 +1,10 @@
 // ゲーム開始：旅人（人間＋CPU）を作り、日本橋に並べる。
 
 import { createInitialBoardState } from './board'
-import { DEFAULT_CONFIG, type GameConfig } from './config'
+import { DEFAULT_CONFIG, ROLE_IDS, getRole, type GameConfig } from './config'
 import { createRng, randomSeed, type Rng } from './rng'
-import { clampStats } from './stats'
-import { SCHEMA_VERSION, type CpuPersonalityId, type GameState, type Player } from '../types/game'
+import { applyDelta, clampStats } from './stats'
+import { SCHEMA_VERSION, type CpuPersonalityId, type GameState, type Player, type RoleId } from '../types/game'
 
 export const HUMAN_PLAYER_ID = 'p0'
 export const MIN_PLAYERS = 2
@@ -20,6 +20,8 @@ export interface NewGameOptions {
   playerCount?: number
   /** 人間の名前（同じ端末で交代・オンライン用）。指定すると、先頭からその人数が人間になる */
   humanNames?: string[]
+  /** 人間の身分（humanNames の順。未指定は、ふつうの旅人）。CPU の身分は、ランダム */
+  humanRoles?: RoleId[]
 }
 
 function shuffle<T>(items: readonly T[], rng: Rng): T[] {
@@ -31,15 +33,17 @@ function shuffle<T>(items: readonly T[], rng: Rng): T[] {
   return result
 }
 
-function createPlayer(id: string, name: string, personality: CpuPersonalityId | null, config: GameConfig): Player {
+function createPlayer(id: string, name: string, personality: CpuPersonalityId | null, role: RoleId, config: GameConfig): Player {
+  const def = getRole(config, role)
   return {
     id,
     name,
     isHuman: personality === null,
     personality,
-    stats: clampStats({ ...config.balance.start }, config.balance.limits),
+    role,
+    stats: applyDelta(clampStats({ ...config.balance.start }, config.balance.limits), def.start, config.balance.limits),
     meibutsu: [],
-    flags: [],
+    flags: [`role:${role}`],
     usedOnceEvents: [],
     lodging: 'hatago',
     restDays: 0,
@@ -55,17 +59,19 @@ export function createGame(options: NewGameOptions = {}, config: GameConfig = DE
   const humanCount = humanNames ? humanNames.length : (options.includeHuman ?? true) ? 1 : 0
   const wanted = Math.round(options.playerCount ?? config.balance.game.playerCount)
   const count = Math.max(MIN_PLAYERS, humanCount, Math.min(MAX_PLAYERS, wanted))
-  const personalities = shuffle(config.balance.cpuPersonalities.map((p) => p.id), rng)
   const names = shuffle(CPU_NAMES, rng)
+  // CPU の身分は、重ならないように配る（6人までなら、全員が違う身分）
+  const cpuRoles = shuffle(ROLE_IDS, rng)
 
   const players: Player[] = []
   for (let i = 0; i < count; i++) {
     const id = `p${i}`
     if (i < humanCount) {
       const name = humanNames ? humanNames[i] : options.playerName || 'あなた'
-      players.push(createPlayer(id, name, null, config))
+      players.push(createPlayer(id, name, null, options.humanRoles?.[i] ?? 'ippan', config))
     } else {
-      players.push(createPlayer(id, names[i % names.length], personalities[i % personalities.length], config))
+      const role = cpuRoles[(i - humanCount) % cpuRoles.length]
+      players.push(createPlayer(id, names[i % names.length], getRole(config, role).personality, role, config))
     }
   }
 
