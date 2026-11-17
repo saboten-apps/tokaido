@@ -258,19 +258,42 @@ export const BUILDERS: Record<string, Builder> = {
     const s = v === 'big' ? 1.15 : v === 'small' ? 0.7 : 0.9
     const tiers = v === 'big' ? 4 : v === 'small' ? 2 : 3
     const z = -19
-    box(c, 11 * s, 2.6 * s, 11 * s, 0x8c8a82, 0, 1.3 * s, z)
-    box(c, 12 * s, 0.4 * s, 12 * s, 0x7a786f, 0, 0.2 * s, z)
-    let y = 2.6 * s
+    // 石垣：下ほど広い段々（野面積みの、ゆるいのり）
+    box(c, 15 * s, 1.4 * s, 15 * s, 0x8f8c82, 0, 0.7 * s, z)
+    box(c, 13.2 * s, 1.3 * s, 13.2 * s, 0x9a978c, 0, 2.0 * s, z)
+    box(c, 11.4 * s, 1.2 * s, 11.4 * s, 0xa5a297, 0, 3.25 * s, z)
+    box(c, 12 * s, 0.25 * s, 12 * s, 0x6f6c63, 0, 3.95 * s, z)
+    // 天守：下の見張り（なまこ壁の下見板）と、白壁、反りのある屋根
+    let y = 4.05 * s
     for (let k = 0; k < tiers; k++) {
-      const w = (6.4 - k * 1.25) * s
-      box(c, w, 2.0 * s, w, 0xf4f0e6, 0, y + 1.0 * s, z)
-      box(c, w + 0.4 * s, 0.14 * s, w + 0.4 * s, 0x2e2622, 0, y + 0.05 * s, z)
-      cone(c, w * 0.98, 1.4 * s, 0x3a322d, 0, y + 2.7 * s, z, 4, Math.PI / 4)
-      y += 2.1 * s
+      const w = (6.2 - k * 1.15) * s
+      box(c, w, 0.7 * s, w + 0.1, 0x2e2622, 0, y + 0.35 * s, z)
+      box(c, w - 0.1, 1.5 * s, w - 0.1, 0xf6f2e8, 0, y + 1.4 * s, z)
+      box(c, w * 0.34, 0.7 * s, w + 0.15, 0x3a322d, 0, y + 1.5 * s, z)
+      box(c, w + 1.1 * s, 0.16 * s, w + 1.1 * s, 0x2e2622, 0, y + 2.2 * s, z)
+      cone(c, w * 1.05, 1.5 * s, 0x3a322d, 0, y + 3.0 * s, z, 4, Math.PI / 4)
+      cone(c, w * 1.18, 0.45 * s, 0x2a2420, 0, y + 2.35 * s, z, 4, Math.PI / 4)
+      y += 2.35 * s
     }
-    for (const dx of [-0.7, 0.7]) cone(c, 0.18 * s, 0.7 * s, 0xd4a82e, dx * s, y + 0.6 * s, z, 6)
-    box(c, 22 * s, 0.06, 3.4, 0x5f8fb0, 0, 0.03, z + 7.6 * s)
-    box(c, 3.2, 0.25, 3.8, 0x8c8a82, 0, 0.1, z + 7.6 * s)
+    // 金のしゃちほこ
+    for (const dx of [-1, 1]) {
+      cone(c, 0.2 * s, 0.9 * s, 0xd8ae2e, dx * 0.85 * s, y + 0.75 * s, z, 6)
+      box(c, 0.16 * s, 0.35 * s, 0.5 * s, 0xd8ae2e, dx * 0.85 * s, y + 0.3 * s, z)
+    }
+    // 櫓門（手前の門）と石段、堀
+    box(c, 5.2, 2.4, 3.2, 0xf1ecde, 0, 1.2, z + 8.4 * s)
+    box(c, 5.6, 0.25, 3.6, 0x2e2622, 0, 2.55, z + 8.4 * s)
+    cone(c, 4.1, 1.2, 0x3a322d, 0, 3.3, z + 8.4 * s, 4, Math.PI / 4)
+    box(c, 1.9, 1.8, 3.3, 0x2a211a, 0, 0.9, z + 8.4 * s)
+    for (let k = 0; k < 5; k++) box(c, 2.4, 0.18, 0.7, 0x8f8c82, 0, 0.09 + k * 0.18, z + 11.2 * s - k * 0.6)
+    box(c, 26 * s, 0.06, 3.4, 0x4f7fa8, 0, 0.03, z + 7.4 * s)
+    // 城のまわりの松（浜松は、松の城下）
+    for (const side of [-1, 1]) for (let k = 0; k < 3; k++) pine(c, side * (9.5 + k * 3.2) * s, z + 2 + k * 2.6, 4.4 + k * 0.5)
+    // 白い幟
+    for (const dx of [-1, 1]) {
+      cyl(c, 0.05, 0.05, 3.2, 0x5e4328, dx * 3.6, 1.6, z + 12, 6)
+      box(c, 0.05, 2.2, 0.8, 0xf4efe2, dx * 3.6, 2.1, z + 12.45)
+    }
   },
   tower(c) {
     box(c, 4.4, 2.2, 4.4, 0x8c8a82, -7, 1.1, -14)
@@ -329,6 +352,21 @@ export const BUILDERS: Record<string, Builder> = {
     }
     cyl(c, 0.07, 0.07, 2.4, 0xc9a43a, 12, y + 1.2, -16, 6)
   },
+  /** 京の町：両側に、格子の町家（二階建て）と、ならぶ軒の提灯。奥に東山 */
+  machiya(c) {
+    for (let z = 4; z > -34; z -= 3.4) for (const side of [-1, 1]) {
+      const x = side * 6.2
+      box(c, 4.2, 3.2, 3.0, side < 0 ? 0xcdb48c : 0xd8c5a0, x, 1.6, z)
+      box(c, 4.6, 0.2, 3.3, 0x3a322d, x, 3.3, z)
+      cone(c, 3.1, 1.1, 0x4b3d36, x, 3.9, z, 4, Math.PI / 4)
+      // 格子
+      for (let k = 0; k < 6; k++) box(c, 0.07, 1.4, 0.07, 0x3a2a1c, x - side * 2.15, 1.0, z - 1.2 + k * 0.48)
+      // 提灯
+      const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.22, 10, 8), c.m(0xe85a3c))
+      lamp.position.set(x - side * 2.3, 2.5, z + 1.1)
+      c.g.add(lamp)
+    }
+  },
   teahouse(c) {
     box(c, 4.4, 2.2, 3.2, 0xcfb58a, -5, 1.1, -3)
     cone(c, 3.6, 1.4, 0x4b3d36, -5, 2.9, -3, 4, Math.PI / 4)
@@ -386,16 +424,33 @@ export const BUILDERS: Record<string, Builder> = {
   },
   sekisho(c) {
     const z = -7
+    // 関所の門：太い柱と、屋根つきの門
     for (const side of [-1, 1]) cyl(c, 0.34, 0.4, 4.6, 0x5e4328, side * 2.4, 2.3, z, 10)
     box(c, 6.4, 0.5, 0.6, 0x4a3828, 0, 4.7, z)
     box(c, 8, 0.4, 3.6, 0x3a322d, 0, 5.3, z)
     cone(c, 5.6, 1.4, 0x3a322d, 0, 6.1, z, 4, Math.PI / 4)
+    // 柵（関所のかこい）
     for (const side of [-1, 1]) for (let k = 0; k < 6; k++) box(c, 0.16, 1.6, 0.16, 0x7a5a38, side * (4 + k * 1.5), 0.8, z)
     for (const side of [-1, 1]) box(c, 8, 0.14, 0.14, 0x7a5a38, side * 7.6, 1.5, z)
-    box(c, 7, 2.6, 4.4, 0xcfb58a, 0, 1.3, -15)
-    cone(c, 5.6, 1.6, 0x4b3d36, 0, 3.4, -15, 4, Math.PI / 4)
-    box(c, 2.4, 1.4, 0.12, 0xefe6cf, 5.2, 2.2, -2)
-    for (const dx of [-1, 1]) cyl(c, 0.07, 0.07, 2.4, 0x5e4328, 5.2 + dx, 1.2, -2, 6)
+    // 番所：縁側と、大きな屋根、白い障子
+    box(c, 9, 2.6, 4.6, 0xcfb58a, 0, 1.3, -15)
+    box(c, 9.6, 0.25, 1.4, 0x7a5a38, 0, 0.45, -12.1)
+    for (let k = 0; k < 4; k++) box(c, 1.6, 1.5, 0.1, 0xf4efe2, -3.3 + k * 2.2, 1.6, -12.7)
+    cone(c, 7.0, 1.9, 0x4b3d36, 0, 3.6, -15, 4, Math.PI / 4)
+    // 幔幕：白と藍の縞の長い布（関所の目印）
+    for (let k = 0; k < 8; k++) box(c, 1.0, 1.8, 0.06, k % 2 ? 0xf4efe2 : 0x24406e, -3.5 + k * 1.0, 3.2, -12.6)
+    // 高札場（お触れ書きの札）
+    box(c, 2.4, 1.4, 0.12, 0xefe6cf, 5.6, 2.2, -2)
+    for (const dx of [-1, 1]) cyl(c, 0.07, 0.07, 2.4, 0x5e4328, 5.6 + dx, 1.2, -2, 6)
+    box(c, 3.0, 0.18, 0.6, 0x3a322d, 5.6, 3.0, -2)
+    // 役人の持つ長い棒（突棒・袖がらみ）の立て掛け
+    for (let k = 0; k < 3; k++) cyl(c, 0.04, 0.04, 3.2, 0x5e4328, -6 + k * 0.35, 1.7, -3, 5)
+    // 通行を待つ旅人の列と、役人
+    figure(c, 0x2b4a7a, -1.0, 0, -3.2, 1.0)
+    figure(c, 0x7a3a2e, 1.1, 0, -1.8, 1.0)
+    figure(c, 0x5b7a3a, -0.6, 0, 0.4, 1.0)
+    figure(c, 0x222222, 0.2, 0.55, -9.2, 1.15)
+    figure(c, 0x222222, -2.6, 0.55, -9.2, 1.15)
   },
   stonegate(c) {
     for (const side of [-1, 1]) {
