@@ -102,23 +102,11 @@
   {
    "type": "shuku",
    "name": "三島",
-   "meibutsu": {
-    "id": "mishima_unagi",
-    "name": "三島のうなぎ",
-    "price": 240,
-    "memories": 5
-   },
    "eventId": "mishima_taisha"
   },
   {
    "type": "shuku",
    "name": "沼津",
-   "meibutsu": {
-    "id": "numazu_himono",
-    "name": "沼津の干物",
-    "price": 130,
-    "memories": 3
-   },
    "eventId": "numazu_senbon"
   },
   {
@@ -140,12 +128,12 @@
    "type": "shuku",
    "name": "由比",
    "meibutsu": {
-    "id": "yui_sakuraebi",
-    "name": "由比の桜えび",
-    "price": 140,
-    "memories": 4
+    "id": "yui_tenugui",
+    "name": "紺屋の手ぬぐい",
+    "price": 110,
+    "memories": 3
    },
-   "eventId": "yui_sakuraebi"
+   "eventId": "yui_konya"
   },
   {
    "type": "event",
@@ -251,12 +239,6 @@
   {
    "type": "shuku",
    "name": "浜松",
-   "meibutsu": {
-    "id": "hamana_unagi",
-    "name": "浜名湖のうなぎ",
-    "price": 260,
-    "memories": 5
-   },
    "eventId": "hamamatsu_shusse"
   },
   {
@@ -272,7 +254,13 @@
    "type": "shuku",
    "name": "新居",
    "mustStop": true,
-   "eventId": "arai_sekisho"
+   "eventId": "arai_sekisho",
+   "meibutsu": {
+    "id": "hamana_unagi",
+    "name": "浜名湖のうなぎ",
+    "price": 260,
+    "memories": 5
+   }
   },
   {
    "type": "shuku",
@@ -344,13 +332,7 @@
   {
    "type": "shuku",
    "name": "宮",
-   "eventId": "miya_shichiri",
-   "meibutsu": {
-    "id": "atsuta_kishimen",
-    "name": "きしめん",
-    "price": 90,
-    "memories": 3
-   }
+   "eventId": "miya_shichiri"
   },
   {
    "type": "event",
@@ -420,12 +402,6 @@
   {
    "type": "shuku",
    "name": "土山",
-   "meibutsu": {
-    "id": "tsuchiyama_cha",
-    "name": "土山茶",
-    "price": 110,
-    "memories": 3
-   },
    "eventId": "tsuchiyama_ame"
   },
   {

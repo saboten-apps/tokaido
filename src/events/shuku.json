@@ -283,23 +283,22 @@
     ]
   },
   {
-    "id": "yui_sakuraebi",
-    "title": "桜えびの浜",
-    "description": "由比の浜では、桜えびの干し場が広がっている。薄紅の色が、陽に映えて美しい。",
+    "id": "yui_konya",
+    "title": "正雪紺屋の藍染め",
+    "description": "由比宿には、本藍染めの紺屋がある。由比正雪の生家と伝わる店で、手ぬぐいなどの手ごろな品も並んでいる。",
     "weight": 1,
     "once": true,
     "special": true,
     "choices": [
       {
-        "label": "干したての桜えびを、分けてもらう",
+        "label": "手ぬぐいを買って、旅の記念にする",
         "effects": {
-          "money": -30,
-          "stamina": 6,
-          "memories": 2
+          "money": -40,
+          "memories": 3
         }
       },
       {
-        "label": "浜の働き手と、立ち話をする",
+        "label": "藍がめを見せてもらい、染めの話を聞く",
         "effects": {
           "memories": 3,
           "reputation": 1
