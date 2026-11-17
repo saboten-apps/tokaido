@@ -88,3 +88,12 @@ button small { font-size: 12px; opacity: 0.8; }
 .role-chip { font-size: 11px; background: #efe3c8; border: 1px solid #d8c7a2; border-radius: 4px; padding: 0 6px; }
 .role-desc { color: #6b5a48; line-height: 1.5; }
 .role-sub { color: #8a7660; font-size: 11px; }
+.conn { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: #e6f0e6; display: inline-block; margin-bottom: 6px; }
+.conn-reconnecting, .conn-connecting { background: #fbefc9; }
+.conn-closed { background: #f6d6d0; }
+.conn-error { color: var(--accent); font-size: 13px; }
+.seats { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.seats li { background: #fffaf0; border: 1px solid #d8c7a2; border-radius: 8px; padding: 6px 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seats .seat-cpu { color: #8a7660; border-style: dashed; }
+.auto-note { background: #fbefc9; border-radius: 8px; padding: 6px 10px; margin: 6px 0; font-size: 13px; }
+.waiting { text-align: center; color: #6b5a48; padding: 12px; }

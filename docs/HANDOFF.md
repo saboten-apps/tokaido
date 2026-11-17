@@ -36,9 +36,13 @@
 - 称号：`src/data/titles.json`（条件式）。京都に着いた人だけが、結果画面で得る。取得率（CPU4人×400）：川止めの客41%・思い出の旅人38%・名物通27%・一番乗り25%・関所の顔16%・人望の旅人8%・思い出ぶくろ3%。「倹約の旅人」（路銀1000文以上で到着）は CPU では0%（人間なら狙える）。
 - 旅日記：`GameState.diary`。出来事・関所・名物・分かれ道・本陣・到着を、日・場所つきで記録。結果画面の「〇〇の東海道」で読む。
 
-## オンライン対戦（ROADMAP D2、作業中 2026-11-17）
-- **済み（段階1）**：`src/engine/room.ts`（ロビー・席・身分の選択・持ち時間・切断・自動プレイ）、`src/online/protocol.ts`（通信の形式。行動は厳しく検証）、`src/online/roomServer.ts`（認証・重複送信の防止・猶予・アラーム）。umaregacya のものを、旅向けに作り替えた（1ターンの年数・人生の目標を外し、身分の選択を足した）。テスト：`room.test.ts`・`roomServer.test.ts`。
-- **未**：Worker（`worker/`・`wrangler.jsonc`）、クライアント（`src/online/client.ts`）、ロビーとオンラインの画面。デプロイには、Cloudflare の Worker 名とトークンが要る（この環境にはない）。
+## オンライン対戦（ROADMAP D2、2026-11-17）
+- **ローカルで動作確認済み**：`npm run test:e2e:online`（`wrangler dev --local` に、2つのブラウザでつなぎ、部屋づくり→招待リンクで入室→身分の選択→準備→開始→最後まで→同じ結果、を確認。約3分）。
+- 構成：`src/engine/room.ts`（ロビー・席・身分・持ち時間・切断・自動プレイ）／`src/online/protocol.ts`（通信の形式。行動は厳しく検証）／`roomServer.ts`（認証・重複送信の防止・猶予・アラーム。純粋な関数）／`client.ts`（WebSocket・つなぎ直し・ack・再送）／`worker/`（`index.ts` が入口、`roomDO.ts` が Durable Object）／`wrangler.jsonc`。画面は `src/components/online/OnlineScreen.tsx`（入口・ロビー・対戦・結果）と、共有部品 `src/components/parts.tsx`。umaregacya のものを旅向けに作り替えた（1ターンの年数・人生の目標を外し、身分の選択を足した）。
+- 遊び方：タイトル画面の「オンラインで遊ぶ」→ 部屋をつくる → コード（5文字）か招待リンク（`/?room=CODE`）を伝える。席が余れば CPU が埋める。持ち時間は1人45秒、続けて2回切らすと CPU が代わりに進める（「自分で続ける」で戻れる）。切断しても、8秒の猶予のあとに自動プレイで進み、つなぎ直せば席に戻れる。
+- **未**：オンラインでの駒の移動アニメーション（いまは届いた状態を、すぐ映す。サイコロの目と通知は出る）。同じ画面での演出の共通化。
+- **デプロイするには**（ユーザーが決めてから）：Cloudflare の Worker 名（`wrangler.jsonc` の `name`、いまは `tokaido-sugoroku`）と認証情報（トークン）が要る。`npm run build` → `npx wrangler versions upload --assets dist`（プレビュー）、`npx wrangler deploy`（本番。ユーザーの指示があるときだけ）。Durable Object は SQLite 方式（`migrations`）。**この環境には認証情報がないので、デプロイは未実施**。
+- 注意：Claude のプレビューページ（静的な1枚）では、オンラインは動かない（Worker がないため）。
 
 ## 旅人の身分（ROADMAP H、2026-11-17）
 - **セーブは SCHEMA_VERSION 3**（`Player.role` を追加。移行は `MIGRATIONS[2]`＝「ふつうの旅人」に。v1 からも続けて移行でき、テストあり）。
@@ -82,6 +86,11 @@
 - 旅日記（umaregacya の chronicle を作り直す）
 
 ## 記録（新しいものを上に）
+### 2026-11-17 Claude（ROADMAP D2：オンライン対戦）
+- 部屋・通信・サーバー処理・クライアント・Worker・画面を移植。`parts.tsx` に画面の部品を切り出し（ひとり用とオンラインで共有）。lint から `.wrangler` を除外。
+- 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
+- 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
+
 ### 2026-11-17 Claude（ROADMAP H：旅人の身分）
 - SCHEMA_VERSION 3、身分6つ、タイトル画面の選択、札と結果に身分、シミュレーションを身分ごとの集計に。
 - 確認：`npm run check`（単体53件）、`npm run test:e2e`（18件：desktop・mobile × 9）。

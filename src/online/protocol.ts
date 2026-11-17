@@ -55,7 +55,9 @@ export const REQ_ID_MAX = 64
 export const MESSAGE_MAX_BYTES = 4096
 
 export function cleanName(raw: unknown): string {
-  const s = typeof raw === 'string' ? raw.replace(/[\u0000-\u001f<>]/g, '').trim().slice(0, NAME_MAX) : ''
+  // 制御文字（コード 0〜31）と < > を取り除く
+  const stripped = typeof raw === 'string' ? [...raw].filter((c) => c.charCodeAt(0) > 31 && c !== '<' && c !== '>').join('') : ''
+  const s = stripped.trim().slice(0, NAME_MAX)
   return s || '名無し'
 }
 

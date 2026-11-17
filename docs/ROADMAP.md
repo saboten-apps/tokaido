@@ -60,7 +60,7 @@
 
 ## D：複数人
 - **D1 同じ端末で交代**：タイトル画面で人間の人数と名前を入れる（エンジンは `humanNames` 対応済み）。手番の人を大きく表示。
-- **D2 オンライン**：umaregacya の `room.ts`・`src/online/`・`worker/`（ロビー・席・持ち時間・自動プレイ・Durable Object）を移植。OGP・計測・リダイレクトは持ってこない。
+- **D2 オンライン（ローカルで動作確認済み 2026-11-17。デプロイは未）**：umaregacya の `room.ts`・`src/online/`・`worker/`（ロビー・席・持ち時間・自動プレイ・Durable Object）を移植。OGP・計測・リダイレクトは持ってこない。
   - 必要なもの：Cloudflare の Worker 名、Cloudflare のトークン（この環境に登録）。プレビューは `wrangler versions upload`。
 
 ## E：絵

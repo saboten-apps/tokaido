@@ -1,0 +1,17 @@
+{
+  // オンライン対戦（Durable Objects ＋ WebSocket）を含む Worker。静的ファイル（dist）も同じ Worker が配る。
+  // 本番へのデプロイは、人が決めて行う（Worker 名・認証情報が要る）。docs/HANDOFF.md を参照。
+  "name": "tokaido-sugoroku",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // /api/* は、静的ファイルを経由せず、先に Worker が受ける
+    "run_worker_first": ["/api/*"]
+  },
+  "durable_objects": {
+    "bindings": [{ "name": "ROOMS", "class_name": "RoomDO" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["RoomDO"] }]
+}
