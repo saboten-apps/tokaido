@@ -9,7 +9,7 @@ import { REGIONS, regionAt, shukuNumber } from '../engine'
 import scenesJson from '../data/scenes.json'
 import { PrintCard } from './parts'
 import { fadeMs } from './speed'
-import { MOODS, addWeather, buildMotifs, makeCtx, makePiece, type Mood } from './sceneKit'
+import { MOODS, addWeather, buildMotifs, makeCtx, makePiece, outlineAll, skyDome, skyFor, toon, type Mood } from './sceneKit'
 import type { Weather } from '../engine'
 import type { BoardState, Player } from '../types/game'
 
@@ -124,11 +124,14 @@ export default function SceneStage({ board, players, activeId, focusId, position
     el.appendChild(renderer.domElement)
     renderer.domElement.setAttribute('data-testid', 'board3d-canvas')
 
-    const sky = new THREE.Color(mood.sky ?? region.sky)
-    const fogColor = new THREE.Color(mood.fog ?? region.fog)
-    renderer.setClearColor(sky)
+    const stops = skyFor(def.mood, region.sky)
+    const dome = skyDome(stops)
+    // 遠くは、地平の色にとける（霧の色＝地平の色）
+    const fogColor = new THREE.Color(stops.horizon)
+    renderer.setClearColor(new THREE.Color(stops.mid))
     const scene = new THREE.Scene()
-    scene.background = sky
+    scene.background = new THREE.Color(stops.horizon)
+    scene.add(dome)
     scene.fog = new THREE.Fog(fogColor, mood.near, mood.far)
     scene.add(new THREE.HemisphereLight(def.mood === 'night' ? 0x6f86c8 : 0xfff6e0, 0x8a7a55, mood.hemi))
     const sun = new THREE.DirectionalLight(mood.sunColor, mood.sun)
@@ -139,26 +142,29 @@ export default function SceneStage({ board, players, activeId, focusId, position
     scene.add(world)
     const ctx = makeCtx(world, rng(hash(tile.name)), region, def.mood)
     // 地面と道
-    const groundMat = new THREE.MeshStandardMaterial({ color: mood.ground ?? region.ground, roughness: 1 })
+    const groundMat = toon(mood.ground ?? region.ground)
     const ground = new THREE.Mesh(new THREE.PlaneGeometry(260, 260), groundMat)
     ground.rotation.x = -Math.PI / 2
     ground.position.set(0, -0.06, -40)
     world.add(ground)
-    const grass = new THREE.Mesh(new THREE.PlaneGeometry(260, 120), new THREE.MeshStandardMaterial({ color: mood.ground ?? region.grass, roughness: 1 }))
+    const grass = new THREE.Mesh(new THREE.PlaneGeometry(260, 120), toon(mood.ground ?? region.grass))
     grass.rotation.x = -Math.PI / 2
     grass.position.set(0, -0.05, -70)
     world.add(grass)
-    const road = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.1, 80), new THREE.MeshStandardMaterial({ color: def.mood === 'snow' ? 0xdfe6ee : region.road, roughness: 1 }))
+    const road = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.1, 80), toon(def.mood === 'snow' ? 0xdfe6ee : region.road))
     road.position.set(0, 0.0, -24)
+    road.geometry.userData.noOutline = true
     world.add(road)
 
     buildMotifs(ctx, def.motifs)
+    if (!LITE) outlineAll(world)
     if (mood.particles) addWeather(ctx, mood.particles)
 
     // 駒：その場所にいる旅人だけを、手前に並べる
     const pieces = new Map<string, THREE.Group>()
     players.forEach((p, idx) => {
       const g = makePiece(new THREE.Color(pieceColors[idx % pieceColors.length]))
+      if (!LITE) outlineAll(g)
       world.add(g)
       pieces.set(p.id, g)
     })
@@ -193,6 +199,7 @@ export default function SceneStage({ board, players, activeId, focusId, position
       const y = THREE.MathUtils.lerp(2.0, 4.8, e)
       camera.position.set(Math.sin(az) * R, y, -9 + Math.cos(az) * R)
       camera.lookAt(0, 5.2, -10)
+      dome.position.copy(camera.position)
       // 旅人：その場所にいる人だけ、手前に並べる。道を歩く旅人は、遠ざかる。着いた旅人は、遠くから歩いてくる
       const cur = live.current
       const tr = travelRef.current
@@ -255,6 +262,8 @@ export default function SceneStage({ board, players, activeId, focusId, position
           x.dispose()
         }
       })
+      dome.geometry.dispose()
+      ;(dome.material as THREE.Material).dispose()
       renderer.dispose()
       renderer.domElement.remove()
     }

@@ -232,3 +232,11 @@ button small { font-size: 12px; opacity: 0.8; }
 .stamp-seal small { font-size: 12px; opacity: .8; }
 @keyframes stamp-down { 0% { opacity: 0; transform: rotate(-6deg) scale(2.4); } 18% { opacity: 1; transform: rotate(-6deg) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: rotate(-6deg) scale(1); } }
 @media (prefers-reduced-motion: reduce) { .stamp-seal { animation: cutin-fade 1.2s ease forwards; } }
+
+/* 浮世絵の摺りもの風：紙の縁のかげと、うっすらした紙の目 */
+.scene-wrap::after { content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: 12px; z-index: 1;
+  background:
+    radial-gradient(ellipse at center, rgba(0,0,0,0) 62%, rgba(60,40,15,0.28) 100%),
+    repeating-linear-gradient(0deg, rgba(120,90,40,0.035) 0 1px, rgba(0,0,0,0) 1px 3px);
+  box-shadow: inset 0 0 0 3px rgba(243,234,214,0.9), inset 0 0 0 4px rgba(120,90,50,0.45); }
+.scene-print { z-index: 2; }

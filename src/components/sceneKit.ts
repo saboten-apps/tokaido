@@ -29,6 +29,21 @@ export const MOODS: Record<Mood, MoodDef> = {
   mist: { sky: '#d0d9d6', fog: '#d4dcd9', near: 14, far: 70, hemi: 1.5, sun: 0.7, sunColor: 0xf0f4ee },
 }
 
+/** 浮世絵風：影を3段の平らな色にする（グラデーションのない、摺りもののような面） */
+let gradient: THREE.DataTexture | null = null
+function toonGradient(): THREE.DataTexture {
+  if (!gradient) {
+    gradient = new THREE.DataTexture(new Uint8Array([120, 120, 120, 255, 190, 190, 190, 255, 255, 255, 255, 255]), 3, 1, THREE.RGBAFormat)
+    gradient.minFilter = THREE.NearestFilter
+    gradient.magFilter = THREE.NearestFilter
+    gradient.needsUpdate = true
+  }
+  return gradient
+}
+export function toon(color: number | string | THREE.Color, side: THREE.Side = THREE.FrontSide): THREE.MeshToonMaterial {
+  return new THREE.MeshToonMaterial({ color, gradientMap: toonGradient(), side })
+}
+
 export interface Ctx {
   g: THREE.Group
   rand: () => number
@@ -37,11 +52,11 @@ export interface Ctx {
   /** 毎フレーム呼ぶもの（t＝経過秒、dt＝前のフレームからの秒） */
   effects: Array<(t: number, dt: number) => void>
   /** 材質（同じ色は使い回す） */
-  m: (color: number) => THREE.MeshStandardMaterial
+  m: (color: number) => THREE.MeshToonMaterial
 }
 
 export function makeCtx(g: THREE.Group, rand: () => number, region: RegionDef, mood: Mood): Ctx {
-  const cache = new Map<number, THREE.MeshStandardMaterial>()
+  const cache = new Map<number, THREE.MeshToonMaterial>()
   return {
     g,
     rand,
@@ -51,7 +66,7 @@ export function makeCtx(g: THREE.Group, rand: () => number, region: RegionDef, m
     m: (color) => {
       let x = cache.get(color)
       if (!x) {
-        x = new THREE.MeshStandardMaterial({ color, roughness: 0.85, flatShading: true })
+        x = toon(color)
         cache.set(color, x)
       }
       return x
@@ -81,8 +96,8 @@ function cone(c: Ctx, r: number, h: number, color: number, x: number, y: number,
   c.g.add(m)
   return m
 }
-function plane(c: Ctx, w: number, d: number, color: number, x: number, y: number, z: number, rough = 0.5): THREE.Mesh {
-  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshStandardMaterial({ color, roughness: rough }))
+function plane(c: Ctx, w: number, d: number, color: number, x: number, y: number, z: number, _rough = 0.5): THREE.Mesh {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), toon(color))
   m.rotation.x = -Math.PI / 2
   m.position.set(x, y, z)
   c.g.add(m)
@@ -417,7 +432,7 @@ export const BUILDERS: Record<string, Builder> = {
   tunnel(c) {
     const z = -14
     for (const side of [-1, 1]) box(c, 1.4, 6, 3.2, 0x8c4a3a, side * 3.9, 3, z)
-    const arc = new THREE.Mesh(new THREE.CylinderGeometry(4.0, 4.0, 3.2, 28, 1, true, 0, Math.PI), new THREE.MeshStandardMaterial({ color: 0x8c4a3a, side: THREE.DoubleSide, roughness: 1 }))
+    const arc = new THREE.Mesh(new THREE.CylinderGeometry(4.0, 4.0, 3.2, 28, 1, true, 0, Math.PI), toon(0x8c4a3a, THREE.DoubleSide))
     arc.rotation.set(Math.PI / 2, 0, Math.PI / 2)
     arc.position.set(0, 6, z)
     c.g.add(arc)
@@ -621,14 +636,91 @@ export function addWeather(c: Ctx, kind: 'rain' | 'snow'): THREE.Object3D {
 /** 駒（笠をかぶった旅人） */
 export function makePiece(color: THREE.Color): THREE.Group {
   const g = new THREE.Group()
-  const body = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.44, 0.95, 16), new THREE.MeshStandardMaterial({ color }))
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.44, 0.95, 16), toon(color))
   body.position.y = 0.55
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.34, 16, 12), new THREE.MeshStandardMaterial({ color: 0xf1d3b0 }))
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.34, 16, 12), toon(0xf1d3b0))
   head.position.y = 1.32
-  const hat = new THREE.Mesh(new THREE.ConeGeometry(0.62, 0.34, 16), new THREE.MeshStandardMaterial({ color: 0xc9b27a }))
+  const hat = new THREE.Mesh(new THREE.ConeGeometry(0.62, 0.34, 16), toon(0xc9b27a))
   hat.position.y = 1.66
-  const pack = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.55, 0.3), new THREE.MeshStandardMaterial({ color: 0x6e5636 }))
+  const pack = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.55, 0.3), toon(0x6e5636))
   pack.position.set(0, 0.7, -0.38)
   g.add(body, head, hat, pack)
   return g
+}
+
+
+/** 空：上が濃く、地平に向かって明るく（広重の「ぼかし摺り」）。上・中・地平の3色 */
+export interface SkyStops {
+  top: string
+  mid: string
+  horizon: string
+}
+
+export const SKIES: Record<Exclude<Mood, 'day'>, SkyStops> = {
+  morning: { top: '#4a78a6', mid: '#ecd0b6', horizon: '#f2a27a' },
+  dusk: { top: '#3d5384', mid: '#dc8e6e', horizon: '#f5bd78' },
+  night: { top: '#0a1130', mid: '#1b2a55', horizon: '#33437a' },
+  rain: { top: '#6a7a88', mid: '#a5b2ba', horizon: '#d2dadd' },
+  snow: { top: '#1c2943', mid: '#3a4b70', horizon: '#8294b4' },
+  mist: { top: '#a7b6b2', mid: '#ccd6d2', horizon: '#eaf0ea' },
+}
+
+/** 晴れの空は、県の空の色を中ほどにして、上を濃い藍、地平を淡い黄にする */
+export function skyFor(mood: Mood, regionSky: string): SkyStops {
+  if (mood !== 'day') return SKIES[mood]
+  const c = new THREE.Color(regionSky)
+  const top = c.clone().lerp(new THREE.Color('#1f5f9a'), 0.85)
+  const horizon = c.clone().lerp(new THREE.Color('#fbeec8'), 0.7)
+  return { top: `#${top.getHexString()}`, mid: regionSky, horizon: `#${horizon.getHexString()}` }
+}
+
+/** 空のドーム：カメラに付いて動く大きな半球。地平は明るく、見上げるほど濃い（頂点の色で、高さごとに決める） */
+export function skyDome(stops: SkyStops): THREE.Mesh {
+  const R = 150
+  const geo = new THREE.SphereGeometry(R, 32, 24)
+  const pos = geo.getAttribute('position')
+  const top = new THREE.Color(stops.top)
+  const mid = new THREE.Color(stops.mid)
+  const hor = new THREE.Color(stops.horizon)
+  const col = new Float32Array(pos.count * 3)
+  const c = new THREE.Color()
+  for (let i = 0; i < pos.count; i++) {
+    // 高さ 0（地平）〜0.55（見上げた先）で、地平 → 中 → 上 と変える
+    const h = Math.max(0, pos.getY(i) / R)
+    const t = Math.min(1, h / 0.42)
+    if (t < 0.4) c.copy(hor).lerp(mid, t / 0.4)
+    else c.copy(mid).lerp(top, (t - 0.4) / 0.6)
+    col[i * 3] = c.r
+    col[i * 3 + 1] = c.g
+    col[i * 3 + 2] = c.b
+  }
+  geo.setAttribute('color', new THREE.BufferAttribute(col, 3))
+  geo.userData.noOutline = true
+  const mesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.BackSide, fog: false, depthWrite: false }))
+  mesh.renderOrder = -1
+  return mesh
+}
+
+/** 輪郭線：建物・木・岩などの縁に、濃い藍の細い線を引く（地面・空・天気は除く）。部品が多すぎるときは引かない */
+export function outlineAll(group: THREE.Object3D, color = 0x1d2a44, maxMeshes = 700): number {
+  const meshes: THREE.Mesh[] = []
+  group.traverse((o) => {
+    const m = o as THREE.Mesh
+    if (m.isMesh && m.geometry && !(m.geometry as THREE.BufferGeometry).userData.noOutline) meshes.push(m)
+  })
+  if (meshes.length > maxMeshes) return 0
+  const mat = new THREE.LineBasicMaterial({ color })
+  let n = 0
+  for (const m of meshes) {
+    const geo = m.geometry as THREE.BufferGeometry
+    const pos = geo.getAttribute('position')
+    if (!pos || pos.count > 2000) continue
+    const type = geo.type
+    // 平らな地面（板）には引かない
+    if (type === 'PlaneGeometry') continue
+    const line = new THREE.LineSegments(new THREE.EdgesGeometry(geo, 35), mat)
+    m.add(line)
+    n += 1
+  }
+  return n
 }
