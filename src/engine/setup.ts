@@ -41,6 +41,7 @@ function createPlayer(id: string, name: string, personality: CpuPersonalityId | 
     meibutsu: [],
     flags: [],
     usedOnceEvents: [],
+    lodging: 'hatago',
     restDays: 0,
     arrivedDay: null,
     arrivalRank: null,
@@ -79,5 +80,6 @@ export function createGame(options: NewGameOptions = {}, config: GameConfig = DE
     pendingEvent: null,
     turnCtl: { activeIndex: 0, awaiting: null, meibutsuAfterEvent: false },
     log: [{ day: 1, playerId: null, message: '日本橋を発つ。目指すは京都・三条大橋。' }],
+    diary: [],
   }
 }

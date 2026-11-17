@@ -5,7 +5,7 @@ import { canHurry, innCostFor } from './board'
 import { isChoiceAvailable } from './events'
 import { STAT_KEYS } from './stats'
 import type { Rng } from './rng'
-import type { CpuPersonality, EventChoice, ForkDef, GameEvent, Meibutsu, Player, StatDelta } from '../types/game'
+import type { CpuPersonality, EventChoice, ForkDef, GameEvent, LodgingId, Meibutsu, Player, StatDelta } from '../types/game'
 
 /** 路銀は桁が大きいので、評価では 100文 = 1 として扱う */
 const MONEY_SCALE = 100
@@ -54,6 +54,11 @@ export function chooseCpuChoice(player: Player, event: GameEvent, config: GameCo
 /** サイコロの代わりに、働いて稼ぐか */
 export function shouldCpuWork(player: Player, config: GameConfig): boolean {
   return player.stats.money < config.balance.travel.cpuWorkBelowMoney
+}
+
+/** 泊まり方：路銀に余裕がなければ木賃宿 */
+export function chooseCpuLodging(player: Player, config: GameConfig): LodgingId {
+  return player.stats.money < config.balance.travel.innCost * 4 ? 'kichin' : 'hatago'
 }
 
 export type CpuMove = 'work' | 'hurry' | 'roll'

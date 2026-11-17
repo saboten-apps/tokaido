@@ -3,7 +3,7 @@
 
 import type { GameConfig } from './config'
 import { randomInt, type Rng } from './rng'
-import type { BoardState, ForkDef, Player, PlayerBoardState, TileDef } from '../types/game'
+import type { BoardState, ForkDef, LodgingId, Player, PlayerBoardState, TileDef } from '../types/game'
 
 export function createInitialBoardState(players: readonly Player[], config: GameConfig): BoardState {
   const tiles: TileDef[] = config.board.main.map((t) => ({ ...t }))
@@ -99,11 +99,16 @@ export function syncLaneFlag(board: BoardState, player: Player, pos: number): vo
   if (want) player.flags.push(want)
 }
 
-/** いまの宿代。評判が高いと割引、低いと割増（balance.json の reputation） */
-export function innCostFor(player: Player, config: GameConfig): number {
-  const base = config.balance.travel.innCost
+/** 宿代。泊まり方の割合と、評判の割引・割増（balance.json の lodging・reputation）をかけたもの */
+export function innCostFor(player: Player, config: GameConfig, lodging: LodgingId = player.lodging): number {
+  const base = config.balance.travel.innCost * config.balance.lodging[lodging].costRate
   const r = config.balance.reputation
   if (player.stats.reputation >= r.goodAt) return Math.round(base * r.goodInnRate)
   if (player.stats.reputation < r.badBelow) return Math.round(base * r.badInnRate)
-  return base
+  return Math.round(base)
+}
+
+/** 本陣に招かれるか（評判が高い人が、宿場で日が終わるとき） */
+export function invitedToHonjin(player: Player, config: GameConfig): boolean {
+  return player.stats.reputation >= config.balance.lodging.honjin.reputationAt
 }

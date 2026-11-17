@@ -21,7 +21,14 @@ interface SaveEnvelope {
  * 旧バージョンのセーブデータを 1 段階ずつ新しい形式に変換する。
  * キーは変換「元」のバージョン。SCHEMA_VERSION を上げたら、ここに追加してテストを書く。
  */
-export const MIGRATIONS: Record<number, (state: Record<string, unknown>) => Record<string, unknown>> = {}
+export const MIGRATIONS: Record<number, (state: Record<string, unknown>) => Record<string, unknown>> = {
+  // v1 → v2：泊まり方（lodging）と旅日記（diary）が加わった
+  1: (state) => ({
+    ...state,
+    players: ((state.players as Array<Record<string, unknown>>) || []).map((p) => ({ ...p, lodging: p.lodging ?? 'hatago' })),
+    diary: Array.isArray(state.diary) ? state.diary : [],
+  }),
+}
 
 function defaultStorage(): SaveStorage | null {
   try {

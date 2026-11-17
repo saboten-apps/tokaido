@@ -1,7 +1,7 @@
 // ゲーム全体の型定義。ゲームの状態はすべて GameState に集約する（保存・オンラインで、そのまま送れる形）。
 
 /** セーブデータ・GameState の構造バージョン。構造を変えたら上げて、storage/saveGame.ts の MIGRATIONS に移行を書く */
-export const SCHEMA_VERSION = 1
+export const SCHEMA_VERSION = 2
 
 /** 旅人の能力値。money＝路銀（文）、stamina＝体力、memories＝思い出、reputation＝評判 */
 export type StatKey = 'money' | 'stamina' | 'memories' | 'reputation'
@@ -10,6 +10,9 @@ export type Stats = Record<StatKey, number>
 
 /** 能力値の変化量（未指定は変化なし） */
 export type StatDelta = Partial<Stats>
+
+/** 泊まり方（木賃宿＝安い・回復小、旅籠＝ふつう。評判が高いと本陣に招かれる） */
+export type LodgingId = 'kichin' | 'hatago'
 
 /** CPU の旅の流儀 */
 export type CpuPersonalityId = 'steady' | 'gourmet' | 'hasty' | 'social'
@@ -100,6 +103,8 @@ export interface Player {
   meibutsu: string[]
   flags: string[]
   usedOnceEvents: string[]
+  /** 泊まり方の好み（宿場で日が終わるときに使う） */
+  lodging: LodgingId
   /** 足止めの残り日数（川止め・寝込みなど。0 なら動ける） */
   restDays: number
   /** 京都に着いた日（着いていなければ null） */
@@ -183,6 +188,36 @@ export interface TurnControl {
 
 export type GamePhase = 'playing' | 'finished'
 
+/** 旅日記の1行 */
+export type DiaryKind = 'event' | 'sekisho' | 'meibutsu' | 'fork' | 'inn' | 'arrive'
+
+export interface DiaryEntry {
+  day: number
+  playerId: string
+  /** その場所（マスの名前） */
+  place: string
+  kind: DiaryKind
+  text: string
+}
+
+export interface TitleCondition {
+  minMemories?: number
+  minMeibutsu?: number
+  minReputation?: number
+  minMoney?: number
+  arrivalRank?: number
+  /** 起きた専用イベント（すべて） */
+  hasEvents?: string[]
+  hasFlags?: string[]
+}
+
+export interface TitleDef {
+  id: string
+  name: string
+  desc: string
+  when: TitleCondition
+}
+
 export interface GameState {
   schemaVersion: number
   seed: number
@@ -195,6 +230,8 @@ export interface GameState {
   pendingEvent: PendingEvent | null
   turnCtl: TurnControl
   log: LogEntry[]
+  /** 旅日記（出来事・名物・関所・分かれ道・到着。結果画面で読む） */
+  diary: DiaryEntry[]
 }
 
 export interface ScoreBreakdown {

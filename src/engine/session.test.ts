@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { DEFAULT_CONFIG } from './config'
 import { goalIndex, innCostFor, isTired, maxFaceFor, recordCamp } from './board'
 import { isChoiceAvailable } from './events'
+import { earnedTitles } from './titles'
 import { rankPlayers } from './scoring'
 import { SessionError, autoAct, getAwaiting, runUntilHuman, submitAction } from './session'
 import { createGame } from './setup'
@@ -122,7 +123,7 @@ describe('評判の効果', () => {
 
   it('日の終わりに、評判の高い人は割引の宿代を払う', () => {
     const s = soloHuman()
-    s.players[0].stats.reputation = 80
+    s.players[0].stats.reputation = 50
     s.players[0].stats.money = 1000
     const out = runUntilHuman(submitAction(s, 'p0', { type: 'work' }, cfg).state, cfg).state
     // 日本橋（出発地）で泊まる：働いた分を足して、割引の宿代を引く
@@ -170,5 +171,52 @@ describe('早足と野宿', () => {
     expect(maxFaceFor(p, cfg)).toBe(cfg.balance.travel.tiredMaxFace)
     recordCamp(p, false)
     expect(isTired(p, cfg)).toBe(false)
+  })
+})
+
+describe('宿の格・本陣・旅日記・称号', () => {
+  it('木賃宿は旅籠より安い', () => {
+    const p = soloHuman().players[0]
+    p.stats.reputation = 30
+    expect(innCostFor(p, cfg, 'kichin')).toBeLessThan(innCostFor(p, cfg, 'hatago'))
+  })
+
+  it('泊まり方を決めても番は進まない', () => {
+    const s = soloHuman()
+    const out = submitAction(s, 'p0', { type: 'lodging', value: 'kichin' }, cfg).state
+    expect(out.players[0].lodging).toBe('kichin')
+    expect(getAwaiting(out)).toEqual({ kind: 'roll', playerId: 'p0' })
+    expect(out.turnCtl.activeIndex).toBe(s.turnCtl.activeIndex)
+    expect(() => submitAction(s, 'p0', { type: 'lodging', value: 'honjin' as never }, cfg)).toThrow(SessionError)
+  })
+
+  it('評判が高いと本陣に招かれ、宿代なしで体力と思い出が増える', () => {
+    const s = soloHuman()
+    const p = s.players[0]
+    p.stats.reputation = cfg.balance.lodging.honjin.reputationAt
+    p.stats.money = 500
+    p.stats.stamina = 40
+    const out = runUntilHuman(submitAction(s, 'p0', { type: 'work' }, cfg).state, cfg).state
+    const me = out.players[0]
+    expect(me.stats.money).toBe(500 + cfg.balance.travel.workMoney)
+    expect(me.stats.memories).toBe(cfg.balance.lodging.honjin.memories)
+    expect(out.diary.some((d) => d.kind === 'inn')).toBe(true)
+  })
+
+  it('旅日記に、名物・関所・到着が残る', () => {
+    const end = playOut(soloHuman(9, 3))
+    const kinds = new Set(end.diary.map((d) => d.kind))
+    expect(kinds.has('arrive')).toBe(true)
+    expect(kinds.has('meibutsu')).toBe(true)
+    expect(end.diary.every((d) => d.place && d.text)).toBe(true)
+  })
+
+  it('称号は、京都に着いた人だけが、条件を満たすと得る', () => {
+    const end = playOut(soloHuman(9, 3))
+    const first = end.players.find((p) => p.arrivalRank === 1)!
+    expect(earnedTitles(first, cfg).map((t) => t.id)).toContain('ichibannori')
+    expect(earnedTitles({ ...first, arrivalRank: null }, cfg)).toEqual([])
+    const noble = { ...first, stats: { ...first.stats, memories: 120 } }
+    expect(earnedTitles(noble, cfg).map((t) => t.id)).toContain('omoide_bukuro')
   })
 })

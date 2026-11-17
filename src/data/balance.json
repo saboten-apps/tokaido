@@ -34,7 +34,6 @@
     "tiredStamina": 20,
     "tiredMaxFace": 3,
     "innCost": 120,
-    "innStamina": 22,
     "campStamina": -8,
     "campReputation": 0,
     "teahouseCost": 40,
@@ -123,5 +122,23 @@
     "goodInnRate": 0.75,
     "badBelow": 20,
     "badInnRate": 1.25
+  },
+  "lodging": {
+    "kichin": {
+      "name": "木賃宿",
+      "costRate": 0.5,
+      "stamina": 12
+    },
+    "hatago": {
+      "name": "旅籠",
+      "costRate": 1,
+      "stamina": 22
+    },
+    "honjin": {
+      "name": "本陣",
+      "reputationAt": 70,
+      "stamina": 30,
+      "memories": 2
+    }
   }
 }

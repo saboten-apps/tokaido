@@ -1,0 +1,70 @@
+[
+  {
+    "id": "ichibannori",
+    "name": "一番乗り",
+    "desc": "京都・三条大橋に、いちばん先に着いた。",
+    "when": {
+      "arrivalRank": 1
+    }
+  },
+  {
+    "id": "sekisho_kao",
+    "name": "関所の顔",
+    "desc": "箱根か新居の関所を、評判のよさで通った。",
+    "when": {
+      "hasFlags": [
+        "sekisho:kao"
+      ]
+    }
+  },
+  {
+    "id": "kawadome",
+    "name": "川止めの客",
+    "desc": "大井川で川明けを待ち、宿の旅人と語り明かした。",
+    "when": {
+      "hasFlags": [
+        "took:lane"
+      ]
+    }
+  },
+  {
+    "id": "meibutsu_tsu",
+    "name": "名物通",
+    "desc": "名物を8つ以上味わった。",
+    "when": {
+      "minMeibutsu": 8
+    }
+  },
+  {
+    "id": "omoide_tabi",
+    "name": "思い出の旅人",
+    "desc": "思い出を70以上集めた。",
+    "when": {
+      "minMemories": 70
+    }
+  },
+  {
+    "id": "omoide_bukuro",
+    "name": "思い出ぶくろ",
+    "desc": "思い出を100以上集めた。",
+    "when": {
+      "minMemories": 100
+    }
+  },
+  {
+    "id": "jinbo",
+    "name": "人望の旅人",
+    "desc": "道中で、評判を60以上に高めた。",
+    "when": {
+      "minReputation": 60
+    }
+  },
+  {
+    "id": "kenyaku",
+    "name": "倹約の旅人",
+    "desc": "路銀を1000文以上残して着いた。",
+    "when": {
+      "minMoney": 1000
+    }
+  }
+]

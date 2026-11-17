@@ -29,7 +29,10 @@
         },
         "requires": {
           "minReputation": 45
-        }
+        },
+        "addFlags": [
+          "sekisho:kao"
+        ]
       }
     ]
   },
@@ -86,7 +89,10 @@
         },
         "requires": {
           "minReputation": 45
-        }
+        },
+        "addFlags": [
+          "sekisho:kao"
+        ]
       }
     ]
   },

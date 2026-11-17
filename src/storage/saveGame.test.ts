@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createGame } from '../engine/setup'
 import { SCHEMA_VERSION } from '../types/game'
-import { SAVE_KEY, createMemoryStorage, deleteSavedGame, loadGame, migrate, saveGame } from './saveGame'
+import { MIGRATIONS, SAVE_KEY, createMemoryStorage, deleteSavedGame, loadGame, migrate, saveGame } from './saveGame'
 
 describe('セーブと読み込み', () => {
   it('保存した状態を、そのまま読み込める', () => {
@@ -30,5 +30,19 @@ describe('セーブと読み込み', () => {
     const steps = { 1: (s: Record<string, unknown>) => ({ ...s, a: 1 }), 2: (s: Record<string, unknown>) => ({ ...s, b: 2 }) }
     expect(migrate({ x: 0 }, 1, steps, 3)).toEqual({ x: 0, a: 1, b: 2, schemaVersion: 3 })
     expect(migrate({ x: 0 }, 1, { 1: steps[1] }, 3)).toBeNull()
+  })
+
+  it('v1 のセーブを読むと、泊まり方と旅日記が補われる', () => {
+    const v1 = structuredClone(createGame({ seed: 5 })) as unknown as Record<string, unknown>
+    delete v1.diary
+    for (const p of v1.players as Array<Record<string, unknown>>) delete p.lodging
+    expect(Object.keys(MIGRATIONS)).toContain('1')
+    const storage = createMemoryStorage()
+    storage.setItem(SAVE_KEY, JSON.stringify({ schemaVersion: 1, savedAt: '2026-11-17', state: v1 }))
+    const loaded = loadGame(storage)!
+    expect(loaded.schemaVersion).toBe(SCHEMA_VERSION)
+    expect(loaded.diary).toEqual([])
+    expect(loaded.players.every((p) => p.lodging === 'hatago')).toBe(true)
+    expect(loaded.players).toHaveLength(v1.players instanceof Array ? v1.players.length : 0)
   })
 })

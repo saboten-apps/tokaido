@@ -3,13 +3,13 @@
 // 状態はすべて GameState に入っているので、保存・復元・サーバーでの再開ができる。
 // 乱数は state.rngState から決まるので、同じ状態と同じ行動なら、同じ結果になる。
 
-import { canHurry, forkAt, innCostFor, pathFrom, recordCamp, rollFace, syncLaneFlag } from './board'
+import { canHurry, forkAt, innCostFor, invitedToHonjin, pathFrom, recordCamp, rollFace, syncLaneFlag } from './board'
 import { DEFAULT_CONFIG, getEvent, type GameConfig } from './config'
-import { chooseCpuBuyMeibutsu, chooseCpuChoice, chooseCpuMove, chooseCpuRoute, shouldCpuWork } from './cpu'
+import { chooseCpuBuyMeibutsu, chooseCpuChoice, chooseCpuLodging, chooseCpuMove, chooseCpuRoute, shouldCpuWork } from './cpu'
 import { applyChoice, drawEvent, isChoiceAvailable, markEventUsed } from './events'
 import { createRng, type Rng } from './rng'
 import { applyDelta, formatDelta } from './stats'
-import type { ForkDef, GameEvent, GameState, Player, TileType } from '../types/game'
+import type { DiaryKind, ForkDef, GameEvent, GameState, LodgingId, Player, TileType } from '../types/game'
 
 /** 人間の行動 */
 export type SessionAction =
@@ -17,6 +17,8 @@ export type SessionAction =
   /** 早足：出目に hurryBonus を足して進むかわりに、体力を余分に使う */
   | { type: 'hurry' }
   | { type: 'work' }
+  /** 泊まり方を決める（振る前の待ちのとき。番は進まない） */
+  | { type: 'lodging'; value: LodgingId }
   | { type: 'event'; choiceIndex: number }
   | { type: 'meibutsu'; buy: boolean }
   | { type: 'fork'; route: 'main' | 'lane' }
@@ -65,6 +67,10 @@ interface Ctx {
   events: SessionEvent[]
 }
 
+function note(s: GameState, p: Player, kind: DiaryKind, text: string): void {
+  s.diary.push({ day: s.day, playerId: p.id, place: s.board.tiles[s.board.playerStates[p.id].position].name, kind, text })
+}
+
 function log(s: GameState, player: Player | null, message: string): void {
   s.log.push({ day: s.day, playerId: player?.id ?? null, message })
 }
@@ -97,10 +103,19 @@ function endOfDay(c: Ctx): void {
   for (const p of s.players) {
     if (hasArrived(p)) continue
     const tile = s.board.tiles[s.board.playerStates[p.id].position]
-    const cost = innCostFor(p, config)
-    const canInn = (tile.type === 'shuku' || tile.type === 'start') && p.stats.money >= cost
-    if (canInn) {
-      p.stats = applyDelta(p.stats, { money: -cost, stamina: t.innStamina }, config.balance.limits)
+    const inTown = tile.type === 'shuku' || tile.type === 'start'
+    if (inTown && invitedToHonjin(p, config)) {
+      const h = config.balance.lodging.honjin
+      p.stats = applyDelta(p.stats, { stamina: h.stamina, memories: h.memories }, config.balance.limits)
+      recordCamp(p, false)
+      log(s, p, `${p.name}は評判を聞きつけた${tile.name}の${h.name}に招かれ、手厚くもてなされた。（思い出+${h.memories}）`)
+      note(s, p, 'inn', `${h.name}に招かれ、手厚くもてなされた。`)
+      continue
+    }
+    const lodging = p.isHuman ? p.lodging : chooseCpuLodging(p, config)
+    const cost = innCostFor(p, config, lodging)
+    if (inTown && p.stats.money >= cost) {
+      p.stats = applyDelta(p.stats, { money: -cost, stamina: config.balance.lodging[lodging].stamina }, config.balance.limits)
       recordCamp(p, false)
     } else {
       p.stats = applyDelta(p.stats, { stamina: t.campStamina, reputation: t.campReputation }, config.balance.limits)
@@ -157,6 +172,7 @@ function buyMeibutsu(c: Ctx, p: Player, tileIndex: number): void {
   p.stats = applyDelta(p.stats, { money: -m.price, memories: m.memories }, c.config.balance.limits)
   p.meibutsu.push(m.id)
   log(c.s, p, `${p.name}は名物「${m.name}」を買った。（路銀-${m.price}文 / 思い出+${m.memories}）`)
+  note(c.s, p, 'meibutsu', `名物「${m.name}」を買った。`)
 }
 
 /** 名物を買えるか（まだ持っていなくて、路銀が足りる） */
@@ -180,8 +196,10 @@ function applyFork(c: Ctx, p: Player, fork: ForkDef, route: 'main' | 'lane'): vo
   const choice = fork[route]
   p.stats = applyDelta(p.stats, choice.effects, c.config.balance.limits)
   c.s.board.playerStates[p.id].route = route
+  if (!p.flags.includes(`took:${route}`)) p.flags.push(`took:${route}`)
   const d = formatDelta(choice.effects)
   log(c.s, p, `${p.name}は「${choice.label}」を選んだ。${choice.story}${d ? `（${d}）` : ''}`)
+  note(c.s, p, 'fork', `「${choice.label}」を選んだ。${choice.story}`)
 }
 
 /** 出来事を始める。人間なら選択待ち、CPU ならその場で選ぶ */
@@ -195,6 +213,7 @@ function startEvent(c: Ctx, p: Player, ev: GameEvent, meibutsuAfter: boolean, ti
   }
   const idx = chooseCpuChoice(p, ev, c.config, c.rng)
   log(c.s, p, `【${ev.title}】${p.name}：${applyChoice(p, ev.choices[idx], c.config, c.rng)}`)
+  note(c.s, p, ev.id.endsWith('sekisho') ? 'sekisho' : 'event', `${ev.title}：${ev.choices[idx].label}`)
   if (meibutsuAfter) offerMeibutsu(c, p, tileIndex)
   else endTurn(c)
 }
@@ -210,6 +229,7 @@ function land(c: Ctx, p: Player, idx: number): void {
       p.arrivedDay = s.day
       p.arrivalRank = rank
       log(s, p, `${p.name}は${s.day}日目に京都・三条大橋に着いた！（${rank}番目）`)
+      note(s, p, 'arrive', `京都・三条大橋に着いた。${s.day}日目、${rank}番目。`)
       c.events.push({ type: 'arrived', playerId: p.id, rank, day: s.day })
       return endTurn(c)
     }
@@ -357,12 +377,18 @@ export function submitAction(
       if (action.type === 'work') doWork(c)
       else doRoll(c, forcedFace, action.type === 'hurry')
       break
+    case 'lodging':
+      if (aw.kind !== 'roll') throw new SessionError('wrong_action', 'いまはその行動はできません')
+      if (action.value !== 'kichin' && action.value !== 'hatago') throw new SessionError('invalid_choice', 'その宿はありません')
+      p.lodging = action.value
+      break
     case 'event': {
       if (aw.kind !== 'event') throw new SessionError('wrong_action', 'いまはその行動はできません')
       const ev = getEvent(config, aw.eventId!)
       const choice = ev.choices[action.choiceIndex]
       if (!choice || !isChoiceAvailable(p, choice)) throw new SessionError('invalid_choice', 'その選択肢は選べません')
       log(s, p, `【${ev.title}】${p.name}：${applyChoice(p, choice, config, c.rng)}`)
+      note(s, p, ev.id.endsWith('sekisho') ? 'sekisho' : 'event', `${ev.title}：${choice.label}`)
       s.pendingEvent = null
       if (s.turnCtl.meibutsuAfterEvent) {
         s.turnCtl.meibutsuAfterEvent = false

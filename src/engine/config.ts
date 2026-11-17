@@ -2,10 +2,11 @@
 
 import balanceJson from '../data/balance.json'
 import boardJson from '../data/board.json'
+import titlesJson from '../data/titles.json'
 import roadEvents from '../events/road.json'
 import specialEvents from '../events/special.json'
 import laneEvents from '../events/lane.json'
-import type { CpuPersonality, CpuPersonalityId, ForkChoiceDef, GameEvent, Stats, TileDef } from '../types/game'
+import type { CpuPersonality, CpuPersonalityId, ForkChoiceDef, GameEvent, Stats, TileDef, TitleDef } from '../types/game'
 
 export interface Range {
   min: number
@@ -21,7 +22,6 @@ export interface Balance {
     tiredStamina: number
     tiredMaxFace: number
     innCost: number
-    innStamina: number
     campStamina: number
     campReputation: number
     teahouseCost: number
@@ -43,6 +43,12 @@ export interface Balance {
     meibutsuPoints: number
     arrivedBonus: number
     arrivalRankBonus: number[]
+  }
+  /** 泊まり方。本陣は、評判が reputationAt 以上のとき、宿場で日が終わると招かれる（無料） */
+  lodging: {
+    kichin: { name: string; costRate: number; stamina: number }
+    hatago: { name: string; costRate: number; stamina: number }
+    honjin: { name: string; reputationAt: number; stamina: number; memories: number }
   }
   /** 評判の効果：goodAt 以上で宿代が goodInnRate 倍、badBelow 未満で badInnRate 倍 */
   reputation: { goodAt: number; goodInnRate: number; badBelow: number; badInnRate: number }
@@ -66,12 +72,14 @@ export interface GameConfig {
   balance: Balance
   board: BoardConfig
   events: GameEvent[]
+  titles: TitleDef[]
 }
 
 export const DEFAULT_CONFIG: GameConfig = {
   balance: balanceJson as Balance,
   board: boardJson as BoardConfig,
   events: [...roadEvents, ...specialEvents, ...laneEvents] as GameEvent[],
+  titles: titlesJson as TitleDef[],
 }
 
 export function getEvent(config: GameConfig, id: string): GameEvent {

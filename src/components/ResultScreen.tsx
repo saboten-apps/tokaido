@@ -1,8 +1,9 @@
-import { DEFAULT_CONFIG, rankPlayers } from '../engine'
+import { DEFAULT_CONFIG, earnedTitles, rankPlayers } from '../engine'
 import type { GameState } from '../types/game'
 
 export function ResultScreen({ state, onRestart }: { state: GameState; onRestart: () => void }) {
   const ranking = rankPlayers(state, DEFAULT_CONFIG)
+  const me = state.players.find((p) => p.isHuman)
   return (
     <div className="result" data-testid="result">
       <h1>旅の終わり</h1>
@@ -25,6 +26,28 @@ export function ResultScreen({ state, onRestart }: { state: GameState; onRestart
           })}
         </tbody>
       </table>
+      <section className="titles" data-testid="titles">
+        <h2>称号</h2>
+        {state.players.map((p) => {
+          const ts = earnedTitles(p, DEFAULT_CONFIG)
+          return (
+            <div key={p.id}>
+              {p.name}：
+              {ts.length ? ts.map((t) => <span key={t.id} className="title-chip" title={t.desc}>{t.name}</span>) : '（なし）'}
+            </div>
+          )
+        })}
+      </section>
+      {me && (
+        <section className="diary" data-testid="diary">
+          <h2>{me.name}の東海道</h2>
+          <ol>
+            {state.diary.filter((d) => d.playerId === me.id).map((d, i) => (
+              <li key={i}><span className="lday">{d.day}日目</span> <span className="dplace">{d.place}</span>{d.text}</li>
+            ))}
+          </ol>
+        </section>
+      )}
       <button className="primary" data-testid="restart" onClick={onRestart}>もう一度旅に出る</button>
     </div>
   )

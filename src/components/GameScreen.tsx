@@ -90,6 +90,20 @@ export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
           <button data-testid="hurry" disabled={!canHurry(awPlayer, cfg)} onClick={() => act({ type: 'hurry' })}>
             早足で振る（+{cfg.balance.travel.hurryBonus}マス・体力-{cfg.balance.travel.hurryStamina}）
           </button>
+          <span className="lodging" role="group" aria-label="泊まり方">
+            泊まり方：
+            {(['kichin', 'hatago'] as const).map((id) => (
+              <button
+                key={id}
+                data-testid={`lodging-${id}`}
+                aria-pressed={awPlayer.lodging === id}
+                className={awPlayer.lodging === id ? 'on' : ''}
+                onClick={() => act({ type: 'lodging', value: id })}
+              >
+                {cfg.balance.lodging[id].name}<small>{innCostFor(awPlayer, cfg, id)}文・体力+{cfg.balance.lodging[id].stamina}</small>
+              </button>
+            ))}
+          </span>
           <button data-testid="work" onClick={() => act({ type: 'work' })}>
             働いて稼ぐ（+{cfg.balance.travel.workMoney}文・進まない）
           </button>
