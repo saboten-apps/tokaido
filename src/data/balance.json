@@ -25,7 +25,7 @@
     }
   },
   "start": {
-    "money": 3000,
+    "money": 2200,
     "stamina": 80,
     "memories": 0,
     "reputation": 30
@@ -34,7 +34,7 @@
     "staminaPerStep": 2,
     "tiredStamina": 20,
     "tiredMaxFace": 3,
-    "innCost": 120,
+    "innCost": 150,
     "campStamina": -8,
     "campReputation": 0,
     "teahouseCost": 40,
@@ -148,7 +148,7 @@
       "desc": "特別な持ち味はない、ごくふつうの旅人。",
       "personality": "steady",
       "start": {
-        "money": 300
+        "money": 500
       },
       "workMoneyBonus": 0,
       "workMemories": 0,
@@ -161,7 +161,7 @@
       "desc": "商いで旅をする。路銀は多めだが、荷が重く体力は少なめ。「働く」と、多く稼げる。",
       "personality": "steady",
       "start": {
-        "money": 350,
+        "money": 480,
         "stamina": -10
       },
       "workMoneyBonus": 60,
@@ -189,7 +189,7 @@
       "personality": "hasty",
       "start": {
         "stamina": 20,
-        "money": 120
+        "money": 340
       },
       "workMoneyBonus": 0,
       "workMemories": 0,
@@ -202,7 +202,7 @@
       "desc": "芸を見せて旅をする。「働く」と、路銀に加えて思い出も増える。路銀は少なめ。",
       "personality": "gourmet",
       "start": {
-        "money": -350,
+        "money": -700,
         "reputation": 5
       },
       "workMoneyBonus": 0,
@@ -216,7 +216,7 @@
       "desc": "お役目の旅。路銀は多く、関所は手形を示して通れる。そのかわり、宿代は高め。",
       "personality": "steady",
       "start": {
-        "money": 950
+        "money": 1250
       },
       "workMoneyBonus": 0,
       "workMemories": 0,
