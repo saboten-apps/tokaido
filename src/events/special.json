@@ -69,5 +69,243 @@
         }
       }
     ]
+  },
+  {
+    "id": "shinagawa_miokuri",
+    "title": "品川の見送り",
+    "description": "江戸を発つ旅人を、友が品川まで見送りに来てくれた。最初の宿で、別れの盃を交わす。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "盃を交わして、旅の無事を誓う",
+        "effects": {
+          "money": -60,
+          "memories": 4,
+          "reputation": 2
+        }
+      },
+      {
+        "label": "早めに休んで、明日に備える",
+        "effects": {
+          "stamina": 8
+        }
+      }
+    ]
+  },
+  {
+    "id": "mishima_taisha",
+    "title": "三嶋大社に参る",
+    "description": "三島宿は、三嶋大社の門前町。旅の安全を祈る人でにぎわっている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "お参りして、お守りを受ける",
+        "effects": {
+          "money": -30,
+          "stamina": 6,
+          "reputation": 1
+        }
+      },
+      {
+        "label": "境内の池をのんびり眺める",
+        "effects": {
+          "memories": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "fuchu_sunpu",
+    "title": "駿府の城下",
+    "description": "府中は駿府城の城下町。徳川家康が晩年を過ごした土地として知られる。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "城下をひと回りして、町のにぎわいを見る",
+        "effects": {
+          "memories": 4,
+          "stamina": -3
+        }
+      },
+      {
+        "label": "安倍川の河原で、足を休める",
+        "effects": {
+          "stamina": 8
+        }
+      }
+    ]
+  },
+  {
+    "id": "maruko_tororo",
+    "title": "とろろ汁の茶屋",
+    "description": "鞠子宿は、とろろ汁の茶屋で名高い。松尾芭蕉も句に詠んだと伝わる。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "名物のとろろ汁を、ゆっくり味わう",
+        "effects": {
+          "money": -50,
+          "stamina": 10,
+          "memories": 3
+        }
+      },
+      {
+        "label": "店先で一句ひねってみる",
+        "effects": {
+          "memories": 2,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "nissaka_yonaki",
+    "title": "夜泣き石の言い伝え",
+    "description": "日坂の先の小夜の中山には、夜泣き石の言い伝えがある。茶屋の主人が、昔話を聞かせてくれた。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "話に耳をかたむけ、石を見に行く",
+        "effects": {
+          "stamina": -4,
+          "memories": 5
+        }
+      },
+      {
+        "label": "礼を言って、先を急ぐ",
+        "effects": {
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "hamamatsu_shusse",
+    "title": "出世城のいわれ",
+    "description": "浜松は、若き日の徳川家康が過ごした城下。「出世城」の呼び名があると聞く。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "城を仰いで、出世にあやかる",
+        "effects": {
+          "memories": 3,
+          "reputation": 3
+        }
+      },
+      {
+        "label": "宿の主人から、土地の話を聞く",
+        "effects": {
+          "memories": 2,
+          "stamina": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "okazaki_yahagi",
+    "title": "矢作橋をわたる",
+    "description": "岡崎は家康生誕の城下。矢作川には、東海道で屈指の長い橋がかかっている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "橋の上から、川と城を眺める",
+        "effects": {
+          "memories": 4
+        }
+      },
+      {
+        "label": "橋のたもとの茶屋で、ひと休みする",
+        "effects": {
+          "money": -30,
+          "stamina": 8
+        }
+      }
+    ]
+  },
+  {
+    "id": "kuwana_funatsuki",
+    "title": "桑名の船着き場",
+    "description": "七里の渡しを越えて、桑名の船着き場に着いた。浜辺では蛤を焼く煙が立っている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "焼き蛤をその場で食べる",
+        "effects": {
+          "money": -60,
+          "stamina": 8,
+          "memories": 3
+        }
+      },
+      {
+        "label": "船旅の疲れを、宿で癒す",
+        "effects": {
+          "stamina": 10
+        }
+      }
+    ]
+  },
+  {
+    "id": "seki_machinami",
+    "title": "関の町並み",
+    "description": "関宿は、伊勢や大和へ向かう道が分かれる宿場。旅人の行き来が絶えない。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "伊勢参りの一行と、道連れになる",
+        "effects": {
+          "memories": 5,
+          "reputation": 2,
+          "stamina": -3
+        }
+      },
+      {
+        "label": "町並みを歩いて、土産物を眺める",
+        "effects": {
+          "memories": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "kusatsu_gouryu",
+    "title": "二つの街道の合流点",
+    "description": "草津は、東海道と中山道が合わさる宿場。中山道を来た旅人たちと、顔を合わせる。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "中山道を来た旅人から、道中の話を聞く",
+        "effects": {
+          "memories": 5,
+          "reputation": 1
+        }
+      },
+      {
+        "label": "姥ヶ餅の店で、ゆっくり休む",
+        "effects": {
+          "money": -30,
+          "stamina": 8
+        }
+      }
+    ]
   }
 ]

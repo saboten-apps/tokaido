@@ -16,7 +16,8 @@
     "name": "品川海苔",
     "price": 120,
     "memories": 3
-   }
+   },
+   "eventId": "shinagawa_miokuri"
   },
   {
    "type": "scenic",
@@ -122,7 +123,8 @@
     "name": "三島のうなぎ",
     "price": 240,
     "memories": 5
-   }
+   },
+   "eventId": "mishima_taisha"
   },
   {
    "type": "teahouse",
@@ -204,7 +206,8 @@
     "name": "安倍川もち",
     "price": 80,
     "memories": 3
-   }
+   },
+   "eventId": "fuchu_sunpu"
   },
   {
    "type": "teahouse",
@@ -218,7 +221,8 @@
     "name": "とろろ汁",
     "price": 100,
     "memories": 4
-   }
+   },
+   "eventId": "maruko_tororo"
   },
   {
    "type": "scenic",
@@ -265,7 +269,8 @@
     "name": "日坂のわらび餅",
     "price": 70,
     "memories": 3
-   }
+   },
+   "eventId": "nissaka_yonaki"
   },
   {
    "type": "teahouse",
@@ -309,7 +314,8 @@
     "name": "浜名湖のうなぎ",
     "price": 260,
     "memories": 5
-   }
+   },
+   "eventId": "hamamatsu_shusse"
   },
   {
    "type": "event",
@@ -395,7 +401,8 @@
     "name": "八丁味噌",
     "price": 150,
     "memories": 4
-   }
+   },
+   "eventId": "okazaki_yahagi"
   },
   {
    "type": "scenic",
@@ -446,7 +453,8 @@
     "name": "焼き蛤",
     "price": 150,
     "memories": 4
-   }
+   },
+   "eventId": "kuwana_funatsuki"
   },
   {
    "type": "event",
@@ -498,7 +506,8 @@
     "name": "関の戸",
     "price": 100,
     "memories": 3
-   }
+   },
+   "eventId": "seki_machinami"
   },
   {
    "type": "event",
@@ -556,7 +565,8 @@
     "name": "うばがもち",
     "price": 70,
     "memories": 3
-   }
+   },
+   "eventId": "kusatsu_gouryu"
   },
   {
    "type": "event",

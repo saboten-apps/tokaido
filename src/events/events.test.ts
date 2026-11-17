@@ -14,3 +14,16 @@ describe('出来事のデータ', () => {
     for (const t of DEFAULT_CONFIG.board.main) if (t.eventId) expect(events.some((e) => e.id === t.eventId), t.eventId).toBe(true)
   })
 })
+
+describe('宿場の専用イベント', () => {
+  const shukuWithEvent = DEFAULT_CONFIG.board.main.filter((t) => t.type === 'shuku' && t.eventId)
+  it('13宿に専用イベントがある', () => {
+    expect(shukuWithEvent.length).toBe(13)
+  })
+  it('専用イベントは once かつ special（抽選に出ず、その宿でだけ起きる）', () => {
+    for (const t of shukuWithEvent) {
+      const e = DEFAULT_CONFIG.events.find((x) => x.id === t.eventId)!
+      expect(e.once && e.special, t.eventId).toBe(true)
+    }
+  })
+})
