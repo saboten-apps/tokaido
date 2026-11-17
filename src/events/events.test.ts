@@ -17,8 +17,8 @@ describe('出来事のデータ', () => {
 
 describe('宿場の専用イベント', () => {
   const shukuWithEvent = DEFAULT_CONFIG.board.main.filter((t) => t.type === 'shuku' && t.eventId)
-  it('13宿に専用イベントがある', () => {
-    expect(shukuWithEvent.length).toBe(13)
+  it('53宿すべてに専用イベントがある', () => {
+    expect(shukuWithEvent.length).toBe(53)
   })
   it('専用イベントは once かつ special（抽選に出ず、その宿でだけ起きる）', () => {
     for (const t of shukuWithEvent) {

@@ -1,0 +1,947 @@
+[
+  {
+    "id": "kawasaki_daishi",
+    "title": "川崎大師にお参り",
+    "description": "川崎宿の近くには、厄除けで知られる川崎大師がある。江戸からの参詣客も多いと聞く。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "厄除けのお札を受ける",
+        "effects": {
+          "money": -40,
+          "stamina": 5,
+          "reputation": 1
+        }
+      },
+      {
+        "label": "境内の賑わいを、ひとめぐりして眺める",
+        "effects": {
+          "memories": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "kanagawa_daimachi",
+    "title": "台町の茶屋",
+    "description": "神奈川宿の台町は、海を見下ろす高台。茶屋の座敷から、船の行き交う入江が見える。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "座敷に上がって、海を眺めながら一服する",
+        "effects": {
+          "money": -40,
+          "stamina": 8,
+          "memories": 2
+        }
+      },
+      {
+        "label": "縁先から、景色だけ眺めて先へ進む",
+        "effects": {
+          "memories": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "hodogaya_gonta",
+    "title": "権太坂の上り",
+    "description": "保土ヶ谷宿を出ると、長い坂道が続く。荷を担いだ旅人たちが、息を切らして上っていく。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "ゆっくりと、休みながら上る",
+        "effects": {
+          "stamina": -4,
+          "memories": 1
+        }
+      },
+      {
+        "label": "勢いをつけて、一気に上りきる",
+        "effects": {
+          "stamina": -10,
+          "reputation": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "totsuka_hatsunichi",
+    "title": "江戸から一日目の宿",
+    "description": "戸塚宿は、江戸を発った旅人が最初の晩に泊まることの多い宿場。『東海道中膝栗毛』の二人も、ここで一泊目を迎えたという。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "旅の最初の晩を祝って、ささやかな宴を開く",
+        "effects": {
+          "money": -60,
+          "memories": 4,
+          "reputation": 1
+        }
+      },
+      {
+        "label": "明日からに備えて、早めに床につく",
+        "effects": {
+          "stamina": 10
+        }
+      }
+    ]
+  },
+  {
+    "id": "fujisawa_yugyoji",
+    "title": "遊行寺の門前",
+    "description": "藤沢宿には、時宗の総本山・遊行寺がある。ここから、江の島へ向かう道も分かれている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "遊行寺の大きな門と境内を見て回る",
+        "effects": {
+          "memories": 3,
+          "stamina": -2
+        }
+      },
+      {
+        "label": "江の島詣での人々から、島の話を聞く",
+        "effects": {
+          "memories": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": "hiratsuka_bannyu",
+    "title": "馬入川の渡し",
+    "description": "平塚宿のそばには馬入川（相模川）が流れ、旅人は舟で渡った。川向こうには、高麗山が見える。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "渡し舟に乗って、川風を感じる",
+        "effects": {
+          "money": -20,
+          "memories": 3
+        }
+      },
+      {
+        "label": "舟を待つあいだ、川原で足を休める",
+        "effects": {
+          "stamina": 8
+        }
+      }
+    ]
+  },
+  {
+    "id": "oiso_tora",
+    "title": "虎御前の言い伝え",
+    "description": "大磯の宿には、鎌倉時代の遊女・虎御前と曽我十郎の恋の言い伝えが残る。宿の人が、その話を聞かせてくれた。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "化粧井戸を訪ねて、昔話に耳をかたむける",
+        "effects": {
+          "stamina": -3,
+          "memories": 5
+        }
+      },
+      {
+        "label": "話の礼を言って、宿でゆっくり休む",
+        "effects": {
+          "stamina": 8,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "odawara_uiro",
+    "title": "外郎の店先",
+    "description": "小田原の町には、薬の外郎（ういろう）を商う店がある。旅の必需品として、買い求める旅人も多い。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "旅の薬を買い求める",
+        "effects": {
+          "money": -80,
+          "stamina": 12
+        }
+      },
+      {
+        "label": "店先の見事な建物を眺めて通る",
+        "effects": {
+          "memories": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "numazu_senbon",
+    "title": "千本松原",
+    "description": "沼津の海辺には、松林が長く続く。波の音を聞きながら歩くと、足も軽くなる。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "松林を歩いて、潮風を浴びる",
+        "effects": {
+          "stamina": 6,
+          "memories": 2
+        }
+      },
+      {
+        "label": "浜辺に出て、貝がらを拾う",
+        "effects": {
+          "memories": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "hara_fuji",
+    "title": "原から仰ぐ富士",
+    "description": "原宿のあたりは、富士の姿が大きく見える。広重も、朝の富士の絵を描いている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "立ち止まって、富士をじっくり眺める",
+        "effects": {
+          "memories": 5,
+          "stamina": 2
+        }
+      },
+      {
+        "label": "宿の人に、富士の見どころを尋ねる",
+        "effects": {
+          "memories": 2,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "yoshiwara_hidarifuji",
+    "title": "左富士",
+    "description": "吉原のあたりで街道が大きく曲がり、京へ向かう旅人の左手に富士が見える。左富士と呼ばれる珍しい景色だ。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "松並木の道で足を止め、左手の富士を眺める",
+        "effects": {
+          "memories": 5
+        }
+      },
+      {
+        "label": "同じ道を行く旅人と、景色のことを語り合う",
+        "effects": {
+          "memories": 3,
+          "reputation": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "kanbara_yuki",
+    "title": "雪の蒲原",
+    "description": "蒲原は、広重が夜の雪景色を描いた宿。温暖な土地で、雪は珍しいともいわれる。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "絵のような雪景色を思い浮かべながら歩く",
+        "effects": {
+          "memories": 3,
+          "stamina": 2
+        }
+      },
+      {
+        "label": "宿で、絵の話を聞かせてもらう",
+        "effects": {
+          "memories": 2,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "yui_sakuraebi",
+    "title": "桜えびの浜",
+    "description": "由比の浜では、桜えびの干し場が広がっている。薄紅の色が、陽に映えて美しい。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "干したての桜えびを、分けてもらう",
+        "effects": {
+          "money": -30,
+          "stamina": 6,
+          "memories": 2
+        }
+      },
+      {
+        "label": "浜の働き手と、立ち話をする",
+        "effects": {
+          "memories": 3,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "okitsu_seikenji",
+    "title": "清見寺の鐘",
+    "description": "興津宿を見下ろす高台に、清見寺がある。海と三保の松原の眺めがよく、朝鮮通信使が泊まったこともあるという。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "石段を上って、境内から海を眺める",
+        "effects": {
+          "stamina": -4,
+          "memories": 5
+        }
+      },
+      {
+        "label": "寺の鐘の音を聞きながら、境内で休む",
+        "effects": {
+          "stamina": 8,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "ejiri_miho",
+    "title": "三保の松原を望む",
+    "description": "江尻宿の先には、三保の松原が見える。羽衣伝説の舞台として知られている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "羽衣の伝説を思い浮かべながら、眺める",
+        "effects": {
+          "memories": 4
+        }
+      },
+      {
+        "label": "船着き場で、地元の漁師に話を聞く",
+        "effects": {
+          "memories": 2,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "okabe_utsunoya",
+    "title": "宇津ノ谷峠の古道",
+    "description": "岡部宿の手前の宇津ノ谷峠には、『伊勢物語』に出てくる蔦の細道が残るという。江戸の東海道は、別の新しい道を通っていた。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "昔の道を少しだけ歩いてみる",
+        "effects": {
+          "stamina": -5,
+          "memories": 5
+        }
+      },
+      {
+        "label": "新しい街道を、そのまま進む",
+        "effects": {
+          "stamina": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "fujieda_someimeshi",
+    "title": "染飯の屋台",
+    "description": "藤枝宿の名物は、くちなしで黄色く染めた飯。疲れをとり、足を軽くするといわれている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "染飯を買って、歩きながら食べる",
+        "effects": {
+          "money": -30,
+          "stamina": 10
+        }
+      },
+      {
+        "label": "染飯の作り方を、店の人に聞く",
+        "effects": {
+          "memories": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "shimada_kawakaisho",
+    "title": "川会所と川札",
+    "description": "島田宿には、大井川の川越しを取り仕切る川会所がある。渡るには、水の深さに応じた川札を買わなければならない。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "川札のしくみを、役人に教えてもらう",
+        "effects": {
+          "memories": 3,
+          "reputation": 1
+        }
+      },
+      {
+        "label": "人足の様子を、岸辺から眺める",
+        "effects": {
+          "memories": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "kanaya_ishidatami",
+    "title": "金谷坂の石畳",
+    "description": "金谷宿の先には、石畳の急な坂道が続く。雨の日は、特に足もとが滑りやすい。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "石畳を、慎重に踏みしめて上る",
+        "effects": {
+          "stamina": -4,
+          "memories": 2
+        }
+      },
+      {
+        "label": "坂の途中の茶屋で、ひと息つく",
+        "effects": {
+          "money": -30,
+          "stamina": 8
+        }
+      }
+    ]
+  },
+  {
+    "id": "kakegawa_castle",
+    "title": "掛川城の城下",
+    "description": "掛川宿は、掛川城の城下町。町には、葛布を織る音がかすかに聞こえる。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "城の天守を仰いで、町を歩く",
+        "effects": {
+          "memories": 3,
+          "stamina": -2
+        }
+      },
+      {
+        "label": "葛布の織り手の仕事を、見せてもらう",
+        "effects": {
+          "memories": 3,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "fukuroi_domanaka",
+    "title": "東海道のどまん中",
+    "description": "袋井宿は、江戸からも京からも27番目で、五十三次の中間にあたる。「どまん中」と、宿場の人が自慢げに言う。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "折り返しを祝って、茶をふるまわれる",
+        "effects": {
+          "stamina": 8,
+          "memories": 3
+        }
+      },
+      {
+        "label": "ここまでの旅を、宿の主人と語り合う",
+        "effects": {
+          "memories": 4,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "mitsuke_tenryu",
+    "title": "天竜川の舟渡し",
+    "description": "見附宿の先の天竜川には橋がなく、舟で渡る。大井川と違い、川止めは少ないと聞く。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "舟に乗って、川の流れを感じる",
+        "effects": {
+          "money": -20,
+          "memories": 3
+        }
+      },
+      {
+        "label": "舟を待つあいだ、岸辺で休む",
+        "effects": {
+          "stamina": 8
+        }
+      }
+    ]
+  },
+  {
+    "id": "maisaka_watashi",
+    "title": "浜名湖の渡し舟",
+    "description": "舞坂の船着き場からは、浜名湖を舟で渡って新居へ向かう。湖面に、遠くの山影が映っている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "舟に揺られて、湖の景色を楽しむ",
+        "effects": {
+          "money": -30,
+          "memories": 4
+        }
+      },
+      {
+        "label": "船頭に、湖の話を聞いておく",
+        "effects": {
+          "memories": 2,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "shirasuka_shiomizaka",
+    "title": "潮見坂の眺め",
+    "description": "白須賀宿は、宝永の地震と津波のあと、高台に移ったと伝わる。潮見坂からは、遠州灘が広がって見える。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "坂の上から、大海原を眺める",
+        "effects": {
+          "memories": 5
+        }
+      },
+      {
+        "label": "宿の人から、昔の津波の話を聞く",
+        "effects": {
+          "memories": 3,
+          "reputation": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "futagawa_honjin",
+    "title": "二川の本陣",
+    "description": "二川宿には、旅の大名が泊まる本陣がある。今では、その建物が残る宿場として知られている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "本陣の門構えを見学して、宿場の話を聞く",
+        "effects": {
+          "memories": 4
+        }
+      },
+      {
+        "label": "宿場の茶店で、柏餅を食べる",
+        "effects": {
+          "money": -30,
+          "stamina": 6
+        }
+      }
+    ]
+  },
+  {
+    "id": "yoshida_tezutsu",
+    "title": "吉田の花火",
+    "description": "吉田宿の祭りでは、手筒花火が奉納される。曲亭馬琴も、吉田の花火を天下一と記したという。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "筒を抱える人々の姿を、間近で見守る",
+        "effects": {
+          "memories": 6,
+          "stamina": -3
+        }
+      },
+      {
+        "label": "遠くから、花火の音と光を楽しむ",
+        "effects": {
+          "memories": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "goyu_matsunamiki",
+    "title": "御油の松並木",
+    "description": "御油宿の外れには、立派な松並木が続く。家康の命で植えられたと伝わる大木が、道に影を落としている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "松の木陰で、涼みながら歩く",
+        "effects": {
+          "stamina": 6,
+          "memories": 2
+        }
+      },
+      {
+        "label": "松の太さに驚いて、幹に手をあててみる",
+        "effects": {
+          "memories": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "akasaka_hatago",
+    "title": "赤坂の旅籠",
+    "description": "御油から、東海道でも最も近い宿・赤坂までは、わずか1.7kmほど。旅籠の主人が、にこやかに声をかけてくる。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "勧められるままに、旅籠に泊まる",
+        "effects": {
+          "money": -80,
+          "stamina": 14,
+          "memories": 2
+        }
+      },
+      {
+        "label": "丁寧に断って、先を急ぐ",
+        "effects": {
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "fujikawa_bohana",
+    "title": "棒鼻の出迎え",
+    "description": "藤川宿の入口（棒鼻）には、宿場の役人が並ぶ。八朔の頃には、朝廷へ馬を献上する行列を迎える習わしがあったという。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "棒鼻のたたずまいを、ゆっくり眺める",
+        "effects": {
+          "memories": 3
+        }
+      },
+      {
+        "label": "宿場の人に、昔の行列の話を聞く",
+        "effects": {
+          "memories": 3,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "chiryu_umaichi",
+    "title": "馬市の賑わい",
+    "description": "池鯉鮒には、馬市が立つといわれる。広重も、初夏の馬市を描いている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "馬の並ぶ様子を見物する",
+        "effects": {
+          "memories": 4,
+          "stamina": -2
+        }
+      },
+      {
+        "label": "市の屋台で、土地の味を試す",
+        "effects": {
+          "money": -40,
+          "stamina": 6,
+          "memories": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "narumi_arimatsu",
+    "title": "有松の絞り染め",
+    "description": "鳴海宿の近くの有松は、絞り染めで知られる。店先に、色とりどりの布が並んでいる。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "絞りの手ぬぐいを買って、旅の記念にする",
+        "effects": {
+          "money": -60,
+          "memories": 4
+        }
+      },
+      {
+        "label": "染め上がりの布を、見せてもらう",
+        "effects": {
+          "memories": 2,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "yokkaichi_oiwake",
+    "title": "伊勢街道の追分",
+    "description": "四日市宿の先の日永には、東海道と伊勢街道の分かれ道（追分）がある。伊勢参りの旅人が、そちらへ折れていく。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "伊勢へ向かう旅人と、道中の話をする",
+        "effects": {
+          "memories": 4,
+          "reputation": 1
+        }
+      },
+      {
+        "label": "分かれ道の道標を眺めて、先へ進む",
+        "effects": {
+          "memories": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "ishiyakushi_tera",
+    "title": "石薬師寺の門前",
+    "description": "石薬師の宿の名は、石薬師寺にちなむと伝わる。門前では、旅人が静かに手を合わせている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "お参りして、旅の無事を祈る",
+        "effects": {
+          "money": -20,
+          "stamina": 5,
+          "reputation": 1
+        }
+      },
+      {
+        "label": "門前の茶屋で、ひと休みする",
+        "effects": {
+          "money": -30,
+          "stamina": 8
+        }
+      }
+    ]
+  },
+  {
+    "id": "shono_haku",
+    "title": "にわか雨の庄野",
+    "description": "庄野宿は、広重が激しい夕立の中を急ぐ人々を描いた宿。空が暗くなり、雨粒が落ちてきた。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "近くの軒下に駆け込んで、雨をやり過ごす",
+        "effects": {
+          "stamina": 5,
+          "memories": 2
+        }
+      },
+      {
+        "label": "傘を広げて、雨の中を進む",
+        "effects": {
+          "stamina": -8,
+          "memories": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "kameyama_joka",
+    "title": "亀山の城下",
+    "description": "亀山宿は、城下町。坂の多い町で、白壁の城が高台に見える。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "城下の坂道をのんびり歩く",
+        "effects": {
+          "memories": 3,
+          "stamina": -2
+        }
+      },
+      {
+        "label": "城下の店で、旅の支度を整える",
+        "effects": {
+          "money": -50,
+          "stamina": 8
+        }
+      }
+    ]
+  },
+  {
+    "id": "sakanoshita_fudesute",
+    "title": "筆捨山の言い伝え",
+    "description": "坂下宿の近くには、筆捨山と呼ばれる山がある。絵師・狩野元信が、あまりの景色に筆を捨てたと伝わる。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "言い伝えを思いながら、山を見上げる",
+        "effects": {
+          "memories": 4
+        }
+      },
+      {
+        "label": "鈴鹿越えに備えて、早く休む",
+        "effects": {
+          "stamina": 10
+        }
+      }
+    ]
+  },
+  {
+    "id": "tsuchiyama_ame",
+    "title": "あいの土山、雨が降る",
+    "description": "鈴鹿峠を越えた土山宿は、雨の多い土地として知られる。馬子唄にも「あいの土山」と歌われるという。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "雨宿りがてら、馬子唄の話を聞く",
+        "effects": {
+          "memories": 4,
+          "stamina": 4
+        }
+      },
+      {
+        "label": "笠をかぶって、雨の中を進む",
+        "effects": {
+          "stamina": -6,
+          "memories": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "minakuchi_kanpyo",
+    "title": "かんぴょうの干し場",
+    "description": "水口宿の周りでは、夕顔の実を細く剥いて干すかんぴょう作りが盛んだ。軒先に、白い帯が揺れている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "干し場を見せてもらい、作り方を聞く",
+        "effects": {
+          "memories": 3,
+          "reputation": 1
+        }
+      },
+      {
+        "label": "かんぴょうを分けてもらい、旅の食べ物にする",
+        "effects": {
+          "money": -30,
+          "stamina": 6
+        }
+      }
+    ]
+  },
+  {
+    "id": "ishibe_kyodachi",
+    "title": "京立ち石部泊まり",
+    "description": "石部宿は、京を発った旅人が最初の晩を過ごす宿場として栄えたと聞く。京から来た旅人が、宿で一息ついている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "京から来た旅人に、都の様子を尋ねる",
+        "effects": {
+          "memories": 4,
+          "reputation": 1
+        }
+      },
+      {
+        "label": "もうすぐ京だと、気持ちを新たにして休む",
+        "effects": {
+          "stamina": 8,
+          "memories": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "otsu_osaka",
+    "title": "逢坂の関と大津絵",
+    "description": "大津宿の手前の逢坂の関は、百人一首の蝉丸の歌で知られる。街道沿いでは、素朴な大津絵が売られている。",
+    "weight": 1,
+    "once": true,
+    "special": true,
+    "choices": [
+      {
+        "label": "蝉丸の歌を思いながら、関の跡を歩く",
+        "effects": {
+          "memories": 4
+        }
+      },
+      {
+        "label": "大津絵を一枚買って、京への土産にする",
+        "effects": {
+          "money": -60,
+          "memories": 3,
+          "reputation": 1
+        }
+      }
+    ]
+  }
+]

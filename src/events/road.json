@@ -388,5 +388,313 @@
         }
       }
     ]
+  },
+  {
+    "id": "tabigeinin",
+    "title": "旅芸人の一座",
+    "description": "街道の広場で、旅芸人の一座が芸を見せている。太鼓と笛の音に、人だかりができていた。",
+    "weight": 5,
+    "choices": [
+      {
+        "label": "人垣に加わって、最後まで見物する",
+        "effects": {
+          "memories": 4,
+          "stamina": -3,
+          "money": -30
+        }
+      },
+      {
+        "label": "遠くから、音だけ楽しんで通り過ぎる",
+        "effects": {
+          "memories": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "michishirube",
+    "title": "道標の前で",
+    "description": "分かれ道に、古い道標が立っている。文字が薄れて、すぐには読めない。",
+    "weight": 4,
+    "choices": [
+      {
+        "label": "じっくり読んで、行く先を確かめる",
+        "effects": {
+          "stamina": -1,
+          "reputation": 1
+        }
+      },
+      {
+        "label": "通りかかった人に道を尋ねる",
+        "effects": {
+          "memories": 2,
+          "stamina": -2
+        }
+      }
+    ]
+  },
+  {
+    "id": "chaya_mukashi",
+    "title": "茶屋の主人の昔話",
+    "description": "茶屋の主人が、団子を出しながら、若いころに見た街道の話を聞かせてくれる。",
+    "weight": 5,
+    "choices": [
+      {
+        "label": "団子を食べながら、話に聞き入る",
+        "effects": {
+          "money": -30,
+          "memories": 4,
+          "stamina": 4
+        }
+      },
+      {
+        "label": "礼を言って、先を急ぐ",
+        "effects": {
+          "stamina": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "zoumizu",
+    "title": "増水した小川",
+    "description": "前の晩の雨で、小川が思いのほか増水している。橋は流されたらしい。",
+    "weight": 4,
+    "choices": [
+      {
+        "label": "上流の浅い所まで回って渡る",
+        "effects": {
+          "stamina": -8
+        }
+      },
+      {
+        "label": "水が引くまで、岸で待つ",
+        "effects": {
+          "stamina": 6,
+          "memories": 1
+        },
+        "restDays": 1
+      }
+    ]
+  },
+  {
+    "id": "waraji_shuri",
+    "title": "わらじの手入れ",
+    "description": "わらじの紐が切れかけている。このまま歩くと、足を痛めそうだ。",
+    "weight": 5,
+    "choices": [
+      {
+        "label": "道ばたで、自分で結び直す",
+        "effects": {
+          "stamina": -2
+        }
+      },
+      {
+        "label": "店で、新しいわらじを買い求める",
+        "effects": {
+          "money": -40,
+          "stamina": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": "oikaze",
+    "title": "追い風の朝",
+    "description": "よく晴れた朝、後ろから風が吹いて、足取りが軽い。",
+    "weight": 3,
+    "choices": [
+      {
+        "label": "この調子で、先を急ぐ",
+        "effects": {
+          "stamina": 4,
+          "memories": 1
+        }
+      },
+      {
+        "label": "ゆっくり景色を楽しみながら歩く",
+        "effects": {
+          "memories": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "tomikuji",
+    "title": "寺の富くじ",
+    "description": "近くの寺で、富くじが売られている。「当たれば大金」と、人々が列を作っている。",
+    "weight": 3,
+    "choices": [
+      {
+        "label": "一枚買って、運を試す",
+        "effects": {
+          "money": -60
+        },
+        "gamble": {
+          "chance": 0.2,
+          "failEffects": {
+            "money": -60,
+            "memories": 1
+          }
+        }
+      },
+      {
+        "label": "見物だけして、立ち去る",
+        "effects": {
+          "memories": 1
+        }
+      }
+    ],
+    "conditions": {
+      "minMoney": 200
+    }
+  },
+  {
+    "id": "aibeya",
+    "title": "宿の相部屋",
+    "description": "宿は満室で、相部屋になった。同じ部屋には、荷を背負った商人がいる。",
+    "weight": 4,
+    "choices": [
+      {
+        "label": "商人と語り明かして、仲良くなる",
+        "effects": {
+          "memories": 4,
+          "stamina": -4,
+          "reputation": 2
+        }
+      },
+      {
+        "label": "荷物を枕もとに置いて、早く眠る",
+        "effects": {
+          "stamina": 8
+        }
+      }
+    ]
+  },
+  {
+    "id": "nobana",
+    "title": "道ばたの野花",
+    "description": "足もとに、見慣れない野の花が咲いている。",
+    "weight": 3,
+    "choices": [
+      {
+        "label": "しゃがんで、じっくり眺める",
+        "effects": {
+          "memories": 2,
+          "stamina": 2
+        }
+      },
+      {
+        "label": "摘んで、旅の記念にする",
+        "effects": {
+          "memories": 1,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "sendo_banashi",
+    "title": "船頭の話",
+    "description": "渡し舟の船頭が、川の流れや天気について、ぽつぽつ話してくれる。",
+    "weight": 4,
+    "choices": [
+      {
+        "label": "話を聞いて、明日の天気の見当をつける",
+        "effects": {
+          "memories": 2,
+          "stamina": 2
+        }
+      },
+      {
+        "label": "舟べりで、居眠りをする",
+        "effects": {
+          "stamina": 6
+        }
+      }
+    ]
+  },
+  {
+    "id": "kane_no_oto",
+    "title": "夕暮れの鐘",
+    "description": "宿へ向かう道で、遠くの寺の鐘が鳴った。日が傾き、道が茜色に染まる。",
+    "weight": 4,
+    "choices": [
+      {
+        "label": "足を止めて、鐘の音に耳をすます",
+        "effects": {
+          "memories": 3
+        }
+      },
+      {
+        "label": "鐘を合図に、宿へ急ぐ",
+        "effects": {
+          "stamina": -3,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "dango_yatai",
+    "title": "道ばたの屋台",
+    "description": "街道沿いの屋台から、甘辛いたれの香りが漂ってくる。",
+    "weight": 5,
+    "choices": [
+      {
+        "label": "一串買って、歩きながら食べる",
+        "effects": {
+          "money": -20,
+          "stamina": 6
+        }
+      },
+      {
+        "label": "匂いだけ楽しんで通り過ぎる",
+        "effects": {
+          "memories": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "hikyaku_kotozute",
+    "title": "飛脚のことづて",
+    "description": "急ぎの飛脚が、すれ違いざまに「次の宿場の者へ、この手紙を」と預けていった。",
+    "weight": 3,
+    "choices": [
+      {
+        "label": "宿場で、宛先の人を探して手紙を届ける",
+        "effects": {
+          "stamina": -4,
+          "reputation": 5,
+          "memories": 1
+        }
+      },
+      {
+        "label": "急ぎの身だと、申し訳なく断る",
+        "effects": {}
+      }
+    ]
+  },
+  {
+    "id": "yoake_shuttatsu",
+    "title": "夜明けの出立",
+    "description": "宿の人たちが、まだ暗いうちから起きて、朝餉の用意をしている。",
+    "weight": 4,
+    "choices": [
+      {
+        "label": "朝餉をしっかり食べて、早めに出る",
+        "effects": {
+          "money": -20,
+          "stamina": 8
+        }
+      },
+      {
+        "label": "もう少し眠ってから、ゆっくり出る",
+        "effects": {
+          "stamina": 4
+        }
+      }
+    ]
   }
 ]

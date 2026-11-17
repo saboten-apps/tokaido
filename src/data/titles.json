@@ -38,25 +38,25 @@
   {
     "id": "omoide_tabi",
     "name": "思い出の旅人",
-    "desc": "思い出を55以上集めた。",
+    "desc": "思い出を80以上集めた。",
     "when": {
-      "minMemories": 55
+      "minMemories": 80
     }
   },
   {
     "id": "omoide_bukuro",
     "name": "思い出ぶくろ",
-    "desc": "思い出を70以上集めた。",
+    "desc": "思い出を120以上集めた。",
     "when": {
-      "minMemories": 70
+      "minMemories": 120
     }
   },
   {
     "id": "jinbo",
     "name": "人望の旅人",
-    "desc": "道中で、評判を55以上に高めた。",
+    "desc": "道中で、評判を50以上に高めた。",
     "when": {
-      "minReputation": 55
+      "minReputation": 50
     }
   },
   {

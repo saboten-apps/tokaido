@@ -31,31 +31,38 @@
     "name": "久寿餅",
     "price": 90,
     "memories": 3
-   }
+   },
+   "eventId": "kawasaki_daishi"
   },
   {
    "type": "shuku",
-   "name": "神奈川"
+   "name": "神奈川",
+   "eventId": "kanagawa_daimachi"
   },
   {
    "type": "shuku",
-   "name": "保土ヶ谷"
+   "name": "保土ヶ谷",
+   "eventId": "hodogaya_gonta"
   },
   {
    "type": "shuku",
-   "name": "戸塚"
+   "name": "戸塚",
+   "eventId": "totsuka_hatsunichi"
   },
   {
    "type": "shuku",
-   "name": "藤沢"
+   "name": "藤沢",
+   "eventId": "fujisawa_yugyoji"
   },
   {
    "type": "shuku",
-   "name": "平塚"
+   "name": "平塚",
+   "eventId": "hiratsuka_bannyu"
   },
   {
    "type": "shuku",
-   "name": "大磯"
+   "name": "大磯",
+   "eventId": "oiso_tora"
   },
   {
    "type": "event",
@@ -69,7 +76,8 @@
     "name": "小田原かまぼこ",
     "price": 180,
     "memories": 4
-   }
+   },
+   "eventId": "odawara_uiro"
   },
   {
    "type": "event",
@@ -110,19 +118,23 @@
     "name": "沼津の干物",
     "price": 130,
     "memories": 3
-   }
+   },
+   "eventId": "numazu_senbon"
   },
   {
    "type": "shuku",
-   "name": "原"
+   "name": "原",
+   "eventId": "hara_fuji"
   },
   {
    "type": "shuku",
-   "name": "吉原"
+   "name": "吉原",
+   "eventId": "yoshiwara_hidarifuji"
   },
   {
    "type": "shuku",
-   "name": "蒲原"
+   "name": "蒲原",
+   "eventId": "kanbara_yuki"
   },
   {
    "type": "shuku",
@@ -132,7 +144,8 @@
     "name": "由比の桜えび",
     "price": 140,
     "memories": 4
-   }
+   },
+   "eventId": "yui_sakuraebi"
   },
   {
    "type": "event",
@@ -140,11 +153,13 @@
   },
   {
    "type": "shuku",
-   "name": "興津"
+   "name": "興津",
+   "eventId": "okitsu_seikenji"
   },
   {
    "type": "shuku",
-   "name": "江尻"
+   "name": "江尻",
+   "eventId": "ejiri_miho"
   },
   {
    "type": "shuku",
@@ -174,15 +189,18 @@
   },
   {
    "type": "shuku",
-   "name": "岡部"
+   "name": "岡部",
+   "eventId": "okabe_utsunoya"
   },
   {
    "type": "shuku",
-   "name": "藤枝"
+   "name": "藤枝",
+   "eventId": "fujieda_someimeshi"
   },
   {
    "type": "shuku",
-   "name": "島田"
+   "name": "島田",
+   "eventId": "shimada_kawakaisho"
   },
   {
    "type": "fork",
@@ -191,7 +209,8 @@
   },
   {
    "type": "shuku",
-   "name": "金谷"
+   "name": "金谷",
+   "eventId": "kanaya_ishidatami"
   },
   {
    "type": "event",
@@ -216,15 +235,18 @@
     "name": "掛川の葛布",
     "price": 160,
     "memories": 4
-   }
+   },
+   "eventId": "kakegawa_castle"
   },
   {
    "type": "shuku",
-   "name": "袋井"
+   "name": "袋井",
+   "eventId": "fukuroi_domanaka"
   },
   {
    "type": "shuku",
-   "name": "見附"
+   "name": "見附",
+   "eventId": "mitsuke_tenryu"
   },
   {
    "type": "shuku",
@@ -239,7 +261,8 @@
   },
   {
    "type": "shuku",
-   "name": "舞坂"
+   "name": "舞坂",
+   "eventId": "maisaka_watashi"
   },
   {
    "type": "event",
@@ -253,7 +276,8 @@
   },
   {
    "type": "shuku",
-   "name": "白須賀"
+   "name": "白須賀",
+   "eventId": "shirasuka_shiomizaka"
   },
   {
    "type": "shuku",
@@ -263,23 +287,28 @@
     "name": "二川の柏餅",
     "price": 70,
     "memories": 3
-   }
+   },
+   "eventId": "futagawa_honjin"
   },
   {
    "type": "shuku",
-   "name": "吉田"
+   "name": "吉田",
+   "eventId": "yoshida_tezutsu"
   },
   {
    "type": "shuku",
-   "name": "御油"
+   "name": "御油",
+   "eventId": "goyu_matsunamiki"
   },
   {
    "type": "shuku",
-   "name": "赤坂"
+   "name": "赤坂",
+   "eventId": "akasaka_hatago"
   },
   {
    "type": "shuku",
-   "name": "藤川"
+   "name": "藤川",
+   "eventId": "fujikawa_bohana"
   },
   {
    "type": "shuku",
@@ -298,7 +327,8 @@
   },
   {
    "type": "shuku",
-   "name": "池鯉鮒"
+   "name": "池鯉鮒",
+   "eventId": "chiryu_umaichi"
   },
   {
    "type": "shuku",
@@ -308,7 +338,8 @@
     "name": "鳴海絞り",
     "price": 220,
     "memories": 5
-   }
+   },
+   "eventId": "narumi_arimatsu"
   },
   {
    "type": "shuku",
@@ -344,19 +375,23 @@
     "name": "なが餅",
     "price": 70,
     "memories": 3
-   }
+   },
+   "eventId": "yokkaichi_oiwake"
   },
   {
    "type": "shuku",
-   "name": "石薬師"
+   "name": "石薬師",
+   "eventId": "ishiyakushi_tera"
   },
   {
    "type": "shuku",
-   "name": "庄野"
+   "name": "庄野",
+   "eventId": "shono_haku"
   },
   {
    "type": "shuku",
-   "name": "亀山"
+   "name": "亀山",
+   "eventId": "kameyama_joka"
   },
   {
    "type": "teahouse",
@@ -375,7 +410,8 @@
   },
   {
    "type": "shuku",
-   "name": "坂下"
+   "name": "坂下",
+   "eventId": "sakanoshita_fudesute"
   },
   {
    "type": "event",
@@ -389,7 +425,8 @@
     "name": "土山茶",
     "price": 110,
     "memories": 3
-   }
+   },
+   "eventId": "tsuchiyama_ame"
   },
   {
    "type": "shuku",
@@ -399,11 +436,13 @@
     "name": "水口のかんぴょう",
     "price": 80,
     "memories": 3
-   }
+   },
+   "eventId": "minakuchi_kanpyo"
   },
   {
    "type": "shuku",
-   "name": "石部"
+   "name": "石部",
+   "eventId": "ishibe_kyodachi"
   },
   {
    "type": "scenic",
@@ -428,7 +467,8 @@
     "name": "大津絵",
     "price": 200,
     "memories": 5
-   }
+   },
+   "eventId": "otsu_osaka"
   },
   {
    "type": "goal",

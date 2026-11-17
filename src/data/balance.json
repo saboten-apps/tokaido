@@ -71,7 +71,7 @@
       "weights": {
         "money": 2,
         "stamina": 0.6,
-        "memories": 1,
+        "memories": 1.2,
         "reputation": 1
       },
       "meibutsuLove": 4,
@@ -84,7 +84,7 @@
       "weights": {
         "money": 0.8,
         "stamina": 0.5,
-        "memories": 1.6,
+        "memories": 1.15,
         "reputation": 0.6
       },
       "meibutsuLove": 14,
@@ -137,7 +137,7 @@
     },
     "honjin": {
       "name": "本陣",
-      "reputationAt": 70,
+      "reputationAt": 60,
       "stamina": 30,
       "memories": 2
     }

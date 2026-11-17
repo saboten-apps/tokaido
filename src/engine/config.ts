@@ -5,6 +5,7 @@ import boardJson from '../data/board.json'
 import titlesJson from '../data/titles.json'
 import roadEvents from '../events/road.json'
 import specialEvents from '../events/special.json'
+import shukuEvents from '../events/shuku.json'
 import laneEvents from '../events/lane.json'
 import type { CpuPersonality, CpuPersonalityId, ForkChoiceDef, GameEvent, Stats, TileDef, TitleDef } from '../types/game'
 
@@ -78,7 +79,7 @@ export interface GameConfig {
 export const DEFAULT_CONFIG: GameConfig = {
   balance: balanceJson as Balance,
   board: boardJson as BoardConfig,
-  events: [...roadEvents, ...specialEvents, ...laneEvents] as GameEvent[],
+  events: [...roadEvents, ...specialEvents, ...shukuEvents, ...laneEvents] as GameEvent[],
   titles: titlesJson as TitleDef[],
 }
 
