@@ -1,6 +1,6 @@
 // 演出の補助（画面の外で、そのままテストできる関数）。
 
-import { REGIONS, regionAt } from '../engine'
+import { DEFAULT_CONFIG, REGIONS, regionAt } from '../engine'
 import type { BoardState, GameState } from '../types/game'
 
 /** 前の状態から増えた道中記の行（新しい順に max 件まで、古い順で返す） */
@@ -51,4 +51,64 @@ export function phaseDelay(mode: '2d' | '3d', step: number, viaCount: number): n
   if (step < 0) return 1700
   if (step === 0) return travelMs(viaCount)
   return 1900
+}
+
+/** カットイン（イベントの場面に入るときの、画面を横切る帯） */
+export interface CutItem {
+  key: string
+  /** 帯の上の小さな札：「宿場の話」「関所」「道中の出来事」「名物」「分かれ道」 */
+  tag: string
+  /** 大きな字：イベントの名前 */
+  title: string
+  /** 小さな字：場所と、だれが */
+  sub: string
+  tone: 'event' | 'shuku' | 'sekisho' | 'meibutsu' | 'fork'
+}
+
+/** 起きたイベントの、札と色（宿場の専用か、関所か、道中の出来事か） */
+function eventTone(eventId: string): { tag: string; tone: CutItem['tone'] } {
+  const ev = DEFAULT_CONFIG.events.find((e) => e.id === eventId)
+  if (eventId.endsWith('sekisho')) return { tag: '関所', tone: 'sekisho' }
+  if (ev?.special) return { tag: '宿場の話', tone: 'shuku' }
+  return { tag: '道中の出来事', tone: 'event' }
+}
+
+/**
+ * 状態が変わったとき、どんなカットインを出すか。
+ * ・人間のイベントが始まった（選択を待つ）
+ * ・CPU のイベントが、自動で済んだ（道中記の「【題名】名前：…」から）
+ * ・人間が、名物を買うか、分かれ道を選ぶ場面になった
+ */
+export function cutinsFromTransition(prev: GameState, next: GameState): CutItem[] {
+  const items: CutItem[] = []
+  const placeOf = (pid: string) => next.board.tiles[next.board.playerStates[pid]?.position ?? 0]?.name ?? ''
+  const nameOf = (pid: string) => next.players.find((p) => p.id === pid)?.name ?? ''
+  const pe = next.pendingEvent
+  if (pe && !(prev.pendingEvent && prev.pendingEvent.eventId === pe.eventId && prev.pendingEvent.playerId === pe.playerId && prev.log.length === next.log.length)) {
+    const ev = DEFAULT_CONFIG.events.find((e) => e.id === pe.eventId)
+    if (ev) {
+      const { tag, tone } = eventTone(ev.id)
+      items.push({ key: `pe:${pe.playerId}:${ev.id}:${next.log.length}`, tag, title: ev.title, sub: `${placeOf(pe.playerId)}　${nameOf(pe.playerId)}`, tone })
+    }
+  }
+  for (const l of next.log.slice(prev.log.length)) {
+    const m = /^【(.+?)】(.+?)：/.exec(l.message)
+    if (!m) continue
+    const who = next.players.find((p) => p.name === m[2] && !p.isHuman)
+    const ev = DEFAULT_CONFIG.events.find((e) => e.title === m[1])
+    if (!who || !ev) continue
+    const { tag, tone } = eventTone(ev.id)
+    items.push({ key: `log:${who.id}:${ev.id}:${next.log.indexOf(l)}`, tag, title: ev.title, sub: `${placeOf(who.id)}　${who.name}`, tone })
+  }
+  const a = next.turnCtl.awaiting
+  const pa = prev.turnCtl.awaiting
+  if (a && (a.kind === 'meibutsu' || a.kind === 'fork') && !(pa && pa.kind === a.kind && pa.tileIndex === a.tileIndex && pa.playerId === a.playerId)) {
+    const tile = next.board.tiles[a.tileIndex]
+    if (a.kind === 'meibutsu' && tile?.meibutsu) {
+      items.push({ key: `m:${a.playerId}:${a.tileIndex}:${next.log.length}`, tag: '名物', title: tile.meibutsu.name, sub: `${tile.name}　${nameOf(a.playerId)}`, tone: 'meibutsu' })
+    } else if (a.kind === 'fork' && tile) {
+      items.push({ key: `f:${a.playerId}:${a.tileIndex}:${next.log.length}`, tag: '分かれ道', title: tile.name, sub: `どう渡る？　${nameOf(a.playerId)}`, tone: 'fork' })
+    }
+  }
+  return items
 }

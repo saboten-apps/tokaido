@@ -4,7 +4,7 @@ import { DEFAULT_CONFIG, PLACES, REGIONS, canHurry, getEvent, innCostFor, isChoi
 import { pieceColors } from '../art/theme'
 import { useEffect, useState } from 'react'
 import { choiceChips, forkChips, type Chip } from './choiceText'
-import { prefersReducedMotion } from './feedback'
+import { prefersReducedMotion, type CutItem } from './feedback'
 import type { GameState, Player } from '../types/game'
 
 const cfg = DEFAULT_CONFIG
@@ -200,6 +200,22 @@ export function PlaceCard({ board, index }: { board: GameState['board']; index: 
       )}
       {!info && <p className="place-tagline">{region.tagline}</p>}
     </details>
+  )
+}
+
+/** カットイン：帯が画面を横切り、イベントの名前が大きく出る */
+export function CutIn({ item }: { item: CutItem }) {
+  return (
+    <div className={`cutin cutin-${item.tone}`} key={item.key} data-testid="cutin" role="status" aria-live="assertive">
+      <div className="cutin-flash" aria-hidden />
+      <div className="cutin-band">
+        <div className="cutin-inner">
+          <span className="cutin-tag" data-testid="cutin-tag">{item.tag}</span>
+          <span className="cutin-title" data-testid="cutin-title">{item.title}</span>
+          <span className="cutin-sub">{item.sub}</span>
+        </div>
+      </div>
+    </div>
   )
 }
 

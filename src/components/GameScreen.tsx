@@ -5,8 +5,9 @@ import { DEFAULT_CONFIG, REGIONS, advanceOne, getAwaiting, regionAt, submitActio
 import { BoardStage, ViewToggle } from './BoardStage'
 import { useViewMode } from './viewMode'
 import { MiniMap } from './MiniMap'
-import { ActionPanel, DicePop, LogPanel, PlaceCard, PlayerCards } from './parts'
-import { newLogLines, phaseDelay, positionAtStep, prefersReducedMotion, regionEntry, travelMs } from './feedback'
+import { ActionPanel, CutIn, DicePop, LogPanel, PlaceCard, PlayerCards } from './parts'
+import { useCutins } from './useCutins'
+import { cutinsFromTransition, newLogLines, phaseDelay, positionAtStep, prefersReducedMotion, regionEntry, travelMs } from './feedback'
 import type { GameState } from '../types/game'
 
 const cfg = DEFAULT_CONFIG
@@ -46,7 +47,9 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
   const [mode, toggleMode] = useViewMode()
   // 演出は、CPU の番を待たない（?fast=1）ときと、動きを減らす設定のときは省く
   const animate = cpuDelayMs > 0 && !prefersReducedMotion()
-  const busy = anim !== null
+  // カットイン：動き（サイコロ・道を歩く）が終わってから、1つずつ。出ているあいだは、操作の欄を出さない
+  const cuts = useCutins(anim !== null, animate)
+  const busy = anim !== null || cuts.busy
   const awRaw = getAwaiting(state)
   const aw = busy ? null : awRaw
   const active = state.players[state.turnCtl.activeIndex]
@@ -72,6 +75,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
         setTimeout(() => setDice(null), mode === '3d' ? phaseDelay('3d', -1, 0) - 100 : 1000)
       }
     }
+    cuts.push(cutinsFromTransition(prev, out.state))
     const arrived = out.events.find((e) => e.type === 'arrived')
     if (arrived && arrived.type === 'arrived' && prev.players.find((p) => p.id === arrived.playerId)?.isHuman) {
       setArrival({ rank: arrived.rank, day: arrived.day })
@@ -157,6 +161,7 @@ export function GameScreen({ state, onChange, cpuDelayMs, onHowTo }: Props) {
 
       <ActionPanel state={state} aw={aw} onAct={act} />
 
+      {cuts.cut && <CutIn item={cuts.cut} />}
       {dice && <DicePop key={dice.id} face={dice.face} hurry={dice.hurry} name={dice.name} steps={dice.steps} />}
       <div className="toasts" aria-live="polite">
         {toasts.map((t) => (

@@ -8,8 +8,9 @@ import { BoardStage, ViewToggle } from '../BoardStage'
 import { useViewMode } from '../viewMode'
 import { MiniMap } from '../MiniMap'
 import { ResultScreen } from '../ResultScreen'
-import { newLogLines, phaseDelay, positionAtStep, prefersReducedMotion, regionEntry, travelMs } from '../feedback'
-import { ActionPanel, DicePop, LogPanel, PlaceCard, PlayerCards } from '../parts'
+import { cutinsFromTransition, newLogLines, phaseDelay, positionAtStep, prefersReducedMotion, regionEntry, travelMs } from '../feedback'
+import { ActionPanel, CutIn, DicePop, LogPanel, PlaceCard, PlayerCards } from '../parts'
+import { useCutins } from '../useCutins'
 import type { SessionAction } from '../../engine'
 import type { RoomView } from '../../online/protocol'
 import type { GameState } from '../../types/game'
@@ -244,6 +245,9 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
   // 駒の動き：サーバーから届いた進行の記録（steps）の、サイコロの動きを、順番に1マスずつ再生する
   const [queue, setQueue] = useState<Roll[]>([])
   const [step, setStep] = useState(-1)
+  // 演出は、?fast=1 か「動きを減らす」設定のときは省く
+  const [animateOn] = useState(() => !prefersReducedMotion() && !new URLSearchParams(window.location.search).has('fast'))
+  const cuts = useCutins(queue.length > 0, animateOn)
   const [toasts, setToasts] = useState<Array<{ id: number; text: string }>>([])
   const [jump, setJump] = useState<{ index: number; n: number } | null>(null)
   const [message, setMessage] = useState<string | null>(null)
@@ -261,13 +265,16 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
 
   // 届いた状態の差から、通知を出す
   useEffect(() => {
-    const lines = newLogLines(prev.current, game)
+    const before = prev.current
+    const lines = newLogLines(before, game)
     prev.current = game
+    cuts.push(cutinsFromTransition(before, game))
     for (const text of lines) {
       const id = ++seq.current
       setToasts((t) => [...t.slice(-2), { id, text }])
       setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 3200)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [game])
 
   const animate = useRef(!prefersReducedMotion() && !new URLSearchParams(window.location.search).has('fast'))
@@ -332,7 +339,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
     seen.add(r.playerId)
     positions[r.playerId] = i === 0 ? positionAtStep(r.from, r.path, step) : r.from
   })
-  const busy = queue.length > 0
+  const busy = queue.length > 0 || cuts.busy
   const head = queue[0]
   // サイコロは、地図では動きの間ずっと、場面では「サイコロ」の段階だけ
   const dice = head && (mode === '2d' || step < 0) ? { id: head.id, face: head.face, hurry: head.hurry, steps: head.steps, name: game.players.find((p) => p.id === head.playerId)?.name ?? '' } : null
@@ -362,6 +369,7 @@ function OnlineGame({ client, game, view, statusBar, onLeave, selfPlayerId, auto
       <PlayerCards state={game} activeId={active.id} selfId={selfPlayerId} />
       {mine && !busy ? <ActionPanel state={game} aw={aw} onAct={act} /> : mine ? null : <p className="waiting" data-testid="waiting">{waitingName}の行動を待っています…</p>}
       {message && <p className="conn-error" role="alert">{message}</p>}
+      {cuts.cut && <CutIn item={cuts.cut} />}
       {dice && <DicePop key={dice.id} face={dice.face} hurry={dice.hurry} name={dice.name} steps={dice.steps} />}
       <div className="toasts" aria-live="polite">
         {toasts.map((t) => (

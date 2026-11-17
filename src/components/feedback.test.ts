@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { createGame } from '../engine'
-import { indexFromRatio, newLogLines, phaseDelay, positionAtStep, regionEntry, travelMs } from './feedback'
+import { createGame, getAwaiting, runUntilHuman, submitAction } from '../engine'
+import { cutinsFromTransition, indexFromRatio, newLogLines, phaseDelay, positionAtStep, regionEntry, travelMs } from './feedback'
 
 describe('演出の補助', () => {
   it('駒は出発のマスから、通ったマスを1つずつ進む', () => {
@@ -47,5 +47,55 @@ describe('演出の補助', () => {
     expect(phaseDelay('3d', 1, 4)).toBe(1900)
     expect(phaseDelay('2d', -1, 4)).toBe(350)
     expect(phaseDelay('2d', 2, 4)).toBe(120)
+  })
+
+  it('カットイン：人間のイベントが始まると、題名・札・場所つきで出る。同じ状態では、二度出ない', () => {
+    const g = runUntilHuman(createGame({ seed: 3, playerCount: 2 })).state
+    // 箱根（関所のイベント）の手前に置いて、振る
+    const hakone = g.board.tiles.findIndex((t) => t.name === '箱根')
+    g.board.playerStates.p0.position = hakone - 1
+    const out = submitAction(g, 'p0', { type: 'roll' }, undefined, undefined, 6).state
+    expect(out.pendingEvent?.eventId).toBe('hakone_sekisho')
+    const items = cutinsFromTransition(g, out)
+    expect(items).toHaveLength(1)
+    expect(items[0]).toMatchObject({ tag: '関所', title: '箱根の関所', tone: 'sekisho' })
+    expect(items[0].sub).toContain('箱根')
+    expect(cutinsFromTransition(out, out)).toEqual([])
+  })
+
+  it('カットイン：CPU のイベントは、道中記から。人間の選択の結果の行は、出さない', () => {
+    const g = createGame({ seed: 5, playerCount: 3 })
+    const cpu = g.players.find((p) => !p.isHuman)!
+    const next = structuredClone(g)
+    next.log.push({ day: 1, playerId: cpu.id, message: `【にわか雨】${cpu.name}：「笠をかぶって、先を急ぐ」→ 体力-8` })
+    const items = cutinsFromTransition(g, next)
+    expect(items).toHaveLength(1)
+    expect(items[0]).toMatchObject({ title: 'にわか雨', tag: '道中の出来事' })
+    const me = g.players.find((p) => p.isHuman)!
+    const mine = structuredClone(g)
+    mine.log.push({ day: 1, playerId: me.id, message: `【にわか雨】${me.name}：「笠をかぶって、先を急ぐ」→ 体力-8` })
+    expect(cutinsFromTransition(g, mine)).toEqual([])
+  })
+
+  it('カットイン：名物を買う場面と、分かれ道の場面でも出る', () => {
+    const g = runUntilHuman(createGame({ seed: 9, playerCount: 2 })).state
+    const fork = g.board.forks[0].tileIndex
+    g.board.playerStates.p0.position = fork - 1
+    const out = submitAction(g, 'p0', { type: 'roll' }, undefined, undefined, 1).state
+    expect(getAwaiting(out)?.kind).toBe('fork')
+    const items = cutinsFromTransition(g, out)
+    expect(items.map((i) => i.tag)).toContain('分かれ道')
+    expect(items.find((i) => i.tag === '分かれ道')!.title).toBe('大井川')
+    const shina = g.board.tiles.findIndex((t) => t.name === '品川')
+    const g2 = runUntilHuman(createGame({ seed: 9, playerCount: 2 })).state
+    g2.board.playerStates.p0.position = shina - 1
+    const out2 = submitAction(g2, 'p0', { type: 'roll' }, undefined, undefined, 1).state
+    // 品川の専用イベントのあとに、名物
+    const ev = out2.pendingEvent
+    if (ev) {
+      const after = submitAction(out2, 'p0', { type: 'event', choiceIndex: 1 }).state
+      const m = cutinsFromTransition(out2, after)
+      expect(m.map((i) => i.tag)).toContain('名物')
+    }
   })
 })

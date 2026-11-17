@@ -302,3 +302,37 @@ test('場面：サイコロがころがって出目と進むマス数が出る �
   await expect(page.getByTestId('scene-caption')).not.toContainText('日本橋', { timeout: 30_000 })
   await ctx.close()
 })
+
+test('カットイン：イベントの題名が帯で出てから、選択肢が出る', async ({ page }) => {
+  test.setTimeout(180_000)
+  await page.goto('/?seed=4')
+  await page.getByTestId('count').selectOption('2')
+  await page.getByTestId('start').click()
+  let sawCut = false
+  let cutBeforeModal = false
+  for (let i = 0; i < 400; i++) {
+    const modal = await page.getByTestId('event-modal').isVisible()
+    const cut = await page.getByTestId('cutin').isVisible()
+    if (cut) {
+      sawCut = true
+      // 帯が出ているあいだは、選択肢は出ていない
+      expect(modal).toBe(false)
+    }
+    if (modal) {
+      cutBeforeModal = sawCut
+      break
+    }
+    await page.evaluate(() => {
+      for (const id of ['roll', 'buy', 'route-lane']) {
+        const el = Array.from(document.querySelectorAll<HTMLButtonElement>(`[data-testid="${id}"]`)).find((e) => !e.disabled && e.offsetParent !== null)
+        if (el) {
+          el.click()
+          return
+        }
+      }
+    })
+    await page.waitForTimeout(120)
+  }
+  expect(cutBeforeModal).toBe(true)
+  await expect(page.getByTestId('choice').first()).toBeVisible()
+})
