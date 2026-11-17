@@ -10,18 +10,34 @@ interface Props {
   players: Player[]
   activeId: string | null
   focusId: string | null
+  /** 動いている駒の、いまの見かけの位置（なければ、状態の位置） */
+  positions: Record<string, number>
+  /** 小地図で押された位置（n が変わるたびに、そこへ動く） */
+  jump: { index: number; n: number } | null
 }
 
-export function BoardView({ board, players, activeId, focusId }: Props) {
+export function BoardView({ board, players, activeId, focusId, positions, jump }: Props) {
   const pts = useMemo(() => layoutBoard(board), [board])
   const width = MARGIN * 2 + (board.mainLength - 1) * SPACING
   const height = LANE_Y + 100
   const focusRef = useRef<SVGGElement | null>(null)
 
-  const focusPos = focusId ? board.playerStates[focusId]?.position : undefined
+  const focusPos = focusId ? positions[focusId] : undefined
+  // 最初の1回は、その場に直接移る（日本橋の側から始まるので、京都の側からゆっくり動かさない）
+  const firstFocus = useRef(true)
   useEffect(() => {
-    focusRef.current?.scrollIntoView?.({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+    focusRef.current?.scrollIntoView?.({ behavior: firstFocus.current ? 'instant' : 'smooth', inline: 'center', block: 'nearest' })
+    firstFocus.current = false
   }, [focusPos])
+
+  const scrollRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    if (!jump) return
+    const box = scrollRef.current
+    if (!box) return
+    const left = Math.max(0, pts[jump.index].x - box.clientWidth / 2)
+    box.scrollTo?.({ left, behavior: 'smooth' })
+  }, [jump, pts])
 
   const roads: Array<[Point, Point]> = []
   for (let i = 0; i < board.mainLength - 1; i++) roads.push([pts[i], pts[i + 1]])
@@ -32,7 +48,7 @@ export function BoardView({ board, players, activeId, focusId }: Props) {
   }
 
   return (
-    <div className="board-scroll" data-testid="board">
+    <div className="board-scroll" data-testid="board" ref={scrollRef}>
       <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} role="img" aria-label="東海道の盤面">
         {roads.map(([a, b], i) => (
           <line key={i} x1={a.x} y1={a.y} x2={b.x} y2={b.y} className="road" />
@@ -59,14 +75,14 @@ export function BoardView({ board, players, activeId, focusId }: Props) {
           )
         })}
         {players.map((pl, idx) => {
-          const pos = board.playerStates[pl.id].position
-          const here = players.filter((q) => board.playerStates[q.id].position === pos)
+          const pos = positions[pl.id]
+          const here = players.filter((q) => positions[q.id] === pos)
           const k = here.indexOf(pl)
           const p = pts[pos]
           const x = p.x + (k - (here.length - 1) / 2) * 13
           const y = p.y - 34
           return (
-            <g key={pl.id} transform={`translate(${x},${y})`} ref={pl.id === focusId ? focusRef : undefined} className="piece-g" data-piece={pl.id}>
+            <g key={pl.id} style={{ transform: `translate(${x}px,${y}px)` }} ref={pl.id === focusId ? focusRef : undefined} className="piece-g" data-piece={pl.id}>
               <circle r={pl.id === activeId ? 9 : 7} fill={pieceColors[idx % pieceColors.length]} stroke="#222" strokeWidth={pl.id === activeId ? 3 : 1.5} />
               <text className="piece-label" dy="0.35em">{pl.name.slice(0, 1)}</text>
             </g>

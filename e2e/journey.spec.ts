@@ -56,3 +56,37 @@ test('泊まり方を切り替えても、番は進まない', async ({ page }) 
   await page.getByTestId('hurry').click()
   await expect(page.getByTestId('log')).toContainText('早足で')
 })
+
+test('演出：サイコロが出て、駒が動き終わってから、次の操作ができる', async ({ page }) => {
+  await page.goto('/?seed=4')
+  await page.getByTestId('start').click()
+  await page.getByTestId('roll').click()
+  await expect(page.getByTestId('dice-pop')).toBeVisible()
+  // 動いているあいだは、操作の欄が隠れている
+  await expect(page.getByTestId('roll')).toBeHidden()
+  // 動き終われば、判断の画面か、次の自分の番になる
+  await expect(page.getByTestId('choice').first().or(page.getByTestId('buy')).or(page.getByTestId('roll')).first()).toBeVisible({ timeout: 20_000 })
+  await expect(page.getByTestId('dice-pop')).toBeHidden({ timeout: 5_000 })
+})
+
+test('動きを減らす設定では、演出を省く', async ({ browser }) => {
+  const ctx = await browser.newContext({ reducedMotion: 'reduce' })
+  const page = await ctx.newPage()
+  await page.goto('/?seed=4')
+  await page.getByTestId('start').click()
+  await page.getByTestId('roll').click()
+  await expect(page.getByTestId('dice-pop')).toHaveCount(0)
+  await ctx.close()
+})
+
+test('小地図を押すと、盤面がそこへ動く', async ({ page }) => {
+  await page.goto('/?seed=4&fast=1')
+  await page.getByTestId('start').click()
+  const board = page.getByTestId('board')
+  const before = await board.evaluate((el) => el.scrollLeft)
+  // 左端（京都側）を押す
+  const map = page.getByTestId('minimap').locator('svg')
+  const box = (await map.boundingBox())!
+  await page.mouse.click(box.x + 4, box.y + box.height / 2)
+  await expect.poll(() => board.evaluate((el) => el.scrollLeft)).not.toBe(before)
+})

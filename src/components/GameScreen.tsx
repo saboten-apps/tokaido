@@ -1,9 +1,11 @@
 // 旅の画面：盤面・旅人の札・行動・判断（出来事／名物／分かれ道）・道中記。CPU の番は、少しずつ進めて見せる。
 
 import { useEffect, useState } from 'react'
-import { DEFAULT_CONFIG, advanceOne, canHurry, isTired, getAwaiting, getEvent, innCostFor, isChoiceAvailable, maxFaceFor, submitAction, type SessionAction } from '../engine'
+import { DEFAULT_CONFIG, advanceOne, canHurry, isTired, getAwaiting, getEvent, innCostFor, isChoiceAvailable, maxFaceFor, submitAction, type SessionAction, type SessionResult } from '../engine'
 import { pieceColors } from '../art/theme'
 import { BoardView } from './BoardView'
+import { MiniMap } from './MiniMap'
+import { newLogLines, positionAtStep, prefersReducedMotion } from './feedback'
 import type { GameState } from '../types/game'
 
 const cfg = DEFAULT_CONFIG
@@ -14,30 +16,87 @@ interface Props {
   cpuDelayMs: number
 }
 
+interface Anim {
+  playerId: string
+  from: number
+  path: number[]
+  step: number
+}
+
+interface Toast {
+  id: number
+  text: string
+}
+
+const STEP_MS = 120
+let toastSeq = 0
+
 export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
   const [lastRoll, setLastRoll] = useState<{ name: string; face: number } | null>(null)
-  const aw = getAwaiting(state)
+  const [anim, setAnim] = useState<Anim | null>(null)
+  const [dice, setDice] = useState<{ face: number; hurry: boolean; name: string } | null>(null)
+  const [toasts, setToasts] = useState<Toast[]>([])
+  const [arrival, setArrival] = useState<{ rank: number; day: number } | null>(null)
+  const [jump, setJump] = useState<{ index: number; n: number } | null>(null)
+  // 演出は、CPU の番を待たない（?fast=1）ときと、動きを減らす設定のときは省く
+  const animate = cpuDelayMs > 0 && !prefersReducedMotion()
+  const busy = anim !== null
+  const awRaw = getAwaiting(state)
+  const aw = busy ? null : awRaw
   const active = state.players[state.turnCtl.activeIndex]
   const human = state.players.find((p) => p.isHuman)
 
-  // 自動で進める場面（CPU の番・足止め）は、間をあけて1つずつ進める
+  // 駒の見かけの位置（動いている駒だけ、1マスずつ）
+  const positions: Record<string, number> = {}
+  for (const p of state.players) positions[p.id] = state.board.playerStates[p.id].position
+  if (anim) positions[anim.playerId] = positionAtStep(anim.from, anim.path, anim.step)
+
+  // 進行の結果を画面へ：状態・サイコロ・動き・通知・到着
+  const apply = (prev: GameState, out: SessionResult) => {
+    const rolled = out.events.find((e) => e.type === 'rolled')
+    if (rolled && rolled.type === 'rolled') {
+      const name = prev.players.find((p) => p.id === rolled.playerId)!.name
+      setLastRoll({ name, face: rolled.face })
+      if (animate && rolled.path.length > 0) {
+        setAnim({ playerId: rolled.playerId, from: rolled.from, path: rolled.path, step: -1 })
+        setDice({ face: rolled.face, hurry: rolled.hurry, name })
+        setTimeout(() => setDice(null), 1000)
+      }
+    }
+    const arrived = out.events.find((e) => e.type === 'arrived')
+    if (arrived && arrived.type === 'arrived' && prev.players.find((p) => p.id === arrived.playerId)?.isHuman) {
+      setArrival({ rank: arrived.rank, day: arrived.day })
+      setTimeout(() => setArrival(null), 2600)
+    }
+    for (const text of newLogLines(prev, out.state)) {
+      const id = ++toastSeq
+      setToasts((t) => [...t.slice(-2), { id, text }])
+      setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 3200)
+    }
+    onChange(out.state)
+  }
+
+  // 動きを1マスずつ進める
   useEffect(() => {
-    if (state.phase !== 'playing' || aw) return
-    const timer = setTimeout(() => {
-      const out = advanceOne(state, cfg)
-      const rolled = out.events.find((e) => e.type === 'rolled')
-      if (rolled && rolled.type === 'rolled') setLastRoll({ name: state.players.find((p) => p.id === rolled.playerId)!.name, face: rolled.face })
-      onChange(out.state)
-    }, cpuDelayMs)
+    if (!anim) return
+    const timer = setTimeout(
+      () => setAnim(anim.step >= anim.path.length - 1 ? null : { ...anim, step: anim.step + 1 }),
+      anim.step < 0 ? 350 : STEP_MS,
+    )
     return () => clearTimeout(timer)
-  }, [state, aw, cpuDelayMs, onChange])
+  }, [anim])
+
+  // 自動で進める場面（CPU の番・足止め）は、動きが終わってから、間をあけて1つずつ進める
+  useEffect(() => {
+    if (state.phase !== 'playing' || awRaw || busy) return
+    const timer = setTimeout(() => apply(state, advanceOne(state, cfg)), cpuDelayMs)
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, awRaw, busy, cpuDelayMs])
 
   const act = (action: SessionAction) => {
     if (!aw) return
-    const out = submitAction(state, aw.playerId, action, cfg)
-    const rolled = out.events.find((e) => e.type === 'rolled')
-    if (rolled && rolled.type === 'rolled') setLastRoll({ name: state.players.find((p) => p.id === rolled.playerId)!.name, face: rolled.face })
-    onChange(out.state)
+    apply(state, submitAction(state, aw.playerId, action, cfg))
   }
 
   const awPlayer = aw ? state.players.find((p) => p.id === aw.playerId)! : null
@@ -52,7 +111,21 @@ export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
         {lastRoll && <span className="roll" data-testid="last-roll">🎲 {lastRoll.name}：{lastRoll.face}</span>}
       </header>
 
-      <BoardView board={state.board} players={state.players} activeId={active.id} focusId={(awPlayer ?? human ?? active).id} />
+      <MiniMap
+        board={state.board}
+        players={state.players}
+        positions={positions}
+        focusId={(anim?.playerId ?? awPlayer?.id ?? human?.id ?? active.id)}
+        onJump={(index) => setJump({ index, n: (jump?.n ?? 0) + 1 })}
+      />
+      <BoardView
+        board={state.board}
+        players={state.players}
+        activeId={active.id}
+        focusId={anim?.playerId ?? (awPlayer ?? human ?? active).id}
+        positions={positions}
+        jump={jump}
+      />
 
       <section className="players">
         {state.players.map((p, i) => {
@@ -148,6 +221,26 @@ export function GameScreen({ state, onChange, cpuDelayMs }: Props) {
           </div>
         )
       })()}
+
+      {dice && (
+        <div className="dice-pop" data-testid="dice-pop" role="status" aria-live="polite">
+          <div className="dice-face">{dice.face}</div>
+          <div className="dice-note">{dice.name}{dice.hurry ? `　早足＋${cfg.balance.travel.hurryBonus}` : ''}</div>
+        </div>
+      )}
+      <div className="toasts" aria-live="polite">
+        {toasts.map((t) => (
+          <div key={t.id} className="toast">{t.text}</div>
+        ))}
+      </div>
+      {arrival && (
+        <div className="arrival" data-testid="arrival" role="status">
+          <div>
+            京都・三条大橋に着いた！
+            <small>{arrival.day}日目・{arrival.rank}番目</small>
+          </div>
+        </div>
+      )}
 
       <section className="log" data-testid="log">
         {state.log.slice(-8).reverse().map((l, i) => (
