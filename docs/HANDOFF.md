@@ -111,6 +111,8 @@
 
 ## 記録（新しいものを上に）
 
+- 2026-11-17 **書体**：Google Fonts の Zen Old Mincho（見出し・場所名・カットイン・称号）と Shippori Mincho（本文）。`index.html` で読み込み、`--font-display` / `--font-body`。読めないときは端末の明朝体。※オフライン（PWA）では端末の明朝体になる。e2e「3D は場面」の assertion を、時代背景のない土地でも通るよう直した。
+
 - 2026-11-17 **3D を広重風に**：①toon（3段の平らな色）②輪郭線（`outlineAll`・LITE では引かない）③空のドーム（頂点色のぼかし。`skyDome`）④紙の縁・紙の目（`.scene-wrap::after`）。**場面の作り込み**：浜松城（石垣の段・多層天守・しゃちほこ・櫓門・堀・松）、箱根関所（門・番所・幔幕・高札場・列の旅人・役人）、京都（町家の並び `machiya`）。※e2e の「3D は場面」は、並列で重いと稀に落ちる（単独では通る）。
 
 - 2026-11-17 **広重の絵55枚を取り込み**（メトロポリタン美術館 CC0・保永堂版）。Met の公開データ（CSV）で宿場ごとの資料番号を決め（`scripts/metHoeido.json`）、objects API で `isPublicDomain` を確認して取得。紙のふち・色見本を切って webp 化（`public/hiroshige/` 6.7MB）。出どころは `docs/ASSETS.md` と `hiroshige.json`。※このセッションからは、search API が bot 対策でブロックされるため、CSV と objects API を使った。

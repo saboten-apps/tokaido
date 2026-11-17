@@ -277,8 +277,8 @@ test('3D は場面：止まった土地の場面に切り替わる（ワープ�
     if (!(await page.getByTestId('scene-caption').innerText()).includes('日本橋')) break
   }
   await expect(page.getByTestId('scene-caption')).not.toContainText('日本橋', { timeout: 60_000 })
-  // 場面の下に、その土地の解説（時代背景）が出ている
-  await expect(page.getByTestId('place-era')).toBeVisible()
+  // 場面の下に、その土地の解説カードが出ている（時代背景の文は、土地によってない所もあるので、カードだけ確かめる）
+  await expect(page.getByTestId('place-card')).toBeVisible()
   // 小地図を押すと、その場所を見学できる
   const box = (await page.locator('[data-testid=minimap] svg').boundingBox())!
   await page.mouse.click(box.x + 4, box.y + box.height / 2)
