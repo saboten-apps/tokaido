@@ -271,8 +271,9 @@
  },
  "丸子の茶屋": {
   "motifs": [
-   "teahouse",
-   "teafields",
+   "teahouse:thatched",
+   "plum",
+   "travelers:two",
    "street"
   ],
   "mood": "day"
@@ -281,6 +282,7 @@
   "motifs": [
    "teahouse:thatched",
    "plum",
+   "travelers:shop",
    "mountains:round",
    "street"
   ],
@@ -290,6 +292,7 @@
   "motifs": [
    "mountains:cliff",
    "steps",
+   "travelers:walking",
    "cedar",
    "river"
   ],
@@ -299,6 +302,8 @@
   "motifs": [
    "street",
    "horses",
+   "packhorse:cargo",
+   "travelers:two",
    "distanthills"
   ],
   "mood": "day"
@@ -307,6 +312,7 @@
   "motifs": [
    "river:vast",
    "porters",
+   "travelers:walking",
    "distanthills",
    "street"
   ],
@@ -316,7 +322,8 @@
   "motifs": [
    "river:vast",
    "porters",
-   "mountains:layered"
+   "travelers:two",
+   "distanthills"
   ],
   "mood": "day"
  },
@@ -324,6 +331,8 @@
   "motifs": [
    "river:vast",
    "steps",
+   "packhorse:cargo",
+   "travelers:walking",
    "teafields",
    "mountains:layered"
   ],
@@ -334,7 +343,7 @@
    "rock",
    "steps",
    "mountains:cliff",
-   "temple"
+   "travelers:walking"
   ],
   "mood": "dusk"
  },
@@ -342,6 +351,7 @@
   "motifs": [
    "rock",
    "steps",
+   "travelers:two",
    "mountains:cliff",
    "teahouse:thatched"
   ],
@@ -353,6 +363,7 @@
    "river",
    "castle:small",
    "kite",
+   "travelers:two",
    "distanthills"
   ],
   "mood": "day"
@@ -361,6 +372,7 @@
   "motifs": [
    "teahouse:thatched",
    "kettle",
+   "travelers:shop",
    "signpost=東海道 どまん中",
    "paddies"
   ],
@@ -370,6 +382,7 @@
   "motifs": [
    "river:vast",
    "ferry=river",
+   "travelers:two",
    "kasumi",
    "pinelane"
   ],
@@ -377,8 +390,11 @@
  },
  "浜松": {
   "motifs": [
-   "castle:big",
+   "bigpine:bonfire",
+   "travelers:bonfire",
+   "smoke",
    "bonfire",
+   "castle:distant",
    "pinelane",
    "distanthills"
   ],
@@ -668,23 +684,28 @@
  "島田の川止め宿": {
   "motifs": [
    "inn",
-   "river",
+   "river:vast",
+   "travelers:two",
    "street"
   ],
   "mood": "rain"
  },
  "川明けを待つ河原": {
   "motifs": [
-   "river",
-   "mountains"
+   "river:vast",
+   "porters",
+   "travelers:walking",
+   "mountains:layered"
   ],
   "mood": "morning"
  },
  "川越しの朝": {
   "motifs": [
-   "river",
+   "river:vast",
    "porters",
-   "mountains"
+   "travelers:two",
+   "mountains:layered",
+   "kasumi:morning"
   ],
   "mood": "morning"
  }

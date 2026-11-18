@@ -266,6 +266,37 @@
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
 
+### 2026-11-19 Antigravity（風物・人馬作り込み：第3群 21〜30 鞠子〜浜松）
+- ブランチ: `antigravity/scenes-2`
+- 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
+- 作り込み完了宿場（第3群 21〜30）:
+  - 丸子の茶屋: teahouse:thatched, plum, travelers:two, street
+  21. 鞠子（名物茶店）: teahouse:thatched, plum, travelers:shop, mountains:round, street
+  22. 岡部（宇津之谷）: mountains:cliff, steps, travelers:walking, cedar, river
+  23. 藤枝（人馬継立）: street, horses, packhorse:cargo, travelers:two, distanthills
+  24. 島田（大井川駿岸）: river:vast, porters, travelers:walking, distanthills, street
+  - 大井川: river:vast, porters, travelers:two, distanthills
+  - 島田の川止め宿: inn, river:vast, travelers:two, street
+  - 川明けを待つ河原: river:vast, porters, travelers:walking, mountains:layered
+  - 川越しの朝: river:vast, porters, travelers:two, mountains:layered, kasumi:morning
+  25. 金谷（大井川遠望）: river:vast, steps, packhorse:cargo, travelers:walking, teafields, mountains:layered
+  - 小夜の中山: rock, steps, mountains:cliff, travelers:walking
+  26. 日坂（佐夜ノ中山）: rock, steps, travelers:two, mountains:cliff, teahouse:thatched
+  27. 掛川（秋葉道）: bridge:wood, river, castle:small, kite, travelers:two, distanthills
+  28. 袋井（出茶屋ノ図）: teahouse:thatched, kettle, travelers:shop, signpost=東海道 どまん中, paddies
+  29. 見附（天竜川図）: river:vast, ferry=river, travelers:two, kasumi, pinelane
+  30. 浜松（冬枯ノ図）: bigpine:bonfire, travelers:bonfire, smoke, bonfire, castle:distant, pinelane, distanthills
+- 特記事項:
+  - 浜松（冬枯ノ図）: 絵の主役である冬枯れの大松（`bigpine:bonfire`）と、焚き火にあたる旅人たち（`travelers:bonfire`）、風になびく煙のパーティクル（`smoke`）を中央に大写しで配置。遠景に浜松城（`castle:distant`）と松並木・遠山を配し、広重の構図を忠実に再現。
+  - 鞠子（名物茶店）: 茅葺き茶屋（丸子の茶屋）と梅の木、名物とろろ汁を食べる旅人と給仕（`travelers:shop`）。
+  - 藤枝（人馬継立）: 伝馬所の荷駄馬（`packhorse:cargo`）と繋ぎ馬（`horses`）、交代の旅人たち。
+  - 大井川・島田・金谷: 広大な水面（`river:vast`）と蓮台・肩車で渡る川越人足（`porters`）、荷駄馬、坂道を登る旅人。
+  - 日坂（佐夜ノ中山）: 街道真ん中の巨大な夜泣き石（`rock`）と急坂の石段（`steps`）、旅人二人連れ。
+  - 掛川（秋葉道）: 秋葉道の木橋を渡る旅人と、空高く揚がる大凧（`kite`）。
+  - 袋井（出茶屋ノ図）: 街道どまん中の出茶屋、大木に吊るされた巨大薬缶（`kettle`）と休む旅人。
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件通過）
+- 次：第4群（31〜40：舞坂〜池鯉鮒）
+
 ### 2026-11-19 Antigravity（風物・人馬作り込み：第2群 11〜20 箱根〜府中）
 - ブランチ: `antigravity/scenes-2`
 - 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
