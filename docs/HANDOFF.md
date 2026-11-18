@@ -111,6 +111,67 @@
 
 ## 記録（新しいものを上に）
 
+- 2026-11-18 **全55宿の3D場面作り込み（広重風：図形＋平らな色）（Antigravity／デザイン）**：
+  - **ブランチ**：`antigravity/scenes-1`
+  - **コミット**：
+    - `95eaf90` 第1群（1〜10：日本橋〜小田原）
+    - `3da9261` 第2群（11〜20：箱根〜府中）
+    - `c6adef6` 第3群（21〜30：鞠子〜浜松）
+    - `cc393fe` 第4群（31〜40：舞坂〜池鯉鮒）
+    - `833aa6f` 第5群（41〜50：鳴海〜土山）
+    - `5158039` 第6群（51〜55：水口〜京都 三条大橋）
+  - **変更点**：
+    1. 広重風3D表現の導入（`src/components/sceneKit.ts`）：
+       - 山（`mountains:layered`、`mountains:round`、`cliff`）：単一円錐から多層カラー積層（藍・黄土・深緑）および急峻な断崖・丸山へ刷新。
+       - 水（`river:wide`、`sea:wide`、`bay`）：画面全体に広がるベロ藍（プルシアンブルー）のグラデーション水面。
+       - 遠景・霞（`distanthills`、`kasumi`）：輪郭線を排した淡い遠山並みと伝統の「すやり霞」帯。
+       - 風物部品の大幅拡充：大名行列（`procession`）、魚河岸（`fishmarket`）、蕎麦屋（`soba`）、土手・飛脚（`dike`）、満月（`moon`）、湿地（`marsh`）、雪屋根（`snowroofs`）、紅白梅（`plum`）、大凧（`kite`）、薬缶（`kettle`）、蘇鉄（`sotetsu`）、大鳥居（`torii:grand`）、千石船群（`ships`）、干瓢干し（`gourd`）など。
+    2. 全55宿（全73マス）の構成最適化（`src/data/scenes.json`）：
+       - 保永堂版浮世絵（`public/hiroshige/`）および `src/data/places.json` の時代背景に基づき、全73場面の `motifs` と `mood` を完全リファイン。
+    3. 代表5場面を含む11宿の比較画像生成（`shots-scenes/`）：
+       - 箱根・浜松・蒲原・桑名・京都 三条大橋（代表5宿）を含む全11宿について、広重浮世絵とスマホ幅（390px）3D描画の左右比較画像を生成。
+  - **確認結果**：
+    - `npm run check`：oxlint 0 warning / 0 error、vitest 14 files / 129 tests passed、tsc build 成功（615ms）。
+    - `npm run test:e2e`：Playwright 50 tests 全件 passed。
+    - `npm run test:e2e:online`：Playwright 3 tests 全件 passed（2ブラウザ実接続対戦含む）。
+    - 部品数（Mesh）検証：全73場面測定、最大は「京都 三条大橋」の 392 個（輪郭線対象 389 個）。全場面が上限 500 個以下（`outlineAll` 上限 700 個未満）を完全にクリア。
+    - 描画速度（`?stats=1`）：スマホ幅（Pixel 7、390px相当）E2Eにて安定動作（約 8 FPS / 描画 348 回 / 三角形 7098、headless ソフトウェア描画環境）。
+  - **史実・確認事項**：広重浮世絵および `places.json` に記載された確かな風物・景観のみを採用。
+  - **次にやること**：さぼてんによるパッチ化、実機スマホでの描画体感確認、本番環境への反映検討。
+
+- 2026-11-18 **デザイン改善 FIX2：スマホ幅での操作ドック折りたたみと場面可視性確保（Antigravity／デザイン）**：
+  - **ブランチ**：`antigravity/design-1`
+  - **変更点**：
+    1. 操作ドック（`.dock`）の折りたたみUI化：スマホ幅（640px以下）において、「サイコロを振る」と「宿場をめざす」を主行動として常時表示し、早足・泊まり方・働くは「ほかの行動 ▾」（`data-testid="dock-more"`）でアコーディオン開閉する構造に変更。
+    2. 場面（`.board3d`）表示領域の適正化：スマホ表示高さを 315px（min-height 300px）に調整し、上部要素（topbar/minimap）の余白およびドックの高さをコンパクト化。幅390×高さ664pxの閉状態において、場面の表示領域 315px（画面高さの 47.44%）を確保（要件 45% 以上を達成）。開いた際はドックが前面に展開され各行動を選択可能。
+    3. PC幅（1280px）の現行表示維持：メディアクエリ（641px以上）にてトグルボタンを非表示化し、全行動を横並びで常時展開するレイアウトを維持。
+    4. E2Eテスト適応：`e2e/journey.spec.ts` でモバイル実行時に「ほかの行動」を開く操作を追加し、全50件パス。
+  - **検証**：`npm run check`（oxlint 0 errors / 0 warnings、vitest 129 passed、tsc build 成功）、`npm run test:e2e`（50 passed）、`npm run test:e2e:online`（3 passed）。確認用スクリーンショットを `shots-fix2/` に保存。
+
+- 2026-11-18 **デザイン改善 FIX1：結果画面のスマホ幅表示修正（順位表の旅人列・スタンプ帳グリッド）（Antigravity／デザイン）**：
+  - **ブランチ**：`antigravity/design-1`
+  - **変更点**：
+    1. 順位表の「旅人」列（スマホ幅390px）：旅人名（`traveler-name`）の nowrap＋最小幅確保、身分（`role-sub`）を名前の下に小さく横書き表示、列の padding（7px 3px）とフォントサイズ（12px / th 11px）調整を実施。名前が1文字ずつ縦に折れていた問題を解消し、表全体が390px幅に横オーバーフローなしで美しく収まるよう改善。PC幅（768px以上）では名前と身分の横並び（inline）を維持し、2カラム表示を保護。
+    2. 宿場スタンプ帳のグリッド（スマホ幅390px）：順位表の横オーバーフロー解消によりページ全体の横スクロール（435px→390px）が消滅。あわせてスタンプ帳の padding（8px 10px）とグリッド（`minmax(52px, 1fr)`、gap 5px）を最適化し、右端の見切れ・はみ出しなく画面内に完全収容。
+  - **検証**：`npm run check`（oxlint 0 errors / 0 warnings、vitest 14 files / 129 passed、tsc build 成功）、`npm run test:e2e`（50 passed）。スマホ幅（390px）およびPC幅（1280px）のスクリーンショットを `shots-fix1/` に保存。
+
+- 2026-11-18 **デザイン改善 Phase 1〜5（Antigravity／デザイン）**：
+  - **ブランチ**：`antigravity/design-1`
+  - **変更点**：
+    1. Phase 1 デザイン基盤：和の伝統色（墨 `#2b2825`、朱 `#b33e2b`、山吹 `#c98e28`、藍 `#1e3a5f`、和紙 `#f8f4ec`）、書体階層（Zen Old Mincho / Shippori Mincho）、和紙質感テクスチャ、木札・木版風コンポーネントを `src/index.css` に集約・統一。
+    2. Phase 2 重なり崩れ解消＆共通UI刷新：3D場面のスマホ表示高さを 230px に適正化し、下部操作ドック（`.dock`）との重なり・潜り込み・文字切れを解消。アクションボタン、体力ゲージ（竹細工・印籠調）、イベントカットイン（定式幕調）、モーダルを刷新。
+    3. Phase 3 画面別刷新：
+       - タイトル（`TitleScreen.tsx`）：広重『日本橋 朝之景』の額装アイキャッチ、落款印、宿帳風フォーム、PC幅2カラム見開き。
+       - ゲーム（`SceneStage.tsx`, `BoardView.tsx`, `parts.tsx`）：白木道標風宿場看板、浮世絵小窓の黒漆額縁、街道二重線、PlaceCard の短冊タグ付き道中案内記風デザイン。
+       - 結果（`ResultScreen.tsx`）：表彰状・絵巻物風ヘッダー、道中勘定帳風テーブル、落款風称号チップ、PC幅2カラム化。
+    4. Phase 4 3D場面（`sceneKit.ts`）：toonシェーディングの和紙温かみ調整、朝焼け・夕暮れ・広重ブルーの空ぼかしグラデーション調整（ポリゴン数・部品数は維持）。
+  - **確認結果**：
+    - `npm run check` 通過（oxlint 0エラー/0警告、vitest 14 files / 129 tests passed、tsc build 成功）。
+    - `npm run test:e2e` 通過（Playwright 50 tests 全件 passed）。
+    - スマホ幅（390px）およびPC幅で目視・スクリーンショット撮影確認済み（8枚保存、重なり崩れ解消確認）。
+  - **次にやること**：実機（スマホ実機）での 3D レンダリング負荷（`?stats=1`）の確認、オンライン対戦（Worker）のデプロイ準備。
+
+
 - 2026-11-17 **書体**：Google Fonts の Zen Old Mincho（見出し・場所名・カットイン・称号）と Shippori Mincho（本文）。`index.html` で読み込み、`--font-display` / `--font-body`。読めないときは端末の明朝体。※オフライン（PWA）では端末の明朝体になる。e2e「3D は場面」の assertion を、時代背景のない土地でも通るよう直した。
 
 - 2026-11-17 **3D を広重風に**：①toon（3段の平らな色）②輪郭線（`outlineAll`・LITE では引かない）③空のドーム（頂点色のぼかし。`skyDome`）④紙の縁・紙の目（`.scene-wrap::after`）。**場面の作り込み**：浜松城（石垣の段・多層天守・しゃちほこ・櫓門・堀・松）、箱根関所（門・番所・幔幕・高札場・列の旅人・役人）、京都（町家の並び `machiya`）。※e2e の「3D は場面」は、並列で重いと稀に落ちる（単独では通る）。
@@ -202,6 +263,134 @@
 - 部屋・通信・サーバー処理・クライアント・Worker・画面を移植。`parts.tsx` に画面の部品を切り出し（ひとり用とオンラインで共有）。lint から `.wrangler` を除外。
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
+
+### 2026-11-18 Antigravity（全55宿の場面作り込み：第6群 51〜55 水口〜京都 三条大橋・全場面完成）
+- ブランチ: `antigravity/scenes-1`
+- 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。
+- 新風物部品・改修：
+  - 水口の名物干瓢干しと松・水口城、石部の夕暮れ目川茶店と街道松並木、草津の追分立場姥が餅茶屋と大名駕籠行列、大津の走井茶店と名木柳・清水、京都 三条大橋の鴨川に架かる木造長橋（金色の擬宝珠）・五重塔・多層の東山連峰・京都町家の夕暮れ
+- 作り込み完了宿場（第6群 51〜55）:
+  51. 水口（名物干瓢）: day, kanpyo, castle:small, pinelane, street
+  52. 石部（目川ノ里）: dusk, teahouse:thatched, street, pinelane, lantern, signpost=京立ち石部泊まり
+  53. 草津（名物立場）: day, teahouse:thatched, inn, signpost=追分 東海道・中山道, procession（琵琶湖のほとり反映）
+  54. 大津（走井茶店）: day, teahouse:thatched, willow, street, signpost=逢坂の関
+  55. 京都 三条大橋（三条大橋）★代表: dusk, river:wide, bridge:long, pagoda, mountains:layered, machiya
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件全通過）
+- スクリーンショット（比較画像）：`京都 三条大橋-compare.png`（★代表）
+- これにより東海道五十三次（日本橋〜京都 三条大橋 全55宿および分岐・名所マス計73箇所）すべての場面作り込みが完了。
+
+### 2026-11-18 Antigravity（全55宿の場面作り込み：第5群 41〜50 鳴海〜土山）
+- ブランチ: `antigravity/scenes-1`
+- 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。
+- 新風物部品・改修：
+  - 鳴海の有松絞り問屋街と揺れる反物、宮の熱田神事の篝火と疾走する神馬、桑名の七里渡口に立つ大鳥居・城郭の櫓・千石船群、四日市三重川の板橋・風にしなる柳と追分道標、石薬師の門前と鈴鹿連峰、庄野白雨の豪雨にしなる竹藪と急坂、亀山雪晴の白銀の山城と行列、関の本陣早立・長大な格子町家、坂下の筆捨嶺奇峰、土山の春之雨・田村川板橋
+- 作り込み完了宿場（第5群 41〜50）:
+  41. 鳴海（名物有松絞）: day, indigo:colors, street, machiya
+  42. 宮（熱田神事）: night, shrine, torii:big, bonfire, horses
+  43. 桑名（七里渡口）★代表: day, torii:big, sea:wide, tower, boats:sails（七里の渡し反映）
+  44. 四日市（三重川）: day, river, bridge:plank, willow, dike, signpost=伊勢街道 追分
+  45. 石薬師（石薬師寺）: day, temple, paddies, mountains:layered, pinelane
+  46. 庄野（白雨）: rain, bamboo, steps, dike, street
+  47. 亀山（雪晴）: day, castle:small, mountains:snow, snowroofs, procession
+  48. 関（本陣早立）: morning, street:long, procession, lantern, torii（関の茶屋反映）
+  49. 坂下（筆捨嶺）: mist, mountains:cliff, cedar, steps, teahouse:thatched（鈴鹿峠反映）
+  50. 土山（春之雨）: rain, river, bridge:plank, procession, teafields
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件全通過）
+- スクリーンショット（比較画像）：`桑名-compare.png`（★代表）、`庄野-compare.png`
+- 次：第6群（51〜55：水口〜京都 三条大橋）
+
+### 2026-11-18 Antigravity（全55宿の場面作り込み：第4群 31〜40 舞坂〜池鯉鮒）
+- ブランチ: `antigravity/scenes-1`
+- 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。
+- 新風物部品・改修：
+  - `sotetsu`: 赤坂「旅舎招婦ノ図」の旅籠大橋屋の中庭に茂る名物蘇鉄
+  - 舞坂・新居・今切の渡し舟と海中の木杭、白須賀の高台汐見坂から見下ろす遠州灘と大名行列、吉田の豊川橋と吉田城・夜空の手筒花火、御油の夕暮れ松並木と旅籠町、藤川の棒示杭と出迎える大名行列、岡崎の東海道最長・矢矧之橋と岡崎城、池鯉鮒の初夏馬市
+- 作り込み完了宿場（第4群 31〜40）:
+  31. 舞坂（今切真景）: day, lake:wide, ferry=lake, stakes, pinelane, fuji:distant（浜名の今切も反映）
+  32. 新居（渡舟ノ図）: day, sekisho, lake, ferry=lake, stakes
+  33. 白須賀（汐見阪図）: day, steps, sea:wide, procession, pinelane
+  34. 二川（猿ヶ馬場）: day, teahouse:thatched, pinelane, street, paddies
+  35. 吉田（豊川橋）: night, bridge:long, river, castle:small, hanabi
+  36. 御油（旅人留女）: dusk, inn, pinelane, street, lantern
+  37. 赤坂（旅舎招婦ノ図）: night, inn, sotetsu, lantern, street
+  38. 藤川（棒鼻ノ図）: day, stakes, horses, procession, pinelane
+  39. 岡崎（矢矧之橋）: day, bridge:long, river:wide, castle, procession（岡崎の城下も反映）
+  40. 池鯉鮒（首夏馬市）: day, horses, paddies, pinelane, distanthills
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件全通過）
+- スクリーンショット（比較画像）：`岡崎-compare.png`、`白須賀-compare.png`
+- 次：第5群（41〜50：鳴海〜土山）
+
+### 2026-11-18 Antigravity（全55宿の場面作り込み：第3群 21〜30 鞠子〜浜松）
+- ブランチ: `antigravity/scenes-1`
+- 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。
+- 新風物部品・改修：
+  - `plum`: 鞠子「名物茶店」の丁子屋を彩る紅白の梅
+  - `kite`: 掛川「秋葉山遠望」の空に舞う大凧と尾の吹き流し
+  - `kettle`: 袋井「出茶屋ノ図」の大木の枝から吊るされた大鉄薬缶と立ち上る湯気・焚火
+  - `rock`: 日坂「佐夜ノ中山」の街道中央に鎮座する夜泣き石と注連縄
+  - 岡部の宇津之山山峡、島田・金谷・大井川の広大な川筋、浜松の冬枯れの松と焚火
+- 作り込み完了宿場（第3群 21〜30）:
+  21. 鞠子（名物茶店）: day, teahouse:thatched, plum, mountains:round, street
+  22. 岡部（宇津之山）: mist, mountains:cliff, steps, cedar, river
+  23. 藤枝（人馬継立）: day, street, horses, distanthills
+  24. 島田（大井川駿岸）: day, river:vast, porters, distanthills, street
+  25. 金谷（大井川遠岸）: day, river:vast, steps, teafields, mountains:layered
+  26. 日坂（佐夜ノ中山）: day, rock, steps, mountains:cliff, teahouse:thatched（小夜の中山も反映）
+  27. 掛川（秋葉山遠望）: day, bridge:wood, river, castle:small, kite, distanthills
+  28. 袋井（出茶屋ノ図）: day, teahouse:thatched, kettle, signpost=東海道 どまん中, paddies
+  29. 見附（天竜川図）: mist, river:vast, ferry=river, kasumi, pinelane
+  30. 浜松（冬枯ノ図）★代表: day, castle:big, bonfire, pinelane, distanthills（大井川も反映）
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件全通過）
+- スクリーンショット（比較画像）：`浜松-compare.png`（★代表）、`袋井-compare.png`
+- 次：第4群（31〜40：舞坂〜池鯉鮒）
+
+### 2026-11-18 Antigravity（全55宿の場面作り込み：第2群 11〜20 箱根〜府中）
+- ブランチ: `antigravity/scenes-1`
+- 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。
+- 新風物部品・改修：
+  - `marsh`: 原「朝之富士」の浮島ヶ原に広がる広大な湿地・葦原と水面
+  - `moon`: 沼津「黄昏図」の狩野川沿いに浮かぶ大きな満月と淡い夜光
+  - `snowroofs`: 蒲原「夜之雪」のしんしんと雪が積もる茅葺き・瓦屋根の静寂な町並み
+  - 箱根の屏風山（`mountains:layered`）と芦ノ湖の青、三島の朝霧（`mist` と `kasumi`）、由比の薩埵峠断崖（`mountains:cliff`）と駿河湾
+- 作り込み完了宿場（第2群 11〜20）:
+  11. 箱根（湖水図）: morning, lake, mountains:layered, fuji:distant, procession, sekisho
+  12. 三島（朝霧）: mist, shrine, torii, cedar, kasumi
+  13. 沼津（黄昏図）: dusk, river:wide, moon, pinelane, teahouse:thatched
+  14. 原（朝之富士）: morning, fuji:big, marsh, paddies, pinelane
+  15. 吉原（左富士）: day, pinelane, fuji:left, dike, street
+  16. 蒲原（夜之雪）: snow, snowroofs, mountains:snow, pinelane
+  17. 由比（薩埵嶺）: day, mountains:cliff, sea:wide, fuji, pinelane（薩埵峠も反映）
+  18. 興津（興津川）: day, river:wide, mountains:layered, pinelane, street
+  19. 江尻（三保遠望）: day, sea:wide, boats:sails, pinelane, harbor
+  20. 府中（安倍川）: day, river:vast, porters, mountains:layered, fuji:distant
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件全通過）
+- スクリーンショット（比較画像）：`箱根-compare.png`、`蒲原-compare.png`
+- 次：第3群（21〜30：鞠子〜浜松）
+
+### 2026-11-18 Antigravity（全55宿の場面作り込み：第1群 1〜10 日本橋〜小田原）
+- ブランチ: `antigravity/scenes-1`
+- 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。
+- 山・水・遠景・霞の基盤改修：
+  - `mountains`: 裾野（黄土層）・中腹（青緑層）・上部（岩肌層）の多層山（`layered`）、丸山（`round`）、断崖（`cliff`）、雪山（`snow`）
+  - `river`: 広重の深いベロ藍（`0x1b466f`）と浅葱のグラデーション、砂州・中州の配置（`wide`, `vast`）
+  - `sea`: 手前の砂浜、白波、深いベロ藍の沖合（`wide`）
+  - `distanthills`: 輪郭線を引かず遠景に溶け込む淡藍の遠山
+  - `kasumi`: 水平に広がるすやり霞（和紙色・薄紅）
+  - 新風物部品: `procession`（大名行列の毛槍・奴）、`fishmarket`（日本橋の魚河岸・天秤棒）、`soba`（保土ヶ谷の二八蕎麦屋）、`dike`（平塚縄手道・土手・飛脚）、`bonfire`（焚火・篝火）、`bamboo`（竹藪）、`willow`（柳）
+- 作り込み完了宿場（第1群 1〜10）:
+  1. 日本橋（朝之景）: morning, river:wide, bridge:wood, procession, fishmarket, street, distanthills
+  2. 品川（日之出）: morning, sea:wide, boats:sails, teahouse, street, kasumi:morning
+  3. 川崎（六郷渡舟）: day, river:wide, ferry=river, fuji:distant, teahouse:thatched, pinelane
+  4. 神奈川（台之景）: day, sea:wide, steps, teahouse, boats:sails, pinelane
+  5. 保土ヶ谷（新町橋）: day, river, bridge:wood, soba, pinelane, street
+  6. 戸塚（元町別道）: dusk, signpost=左 かまくら道, teahouse:thatched, river, bridge:wood, pinelane
+  7. 藤沢（遊行寺）: day, river, bridge:long, torii, temple, mountains:layered
+  8. 平塚（縄手道）: day, dike, paddies, mountains:round, fuji:distant, pinelane
+  9. 大磯（虎ヶ雨）: rain, pinelane, sea:wide, dike, kasumi
+  10. 小田原（酒匂川）: day, river:wide, porters, castle, mountains:layered, pinelane
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件全通過）
+- スクリーンショット（比較画像）：`日本橋-compare.png`、`小田原-compare.png`
+- 次：第2群（11〜20：箱根〜府中）
 
 ### 2026-11-17 Claude（ROADMAP H：旅人の身分）
 - SCHEMA_VERSION 3、身分6つ、タイトル画面の選択、札と結果に身分、シミュレーションを身分ごとの集計に。

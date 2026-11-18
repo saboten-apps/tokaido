@@ -38,6 +38,9 @@ test('路銀がなくても、働いて稼げる', async ({ page }) => {
   await page.getByTestId('start').click()
   const money = page.getByTestId('player-p0')
   const before = await money.innerText()
+  if (await page.getByTestId('dock-more').isVisible()) {
+    await page.getByTestId('dock-more').click()
+  }
   await page.getByTestId('work').click()
   // CPU がすぐ動いて道中記の行が流れるので、旅人の札の路銀の変化で確かめる（働いたログは単体テストで確認）
   await expect(money).not.toHaveText(before)
@@ -57,6 +60,9 @@ test('続きから再開できる', async ({ page }) => {
 test('泊まり方を切り替えても、番は進まない', async ({ page }) => {
   await page.goto('/?seed=6&fast=1')
   await page.getByTestId('start').click()
+  if (await page.getByTestId('dock-more').isVisible()) {
+    await page.getByTestId('dock-more').click()
+  }
   await page.getByTestId('lodging-kichin').click()
   await expect(page.getByTestId('lodging-kichin')).toHaveAttribute('aria-pressed', 'true')
   await expect(page.getByTestId('roll')).toBeVisible()
