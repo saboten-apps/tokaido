@@ -111,6 +111,34 @@
 
 ## 記録（新しいものを上に）
 
+- 2026-11-18 **全55宿の3D場面作り込み（広重風：図形＋平らな色）（Antigravity／デザイン）**：
+  - **ブランチ**：`antigravity/scenes-1`
+  - **コミット**：
+    - `95eaf90` 第1群（1〜10：日本橋〜小田原）
+    - `3da9261` 第2群（11〜20：箱根〜府中）
+    - `c6adef6` 第3群（21〜30：鞠子〜浜松）
+    - `cc393fe` 第4群（31〜40：舞坂〜池鯉鮒）
+    - `833aa6f` 第5群（41〜50：鳴海〜土山）
+    - `5158039` 第6群（51〜55：水口〜京都 三条大橋）
+  - **変更点**：
+    1. 広重風3D表現の導入（`src/components/sceneKit.ts`）：
+       - 山（`mountains:layered`、`mountains:round`、`cliff`）：単一円錐から多層カラー積層（藍・黄土・深緑）および急峻な断崖・丸山へ刷新。
+       - 水（`river:wide`、`sea:wide`、`bay`）：画面全体に広がるベロ藍（プルシアンブルー）のグラデーション水面。
+       - 遠景・霞（`distanthills`、`kasumi`）：輪郭線を排した淡い遠山並みと伝統の「すやり霞」帯。
+       - 風物部品の大幅拡充：大名行列（`procession`）、魚河岸（`fishmarket`）、蕎麦屋（`soba`）、土手・飛脚（`dike`）、満月（`moon`）、湿地（`marsh`）、雪屋根（`snowroofs`）、紅白梅（`plum`）、大凧（`kite`）、薬缶（`kettle`）、蘇鉄（`sotetsu`）、大鳥居（`torii:grand`）、千石船群（`ships`）、干瓢干し（`gourd`）など。
+    2. 全55宿（全73マス）の構成最適化（`src/data/scenes.json`）：
+       - 保永堂版浮世絵（`public/hiroshige/`）および `src/data/places.json` の時代背景に基づき、全73場面の `motifs` と `mood` を完全リファイン。
+    3. 代表5場面を含む11宿の比較画像生成（`shots-scenes/`）：
+       - 箱根・浜松・蒲原・桑名・京都 三条大橋（代表5宿）を含む全11宿について、広重浮世絵とスマホ幅（390px）3D描画の左右比較画像を生成。
+  - **確認結果**：
+    - `npm run check`：oxlint 0 warning / 0 error、vitest 14 files / 129 tests passed、tsc build 成功（615ms）。
+    - `npm run test:e2e`：Playwright 50 tests 全件 passed。
+    - `npm run test:e2e:online`：Playwright 3 tests 全件 passed（2ブラウザ実接続対戦含む）。
+    - 部品数（Mesh）検証：全73場面測定、最大は「京都 三条大橋」の 392 個（輪郭線対象 389 個）。全場面が上限 500 個以下（`outlineAll` 上限 700 個未満）を完全にクリア。
+    - 描画速度（`?stats=1`）：スマホ幅（Pixel 7、390px相当）E2Eにて安定動作（約 8 FPS / 描画 348 回 / 三角形 7098、headless ソフトウェア描画環境）。
+  - **史実・確認事項**：広重浮世絵および `places.json` に記載された確かな風物・景観のみを採用。
+  - **次にやること**：さぼてんによるパッチ化、実機スマホでの描画体感確認、本番環境への反映検討。
+
 - 2026-11-18 **デザイン改善 FIX2：スマホ幅での操作ドック折りたたみと場面可視性確保（Antigravity／デザイン）**：
   - **ブランチ**：`antigravity/design-1`
   - **変更点**：
