@@ -266,6 +266,31 @@
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
 
+### 2026-11-19 Antigravity（風物・人馬作り込み：第2群 11〜20 箱根〜府中）
+- ブランチ: `antigravity/scenes-2`
+- 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
+- 作り込み完了宿場（第2群 11〜20）:
+  11. 箱根（湖水図）: lake:wide, mountains:layered, distanthills, procession, torii:grand
+  - 箱根の山道: mountains:cliff, cedar, steps, packhorse:rider, travelers:walking
+  - 芦ノ湖と富士: lake:wide, fuji, torii, travelers:two
+  12. 三島（朝霧）: torii:big, packhorse:rider, travelers:two, kasumi:morning, distanthills
+  13. 沼津（黄昏図）: river:wide, dike, travelers:two, packhorse:standing, moon:full, pinelane
+  14. 原（朝之富士）: fuji:huge, travelers:three, paddies, marsh, distanthills
+  15. 吉原（左富士）: bigpine:lane, packhorse:rider, fuji:left, dike, travelers:two
+  16. 蒲原（夜之雪）: mountains:snow, snowroofs, travelers:snow, street:quiet, snow_particles
+  17. 由井（薩埵嶺）: cliff:steep, sea:wide, fuji, boats:sails, pinelane, travelers:two
+  - 薩埵峠: cliff:steep, sea:wide, fuji, pinelane, travelers:walking
+  18. 興津（興津川）: river:wide, packhorse:cargo, porters, travelers:two, distanthills
+  19. 江尻（三保遠望）: bay:wide, boats:sails, pinelane, travelers:two, fuji:distant, kasumi
+  20. 府中（安部川）: river:vast, porters, travelers:walking, packhorse:cargo, distanthills, teahouse:thatched
+- 特記事項:
+  - 原（朝之富士）: 画面の3割を覆う巨大富士（`fuji:huge`）と、菅笠・道中合羽・天秤棒の旅人三人連れ（`travelers:three`）を主役として配置。
+  - 吉原（左富士）: 街道を覆う大松（`bigpine:lane`）と、馬に乗る旅人と手綱引く馬方（`packhorse:rider`）、左手に見える富士（`fuji:left`）を忠実に再現。
+  - 箱根（湖水図）: 芦ノ湖の広い青水面（`lake:wide`）と険しい層状岩山、大名行列、杉並木。
+  - 蒲原（夜之雪）: 静まり返る夜の雪景色（`snowroofs`, `mountains:snow`）と雪笠・蓑を着た三人連れの旅人（`travelers:snow`）。
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件通過）
+- 次：第3群（21〜30：鞠子〜浜松）
+
 ### 2026-11-19 Antigravity（風物・人馬作り込み：第1群 1〜10 日本橋〜小田原）
 - ブランチ: `antigravity/scenes-2`
 - 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。

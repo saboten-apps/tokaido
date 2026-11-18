@@ -143,24 +143,27 @@
   "motifs": [
    "steps",
    "cedar",
+   "travelers:walking",
    "mountains:near"
   ],
   "mood": "mist"
  },
  "箱根": {
   "motifs": [
-   "lake",
+   "lake:wide",
    "mountains:layered",
    "fuji:distant",
    "procession",
+   "travelers:walking",
    "sekisho"
   ],
   "mood": "morning"
  },
  "芦ノ湖と富士": {
   "motifs": [
-   "lake",
+   "lake:wide",
    "fuji",
+   "travelers:two",
    "mountains:layered"
   ],
   "mood": "morning"
@@ -168,7 +171,9 @@
  "三島": {
   "motifs": [
    "shrine",
-   "torii",
+   "torii:big",
+   "packhorse:rider",
+   "travelers:two",
    "cedar",
    "kasumi"
   ],
@@ -178,6 +183,7 @@
   "motifs": [
    "river:wide",
    "moon",
+   "travelers:two",
    "pinelane",
    "teahouse:thatched"
   ],
@@ -185,7 +191,8 @@
  },
  "原": {
   "motifs": [
-   "fuji:big",
+   "fuji:huge",
+   "travelers:three",
    "marsh",
    "paddies",
    "pinelane"
@@ -194,44 +201,50 @@
  },
  "吉原": {
   "motifs": [
-   "pinelane",
+   "bigpine:lane",
+   "packhorse:rider",
    "fuji:left",
-   "dike",
-   "street"
+   "travelers:walking",
+   "dike"
   ],
   "mood": "day"
  },
  "蒲原": {
   "motifs": [
    "snowroofs",
+   "travelers:snow",
    "mountains:snow",
    "pinelane"
   ],
   "mood": "snow"
+ },
+ "薩埵峠": {
+  "motifs": [
+   "mountains:cliff",
+   "sea:wide",
+   "fuji",
+   "travelers:walking",
+   "pinelane"
+  ],
+  "mood": "day"
  },
  "由比": {
   "motifs": [
    "mountains:cliff",
    "sea:wide",
    "fuji",
+   "travelers:two",
    "pinelane"
-  ],
-  "mood": "day"
- },
- "薩埵峠": {
-  "motifs": [
-   "mountains:cliff",
-   "sea:wide",
-   "fuji"
   ],
   "mood": "day"
  },
  "興津": {
   "motifs": [
    "river:wide",
+   "packhorse:cargo",
+   "travelers:two",
    "mountains:layered",
-   "pinelane",
-   "street"
+   "pinelane"
   ],
   "mood": "day"
  },
@@ -239,8 +252,9 @@
   "motifs": [
    "sea:wide",
    "boats:sails",
-   "pinelane",
-   "harbor"
+   "harbor",
+   "travelers:two",
+   "pinelane"
   ],
   "mood": "day"
  },
@@ -248,6 +262,8 @@
   "motifs": [
    "river:vast",
    "porters",
+   "travelers:two",
+   "teahouse:thatched",
    "mountains:layered",
    "fuji:distant"
   ],
