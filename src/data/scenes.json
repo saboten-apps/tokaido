@@ -1,12 +1,14 @@
 {
  "日本橋": {
   "motifs": [
-   "river",
-   "bridge:red",
+   "river:wide",
+   "bridge:wood",
+   "procession",
+   "fishmarket",
    "street",
-   "boats"
+   "distanthills"
   ],
-  "mood": "day"
+  "mood": "morning"
  },
  "高輪の大木戸": {
   "motifs": [
@@ -18,11 +20,13 @@
  },
  "品川": {
   "motifs": [
-   "sea",
+   "sea:wide",
+   "boats:sails",
+   "teahouse",
    "street",
-   "harbor"
+   "kasumi:morning"
   ],
-  "mood": "day"
+  "mood": "morning"
  },
  "六郷の渡し": {
   "motifs": [
@@ -34,58 +38,70 @@
  },
  "川崎": {
   "motifs": [
-   "temple",
-   "street",
+   "river:wide",
+   "ferry=river",
+   "fuji:distant",
+   "teahouse:thatched",
    "pinelane"
   ],
   "mood": "day"
  },
  "神奈川": {
   "motifs": [
-   "sea",
+   "sea:wide",
+   "steps",
    "teahouse",
-   "street"
+   "boats:sails",
+   "pinelane"
   ],
   "mood": "day"
  },
  "保土ヶ谷": {
   "motifs": [
+   "river",
+   "bridge:wood",
+   "soba",
    "pinelane",
-   "steps",
    "street"
   ],
   "mood": "day"
  },
  "戸塚": {
   "motifs": [
-   "river",
-   "bridge",
    "signpost=左 かまくら道",
-   "street"
+   "teahouse:thatched",
+   "river",
+   "bridge:wood",
+   "pinelane"
   ],
   "mood": "dusk"
  },
  "藤沢": {
   "motifs": [
-   "temple",
+   "river",
+   "bridge:long",
    "torii",
-   "street"
+   "temple",
+   "mountains:layered"
   ],
   "mood": "day"
  },
  "平塚": {
   "motifs": [
-   "river",
-   "ferry=river",
-   "mountains",
-   "paddies"
+   "dike",
+   "paddies",
+   "mountains:round",
+   "fuji:distant",
+   "pinelane"
   ],
   "mood": "day"
  },
  "大磯": {
   "motifs": [
    "pinelane",
-   "sea"
+   "sea:wide",
+   "dike",
+   "kasumi"
   ],
   "mood": "rain"
  },
@@ -99,9 +115,11 @@
  },
  "小田原": {
   "motifs": [
+   "river:wide",
+   "porters",
    "castle",
-   "street",
-   "sea"
+   "mountains:layered",
+   "pinelane"
   ],
   "mood": "day"
  },

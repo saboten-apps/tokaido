@@ -197,66 +197,158 @@ export const BUILDERS: Record<string, Builder> = {
       cone(c, 0.9 + c.rand() * 0.4, h, c.rand() < 0.5 ? 0x24462f : 0x35603f, x, h * 0.5 + 0.8, z, 7)
     }
   },
-  sea(c) {
-    plane(c, 90, 140, 0x5b93b8, -56, 0.0, -30, 0.25)
-    plane(c, 2.4, 140, 0xe3d8ad, -10.8, 0.01, -30, 1)
+  sea(c, v) {
+    const wide = v === 'wide'
+    const x = wide ? -45 : -56
+    const w = wide ? 120 : 90
+    // 深いベロ藍の海面（遠くは濃く、手前はやや明るく）
+    plane(c, w, 150, 0x18426d, x - 18, 0.0, -32, 0.25)
+    plane(c, 24, 150, 0x36739e, x + 24, 0.005, -32, 0.25)
+    // 砂浜
+    plane(c, 4.5, 150, 0xe2d6ab, x + 37, 0.01, -32, 1)
     // 白波
     const waves: THREE.Mesh[] = []
-    for (let i = 0; i < 18; i++) {
-      const w = box(c, 3 + c.rand() * 4, 0.04, 0.25, 0xf4f8fa, -14 - c.rand() * 40, 0.05, 10 - c.rand() * 60)
-      waves.push(w)
+    const nw = wide ? 24 : 18
+    for (let i = 0; i < nw; i++) {
+      const wv = box(c, 3.5 + c.rand() * 5, 0.05, 0.28, 0xf6fafc, x + 16 - c.rand() * 42, 0.05, 12 - c.rand() * 70)
+      waves.push(wv)
     }
-    c.effects.push((t) => waves.forEach((w, i) => (w.position.x += Math.sin(t * 0.9 + i) * 0.004)))
+    c.effects.push((t) => waves.forEach((wv, i) => (wv.position.x += Math.sin(t * 0.9 + i) * 0.004)))
   },
-  lake(c) {
-    plane(c, 100, 150, 0x86b4cf, -60, 0.0, -30, 0.2)
-    plane(c, 2.4, 150, 0xe3d8ad, -10.8, 0.01, -30, 1)
-    for (let i = 0; i < 10; i++) {
-      const m = new THREE.Mesh(new THREE.SphereGeometry(8 + c.rand() * 6, 12, 8), c.m(0x7f9a86))
-      m.scale.set(1.8, 0.5, 1)
-      m.position.set(-90 - c.rand() * 30, -1, 20 - c.rand() * 90)
+  lake(c, v) {
+    const w = v === 'wide' ? 120 : 100
+    // 広重ブルー（ベロ藍）の湖面
+    plane(c, w, 150, 0x1d476f, -55, 0.0, -30, 0.2)
+    plane(c, 20, 150, 0x366e96, -20, 0.005, -30, 0.2)
+    plane(c, 3.2, 150, 0xe0d4a8, -8.5, 0.01, -30, 1)
+    for (let i = 0; i < 8; i++) {
+      const m = new THREE.Mesh(new THREE.SphereGeometry(8 + c.rand() * 6, 12, 8), c.m(0x486b58))
+      m.scale.set(1.8, 0.55, 1)
+      m.position.set(-85 - c.rand() * 30, -1, 20 - c.rand() * 90)
       c.g.add(m)
     }
   },
-  river(c) {
-    plane(c, 160, 12, 0x6f9bb8, 0, 0.0, RIVER_Z, 0.25)
-    plane(c, 160, 3.5, 0xcdc3a2, 0, -0.01, RIVER_Z + 7, 1)
-    plane(c, 160, 3.5, 0xcdc3a2, 0, -0.01, RIVER_Z - 7, 1)
+  river(c, v) {
+    const wide = v === 'wide' || v === 'vast'
+    const rw = v === 'vast' ? 54 : wide ? 32 : 14
+    const rz = RIVER_Z
+    // 深いベロ藍の流れ（中央）と浅葱の岸辺
+    plane(c, 170, rw, 0x1b466f, 0, 0.0, rz, 0.25)
+    plane(c, 170, rw * 0.35, 0x3f7da4, 0, 0.005, rz + rw * 0.35, 0.25)
+    plane(c, 170, rw * 0.35, 0x3f7da4, 0, 0.005, rz - rw * 0.35, 0.25)
+    // 砂州・中州
+    if (wide) {
+      const sand = new THREE.Mesh(new THREE.BoxGeometry(22, 0.12, rw * 0.38), c.m(0xd8cb9f))
+      sand.position.set(-8, 0.04, rz + 1)
+      sand.rotation.y = 0.12
+      c.g.add(sand)
+    }
+    // 川原・土手
+    plane(c, 170, 4.2, 0xcdc3a2, 0, -0.01, rz + rw * 0.5 + 2.1, 1)
+    plane(c, 170, 4.2, 0xcdc3a2, 0, -0.01, rz - rw * 0.5 - 2.1, 1)
     const flow: THREE.Mesh[] = []
-    for (let i = 0; i < 16; i++) flow.push(box(c, 2 + c.rand() * 3, 0.03, 0.12, 0xe8f2f8, -40 + c.rand() * 80, 0.03, RIVER_Z - 4 + c.rand() * 8))
+    const n = wide ? 24 : 16
+    for (let i = 0; i < n; i++) flow.push(box(c, 2.5 + c.rand() * 3.5, 0.03, 0.16, 0xeaf3f8, -45 + c.rand() * 90, 0.03, rz - rw * 0.4 + c.rand() * rw * 0.8))
     c.effects.push((_, dt) =>
       flow.forEach((w) => {
-        w.position.x += dt * 1.2
-        if (w.position.x > 40) w.position.x = -40
+        w.position.x += dt * 1.3
+        if (w.position.x > 45) w.position.x = -45
       }),
     )
   },
   fuji(c, v) {
-    const s = v === 'big' ? 1.45 : 1
-    const x = v === 'left' ? -26 : 24
-    const body = new THREE.Mesh(new THREE.ConeGeometry(20 * s, 28 * s, 30), c.m(0x5b6f9a))
-    body.position.set(x, 13 * s, -80)
-    const cap = new THREE.Mesh(new THREE.ConeGeometry(7.6 * s, 10 * s, 30), c.m(0xffffff))
-    cap.position.set(x, 24 * s, -80)
+    const s = v === 'big' ? 1.6 : v === 'distant' ? 0.75 : 1
+    const x = v === 'left' ? -26 : v === 'distant' ? 14 : 24
+    const z = v === 'distant' ? -95 : -80
+    const body = new THREE.Mesh(new THREE.ConeGeometry(20 * s, 28 * s, 30), c.m(0x3a5682))
+    body.position.set(x, 13 * s, z)
+    // 雪冠：広重特有のギザギザした雪（上段の純白と中段のギザギザ白）
+    const cap = new THREE.Mesh(new THREE.ConeGeometry(8.2 * s, 11 * s, 30), c.m(0xffffff))
+    cap.position.set(x, 24 * s, z)
     c.g.add(body, cap)
   },
   mountains(c, v) {
     if (v === 'low') {
       for (let k = 0; k < 9; k++) {
-        const m = new THREE.Mesh(new THREE.SphereGeometry(8 + c.rand() * 5, 14, 8), c.m(0x6d9166))
+        const m = new THREE.Mesh(new THREE.SphereGeometry(8 + c.rand() * 5, 14, 8), c.m(0x567e52))
         m.scale.set(1.7, 0.7, 1)
         m.position.set(-40 + k * 10 + c.rand() * 4, -1, -34 - c.rand() * 12)
         c.g.add(m)
       }
       return
     }
-    const near = v === 'near'
-    for (let k = 0; k < (near ? 14 : 14); k++) {
-      const side = k % 2 === 0 ? -1 : 1
-      const x = near ? side * (11 + c.rand() * 12) : -70 + k * 10 + c.rand() * 6
-      const z = near ? -8 - c.rand() * 34 : -58 - c.rand() * 18
-      const h = near ? 12 + c.rand() * 12 : 14 + c.rand() * 14
-      cone(c, near ? 5 + c.rand() * 4 : 9 + c.rand() * 6, h, near ? 0x5f7d58 : 0x8397a0, x, h / 2 - 0.3, z, 6)
+    if (v === 'round') {
+      // 平塚の高麗山のような、特徴的なこんもりした丸山
+      const r = 16
+      const x = 20
+      const z = -46
+      // 裾野（黄土色）
+      const base = new THREE.Mesh(new THREE.SphereGeometry(r * 1.1, 16, 12), c.m(0xc4aa68))
+      base.scale.set(1.3, 0.5, 1)
+      base.position.set(x, 1, z)
+      // 中腹・山頂（青緑・濃緑）
+      const mid = new THREE.Mesh(new THREE.SphereGeometry(r, 16, 12), c.m(0x386342))
+      mid.scale.set(1.1, 0.85, 0.95)
+      mid.position.set(x, 7, z)
+      const top = new THREE.Mesh(new THREE.SphereGeometry(r * 0.7, 14, 10), c.m(0x274930))
+      top.scale.set(1.0, 0.9, 0.9)
+      top.position.set(x, 14, z)
+      c.g.add(base, mid, top)
+      return
+    }
+    if (v === 'cliff') {
+      // 薩埵嶺などの切り立った岩山・断崖
+      for (let k = 0; k < 5; k++) {
+        const x = -18 - k * 8
+        const z = -22 - k * 9
+        const h = 18 + k * 5
+        // 裾野の黄土岩
+        cone(c, 7 + k * 1.5, h * 0.45, 0xc7ab6d, x, h * 0.22, z, 5, 0.3)
+        // 中腹の緑
+        cone(c, 6 + k * 1.2, h * 0.65, 0x3d6844, x, h * 0.48, z, 5, -0.2)
+        // 頂部の墨岩
+        cone(c, 4.5 + k, h * 0.5, 0x38393b, x, h * 0.8, z, 5, 0.1)
+      }
+      return
+    }
+    if (v === 'layered' || v === 'near') {
+      // 広重の層状の山（黄土・青緑・茶褐色の縞）
+      const count = v === 'near' ? 10 : 8
+      for (let k = 0; k < count; k++) {
+        const side = k % 2 === 0 ? -1 : 1
+        const x = v === 'near' ? side * (12 + c.rand() * 14) : -55 + k * 14 + c.rand() * 6
+        const z = v === 'near' ? -12 - c.rand() * 32 : -48 - c.rand() * 16
+        const h = v === 'near' ? 14 + c.rand() * 12 : 18 + c.rand() * 14
+        const r = v === 'near' ? 7 + c.rand() * 4 : 10 + c.rand() * 5
+        // 裾野：黄土層
+        cone(c, r, h * 0.45, 0xc5aa6a, x, h * 0.22, z, 7, c.rand() * 0.3)
+        // 中腹：青緑層
+        cone(c, r * 0.82, h * 0.55, c.rand() < 0.5 ? 0x396345 : 0x4f784e, x, h * 0.48, z, 7, c.rand() * 0.3)
+        // 上部：岩肌層（濃藍または茶）
+        cone(c, r * 0.55, h * 0.5, c.rand() < 0.5 ? 0x2e465b : 0x45392e, x, h * 0.78, z, 7, c.rand() * 0.3)
+      }
+      return
+    }
+    if (v === 'snow') {
+      // 亀山などの雪山
+      for (let k = 0; k < 9; k++) {
+        const x = -50 + k * 12 + c.rand() * 5
+        const z = -46 - c.rand() * 14
+        const h = 16 + c.rand() * 12
+        const r = 9 + c.rand() * 4
+        cone(c, r, h * 0.6, 0x829bb5, x, h * 0.3, z, 6)
+        cone(c, r * 0.65, h * 0.6, 0xf6f9fc, x, h * 0.72, z, 6)
+      }
+      return
+    }
+    // デフォルト（山並み）
+    for (let k = 0; k < 12; k++) {
+      const x = -65 + k * 12 + c.rand() * 6
+      const z = -54 - c.rand() * 16
+      const h = 15 + c.rand() * 14
+      const r = 9 + c.rand() * 5
+      cone(c, r, h * 0.5, 0xc4aa6a, x, h * 0.25, z, 6)
+      cone(c, r * 0.8, h * 0.65, 0x3d6844, x, h * 0.55, z, 6)
     }
   },
   castle(c, v) {
@@ -315,19 +407,35 @@ export const BUILDERS: Record<string, Builder> = {
     box(c, 0.4 * s, 0.4 * s, 0.4 * s, 0xc0392b, 0, 3.7 * s, z)
   },
   bridge(c, v) {
-    const lacq = v === 'red' ? 0xb03a2e : 0x8a6a45
-    const n = 16
+    const isRed = v === 'red'
+    const isLong = v === 'long'
+    const isPlank = v === 'plank'
+    const lacq = isRed ? 0xb03a2e : 0x6e5235
+    const wood = isRed ? 0x8a6a45 : 0x63492e
+    const n = isLong ? 24 : isPlank ? 8 : 16
+    const len = isLong ? 34 : isPlank ? 12 : 22
     for (let i = 0; i < n; i++) {
       const u = i / (n - 1)
-      const z = 4 - u * 22
-      const y = 0.25 + 1.5 * Math.sin(Math.PI * u)
-      box(c, 4.2, 0.28, 1.45, 0x8a6a45, 0, y, z)
-      for (const side of [-1, 1]) box(c, 0.16, 0.5, 1.45, lacq, side * 2.0, y + 0.45, z)
+      const z = 4 - u * len
+      const y = isPlank ? 0.35 : 0.25 + (isLong ? 0.8 : 1.6) * Math.sin(Math.PI * u)
+      box(c, isPlank ? 2.4 : 4.4, isPlank ? 0.16 : 0.28, (len / n) * 1.05, wood, 0, y, z)
+      if (!isPlank) {
+        for (const side of [-1, 1]) box(c, 0.16, 0.5, (len / n) * 1.05, lacq, side * 2.1, y + 0.45, z)
+      }
     }
-    for (const end of [0, 1]) for (const side of [-1, 1]) {
-      const m = new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 8), c.m(lacq))
-      m.position.set(side * 2.0, 0.95, 4 - end * 22)
-      c.g.add(m)
+    if (!isPlank) {
+      for (const end of [0, 1]) for (const side of [-1, 1]) {
+        const m = new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 8), c.m(isRed ? 0xb03a2e : 0xc9a43a))
+        m.position.set(side * 2.1, 0.95, 4 - end * len)
+        c.g.add(m)
+      }
+      const piles = isLong ? 5 : 3
+      for (let k = 1; k < piles; k++) {
+        const pz = 4 - (k / piles) * len
+        for (const side of [-1, 1]) {
+          cyl(c, 0.18, 0.22, 2.8, 0x4e3824, side * 1.6, 0.3, pz, 6)
+        }
+      }
     }
   },
   temple(c) {
@@ -372,10 +480,18 @@ export const BUILDERS: Record<string, Builder> = {
       c.g.add(lamp)
     }
   },
-  teahouse(c) {
-    box(c, 4.4, 2.2, 3.2, 0xcfb58a, -5, 1.1, -3)
-    cone(c, 3.6, 1.4, 0x4b3d36, -5, 2.9, -3, 4, Math.PI / 4)
-    for (const [i, col] of [0x2f4f8a, 0xf4efe2, 0x2f4f8a].entries()) box(c, 1.1, 1.4, 0.05, col, -6.3 + i * 1.3, 1.5, -1.35)
+  teahouse(c, v) {
+    const isThatched = v === 'thatched'
+    const wallCol = isThatched ? 0xd9c59c : 0xcfb58a
+    const roofCol = isThatched ? 0x725b3e : 0x4b3d36
+    box(c, 4.8, 2.2, 3.4, wallCol, -5, 1.1, -3)
+    if (isThatched) {
+      box(c, 5.6, 1.3, 4.2, roofCol, -5, 2.65, -3)
+      cone(c, 4.2, 1.6, roofCol, -5, 3.4, -3, 4, Math.PI / 4)
+    } else {
+      cone(c, 3.8, 1.4, roofCol, -5, 2.9, -3, 4, Math.PI / 4)
+    }
+    for (const [i, col] of [0x2f4f8a, 0xf4efe2, 0x2f4f8a].entries()) box(c, 1.1, 1.4, 0.05, col, -6.3 + i * 1.3, 1.5, -1.25)
     box(c, 3, 0.45, 0.8, 0x7a5a38, -2.2, 0.25, 0.4)
     cyl(c, 0.05, 0.05, 2.2, 0x5e4328, -2.2, 1.1, 0.4, 6)
     cone(c, 1.6, 0.6, 0xc0392b, -2.2, 2.4, 0.4, 10)
@@ -633,10 +749,125 @@ export const BUILDERS: Record<string, Builder> = {
     for (let i = 0; i < 6; i++) boat(c, -16 - c.rand() * 30, 8 - c.rand() * 40, c.rand() * 2 + 0.6, 0.8 + c.rand() * 0.5, c.rand() < 0.7)
     for (let k = 0; k < 8; k++) box(c, 2, 0.2, 1.6, 0x7a5a38, -11 - k * 1.8, 0.2, 2)
   },
-  boats(c) {
+  boats(c, v) {
+    if (v === 'sails') {
+      for (let i = 0; i < 9; i++) {
+        const x = -28 - c.rand() * 45
+        const z = 4 - c.rand() * 60
+        const ry = (c.rand() - 0.5) * 0.8 + 1.2
+        const s = 0.55 + c.rand() * 0.4
+        boat(c, x, z, ry, s, true)
+      }
+      return
+    }
     boat(c, -8, RIVER_Z + 1, 0.1, 0.9, false)
     boat(c, 6, RIVER_Z - 2, -0.1, 0.8, true)
     boat(c, 16, RIVER_Z + 2, 0.15, 0.9, false)
+  },
+  distanthills(c) {
+    for (let k = 0; k < 7; k++) {
+      const x = -60 + k * 20 + c.rand() * 8
+      const z = -90 - c.rand() * 15
+      const h = 22 + c.rand() * 14
+      const r = 16 + c.rand() * 8
+      const col = c.rand() < 0.5 ? 0x98abc0 : 0x8a9eb3
+      const m = new THREE.Mesh(new THREE.ConeGeometry(r, h, 6), c.m(col))
+      m.position.set(x, h * 0.45, z)
+      m.geometry.userData.noOutline = true
+      c.g.add(m)
+    }
+  },
+  kasumi(c, v) {
+    const col = v === 'sunset' ? 0xf4d3be : v === 'morning' ? 0xf6e2cb : 0xf7ede1
+    const bands = [
+      { x: -14, y: 14, z: -55, w: 48, d: 2.2 },
+      { x: 18, y: 19, z: -68, w: 56, d: 2.4 },
+      { x: -5, y: 9, z: -40, w: 38, d: 2.0 },
+    ]
+    for (const b of bands) {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(b.w, 0.7, b.d), toon(col))
+      m.position.set(b.x, b.y, b.z)
+      m.geometry.userData.noOutline = true
+      c.g.add(m)
+    }
+  },
+  procession(c) {
+    const z = 2
+    for (let i = 0; i < 2; i++) {
+      const side = i === 0 ? -1 : 1
+      const x = side * 1.3
+      cyl(c, 0.04, 0.04, 4.8, 0x1f1f1f, x, 2.4, z - 2, 6)
+      const tuft = new THREE.Mesh(new THREE.SphereGeometry(0.38, 8, 8), c.m(0x1a1a1a))
+      tuft.scale.set(0.8, 1.4, 0.8)
+      tuft.position.set(x, 4.7, z - 2)
+      c.g.add(tuft)
+      figure(c, 0x223355, x, 0, z - 1.8, 1.05)
+      box(c, 0.8, 0.5, 0.45, 0x1a1a1a, x + side * 0.7, 0.9, z - 0.4)
+      box(c, 0.84, 0.08, 0.48, 0xd4af37, x + side * 0.7, 0.9, z - 0.4)
+      figure(c, 0x223355, x + side * 0.7, 0, z - 0.2, 1.0)
+    }
+  },
+  fishmarket(c) {
+    for (const [x, z] of [[3.2, 0], [4.4, -4]] as const) {
+      figure(c, 0x3d5a7d, x, 0, z, 1.0)
+      cyl(c, 0.03, 0.03, 2.4, 0x6e5235, x, 1.25, z, 6).rotation.z = Math.PI / 2
+      for (const dx of [-1.1, 1.1]) {
+        cyl(c, 0.32, 0.3, 0.35, 0x9e7b4f, x + dx, 0.7, z, 8)
+        cyl(c, 0.28, 0.28, 0.1, 0xdf5334, x + dx, 0.85, z, 8)
+      }
+    }
+  },
+  soba(c) {
+    const x = 5.2
+    const z = 2
+    box(c, 3.2, 2.2, 2.6, 0xd9c59c, x, 1.1, z)
+    cone(c, 2.8, 1.2, 0x4b3d36, x, 2.8, z, 4, Math.PI / 4)
+    box(c, 0.6, 0.9, 0.6, 0xf6efe2, x - 1.8, 1.3, z + 0.8)
+    cyl(c, 0.05, 0.05, 1.0, 0x5e4328, x - 1.8, 0.5, z + 0.8, 6)
+    box(c, 1.8, 0.7, 0.05, 0x20355a, x - 0.2, 1.8, z + 1.33)
+  },
+  dike(c) {
+    const rz = -22
+    box(c, 4.4, 0.45, 75, 0x8a9952, 0, 0.22, rz)
+    box(c, 1.8, 0.48, 75, 0xd4c698, 0, 0.24, rz)
+    figure(c, 0xc0392b, 0.4, 0.48, 0, 1.05)
+  },
+  bonfire(c) {
+    const x = 4.2
+    const z = -2
+    for (let k = 0; k < 6; k++) {
+      const a = (k / 6) * Math.PI
+      cyl(c, 0.08, 0.08, 1.2, 0x3d2716, x, 0.15, z, 6).rotation.y = a
+    }
+    cone(c, 0.4, 0.9, 0xe25822, x, 0.65, z, 6)
+    cone(c, 0.25, 0.6, 0xf7b32b, x, 0.8, z, 6)
+    const glow = new THREE.PointLight(0xff7722, 4.5, 10)
+    glow.position.set(x, 1.2, z)
+    c.g.add(glow)
+    figure(c, 0x354b66, x + 1.4, 0, z + 0.3, 0.95)
+    figure(c, 0x6e5238, x - 1.2, 0, z - 0.4, 0.9)
+  },
+  bamboo(c) {
+    for (let i = 0; i < 28; i++) {
+      const side = i % 2 === 0 ? -1 : 1
+      const x = side * (4.2 + c.rand() * 8)
+      const z = 4 - c.rand() * 40
+      const h = 5 + c.rand() * 3
+      const b = cyl(c, 0.07, 0.09, h, 0x4e7838, x, h * 0.48, z, 5)
+      b.rotation.z = side * 0.22
+      cone(c, 0.7, 1.6, 0x3f6b2f, x + side * 0.35, h * 0.9, z, 5)
+    }
+  },
+  willow(c) {
+    for (const [x, z] of [[-4.2, -4], [4.5, -12]] as const) {
+      cyl(c, 0.16, 0.22, 4.2, 0x5a422d, x, 2.1, z, 6)
+      for (let k = 0; k < 6; k++) {
+        const a = (k / 6) * Math.PI * 2
+        const lx = x + Math.cos(a) * 1.2
+        const lz = z + Math.sin(a) * 1.2
+        cone(c, 0.8, 2.8, 0x688d4e, lx, 3.2, lz, 5)
+      }
+    }
   },
 }
 

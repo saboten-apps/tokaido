@@ -236,6 +236,31 @@
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
 
+### 2026-11-18 Antigravity（全55宿の場面作り込み：第1群 1〜10 日本橋〜小田原）
+- ブランチ: `antigravity/scenes-1`
+- 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。
+- 山・水・遠景・霞の基盤改修：
+  - `mountains`: 裾野（黄土層）・中腹（青緑層）・上部（岩肌層）の多層山（`layered`）、丸山（`round`）、断崖（`cliff`）、雪山（`snow`）
+  - `river`: 広重の深いベロ藍（`0x1b466f`）と浅葱のグラデーション、砂州・中州の配置（`wide`, `vast`）
+  - `sea`: 手前の砂浜、白波、深いベロ藍の沖合（`wide`）
+  - `distanthills`: 輪郭線を引かず遠景に溶け込む淡藍の遠山
+  - `kasumi`: 水平に広がるすやり霞（和紙色・薄紅）
+  - 新風物部品: `procession`（大名行列の毛槍・奴）、`fishmarket`（日本橋の魚河岸・天秤棒）、`soba`（保土ヶ谷の二八蕎麦屋）、`dike`（平塚縄手道・土手・飛脚）、`bonfire`（焚火・篝火）、`bamboo`（竹藪）、`willow`（柳）
+- 作り込み完了宿場（第1群 1〜10）:
+  1. 日本橋（朝之景）: morning, river:wide, bridge:wood, procession, fishmarket, street, distanthills
+  2. 品川（日之出）: morning, sea:wide, boats:sails, teahouse, street, kasumi:morning
+  3. 川崎（六郷渡舟）: day, river:wide, ferry=river, fuji:distant, teahouse:thatched, pinelane
+  4. 神奈川（台之景）: day, sea:wide, steps, teahouse, boats:sails, pinelane
+  5. 保土ヶ谷（新町橋）: day, river, bridge:wood, soba, pinelane, street
+  6. 戸塚（元町別道）: dusk, signpost=左 かまくら道, teahouse:thatched, river, bridge:wood, pinelane
+  7. 藤沢（遊行寺）: day, river, bridge:long, torii, temple, mountains:layered
+  8. 平塚（縄手道）: day, dike, paddies, mountains:round, fuji:distant, pinelane
+  9. 大磯（虎ヶ雨）: rain, pinelane, sea:wide, dike, kasumi
+  10. 小田原（酒匂川）: day, river:wide, porters, castle, mountains:layered, pinelane
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件全通過）
+- スクリーンショット（比較画像）：`日本橋-compare.png`、`小田原-compare.png`
+- 次：第2群（11〜20：箱根〜府中）
+
 ### 2026-11-17 Claude（ROADMAP H：旅人の身分）
 - SCHEMA_VERSION 3、身分6つ、タイトル画面の選択、札と結果に身分、シミュレーションを身分ごとの集計に。
 - 確認：`npm run check`（単体53件）、`npm run test:e2e`（18件：desktop・mobile × 9）。
