@@ -525,8 +525,9 @@
  },
  "鳴海": {
   "motifs": [
-   "indigo:colors",
-   "street",
+   "arimatsu:shop",
+   "packhorse:rider",
+   "travelers:shop",
    "machiya"
   ],
   "mood": "day"
@@ -536,7 +537,8 @@
    "shrine",
    "torii:big",
    "bonfire",
-   "horses"
+   "horses",
+   "travelers:two"
   ],
   "mood": "night"
  },
@@ -544,17 +546,17 @@
   "motifs": [
    "sea:wide",
    "boats:sails",
-   "ferry=sea",
-   "lantern"
+   "travelers:two"
   ],
   "mood": "morning"
  },
  "桑名": {
   "motifs": [
+   "ship:big",
+   "castle:seaside",
    "torii:big",
    "sea:wide",
-   "tower",
-   "boats:sails"
+   "travelers:two"
   ],
   "mood": "day"
  },
@@ -563,6 +565,7 @@
    "river",
    "bridge:plank",
    "willow",
+   "travelers:rain",
    "dike",
    "signpost=伊勢街道 追分"
   ],
@@ -572,7 +575,8 @@
   "motifs": [
    "temple",
    "paddies",
-   "mountains:layered",
+   "mountains:suzuka",
+   "travelers:walking",
    "pinelane"
   ],
   "mood": "day"
@@ -580,6 +584,7 @@
  "庄野": {
   "motifs": [
    "bamboo",
+   "travelers:rain",
    "steps",
    "dike",
    "street"
@@ -591,42 +596,46 @@
    "castle:small",
    "mountains:snow",
    "snowroofs",
-   "procession"
+   "procession",
+   "travelers:snow"
   ],
   "mood": "day"
  },
  "関の茶屋": {
   "motifs": [
    "teahouse:thatched",
-   "cedar",
-   "street"
+   "travelers:two",
+   "pinelane",
+   "lantern"
   ],
-  "mood": "day"
+  "mood": "dusk"
  },
  "関": {
   "motifs": [
+   "honjin:maku",
+   "travelers:maku",
    "street:long",
-   "procession",
    "lantern",
-   "torii"
+   "kasumi:morning"
   ],
   "mood": "morning"
  },
  "坂下": {
   "motifs": [
-   "mountains:cliff",
+   "mountains:suzuka",
    "cedar",
    "steps",
+   "travelers:shop",
    "teahouse:thatched"
   ],
   "mood": "mist"
  },
  "鈴鹿峠": {
   "motifs": [
+   "mountains:suzuka",
    "steps",
    "cedar",
-   "mountains:cliff",
-   "lantern"
+   "travelers:walking"
   ],
   "mood": "mist"
  },
@@ -635,6 +644,7 @@
    "river",
    "bridge:plank",
    "procession",
+   "travelers:rain",
    "teafields"
   ],
   "mood": "rain"

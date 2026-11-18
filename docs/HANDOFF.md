@@ -266,6 +266,34 @@
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
 
+### 2026-11-19 Antigravity（風物・人馬作り込み：第5群 41〜50 鳴海〜土山）
+- ブランチ: `antigravity/scenes-2`
+- 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
+- 作り込み完了宿場（第5群 41〜50）:
+  41. 鳴海（名物有松絞）: arimatsu:shop, packhorse:rider, travelers:shop, machiya
+  42. 宮（熱田神事）: shrine, torii:big, bonfire, horses, travelers:two
+  - 七里の渡し: sea:wide, boats:sails, travelers:two
+  43. 桑名（七里渡口）: ship:big, castle:seaside, torii:big, sea:wide, travelers:two
+  44. 四日市（三重川）: river, bridge:plank, willow, travelers:rain, dike, signpost=伊勢街道 追分
+  45. 石薬師（石薬師寺）: temple, paddies, mountains:suzuka, travelers:walking, pinelane
+  46. 庄野（白雨）: bamboo, travelers:rain, steps, dike, street
+  47. 亀山（雪晴）: castle:small, mountains:snow, snowroofs, procession, travelers:snow
+  - 関の茶屋: teahouse:thatched, travelers:two, pinelane, lantern
+  48. 関（本陣早立）: honjin:maku, travelers:maku, street:long, lantern, kasumi:morning
+  49. 坂下（筆捨嶺）: mountains:suzuka, cedar, steps, travelers:shop, teahouse:thatched
+  - 鈴鹿峠: mountains:suzuka, steps, cedar, travelers:walking
+  50. 土山（春之雨）: river, bridge:plank, procession, travelers:rain, teafields
+- 特記事項:
+  - 桑名（七里渡口）: 画面の2〜3割を覆う巨大千石船（`ship:big`）と海に突き出た城郭・蟠龍櫓（`castle:seaside`）、大鳥居、広い海面を配置し、桑名の迫力ある港の景観を再現。
+  - 鳴海（名物有松絞）: 藍染めの大絞り暖簾と反物が吊るされた有松絞り問屋（`arimatsu:shop`）、馬上の旅人と馬方（`packhorse:rider`）、買い物をする旅人たち。
+  - 関（本陣早立）: 本陣の大屋根と正面に張られた巨大な白大幔幕（黒家紋の円、`honjin:maku`）、早立ちする大名行列と提灯・旅人たち（`travelers:maku`）。
+  - 庄野（白雨）: 激しい夕立に煽られる竹林（`bamboo`）と、坂道を急ぐ合羽・笠の旅人たち（`travelers:rain`）。
+  - 亀山（雪晴）: 雪晴れの朝、雪を被った亀山城と大名行列、雪合羽の旅人（`travelers:snow`）。
+  - 四日市（三重川）: 三重川の板橋、風に吹かれる柳と合羽を押さえて歩く旅人（`travelers:rain`）。
+  - 坂下・鈴鹿峠・石薬師: 鈴鹿山脈の険しい奇峰・筆捨山（`mountains:suzuka`）。
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件通過）
+- 次：第6群（51〜55：水口〜京都 三条大橋・全場面完成）
+
 ### 2026-11-19 Antigravity（風物・人馬作り込み：第4群 31〜40 舞坂〜池鯉鮒）
 - ブランチ: `antigravity/scenes-2`
 - 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
