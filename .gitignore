@@ -30,3 +30,4 @@ test-results
 # 絵の取り込み用の置き場（元の画像は git に入れない。変換後の public/art/*.webp と src/art/overrides.json を入れる）
 art-inbox/*
 !art-inbox/README.md
+.wrangler
