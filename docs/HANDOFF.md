@@ -111,6 +111,13 @@
 
 ## 記録（新しいものを上に）
 
+- 2026-11-18 **デザイン改善 FIX1：結果画面のスマホ幅表示修正（順位表の旅人列・スタンプ帳グリッド）（Antigravity／デザイン）**：
+  - **ブランチ**：`antigravity/design-1`
+  - **変更点**：
+    1. 順位表の「旅人」列（スマホ幅390px）：旅人名（`traveler-name`）の nowrap＋最小幅確保、身分（`role-sub`）を名前の下に小さく横書き表示、列の padding（7px 3px）とフォントサイズ（12px / th 11px）調整を実施。名前が1文字ずつ縦に折れていた問題を解消し、表全体が390px幅に横オーバーフローなしで美しく収まるよう改善。PC幅（768px以上）では名前と身分の横並び（inline）を維持し、2カラム表示を保護。
+    2. 宿場スタンプ帳のグリッド（スマホ幅390px）：順位表の横オーバーフロー解消によりページ全体の横スクロール（435px→390px）が消滅。あわせてスタンプ帳の padding（8px 10px）とグリッド（`minmax(52px, 1fr)`、gap 5px）を最適化し、右端の見切れ・はみ出しなく画面内に完全収容。
+  - **検証**：`npm run check`（oxlint 0 errors / 0 warnings、vitest 14 files / 129 passed、tsc build 成功）、`npm run test:e2e`（50 passed）。スマホ幅（390px）およびPC幅（1280px）のスクリーンショットを `shots-fix1/` に保存。
+
 - 2026-11-18 **デザイン改善 Phase 1〜5（Antigravity／デザイン）**：
   - **ブランチ**：`antigravity/design-1`
   - **変更点**：

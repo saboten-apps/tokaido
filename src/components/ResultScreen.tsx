@@ -26,7 +26,15 @@ export function ResultScreen({ state, onRestart }: { state: GameState; onRestart
           <table>
             <thead>
               <tr>
-                <th>順位</th><th>旅人</th><th>路銀</th><th>思い出</th><th>評判</th><th>名物</th><th>スタンプ</th><th>到着</th><th>合計</th>
+                <th className="col-rank">順位</th>
+                <th className="col-traveler">旅人</th>
+                <th className="col-num">路銀</th>
+                <th className="col-num">思い出</th>
+                <th className="col-num">評判</th>
+                <th className="col-num">名物</th>
+                <th className="col-num">スタンプ</th>
+                <th className="col-num">到着</th>
+                <th className="col-total">合計</th>
               </tr>
             </thead>
             <tbody>
@@ -34,18 +42,18 @@ export function ResultScreen({ state, onRestart }: { state: GameState; onRestart
                 const p = state.players.find((x) => x.id === r.playerId)!
                 return (
                   <tr key={r.playerId} className={p.isHuman ? 'me' : ''}>
-                    <td>{i + 1}</td>
-                    <td>
-                      {p.name}
-                      <small className="role-sub"> {DEFAULT_CONFIG.balance.roles[p.role].name}</small>
+                    <td className="col-rank">{i + 1}</td>
+                    <td className="col-traveler">
+                      <span className="traveler-name">{p.name}</span>
+                      <small className="role-sub">{DEFAULT_CONFIG.balance.roles[p.role].name}</small>
                     </td>
-                    <td>{r.money}</td>
-                    <td>{r.memories}</td>
-                    <td>{r.reputation}</td>
-                    <td>{r.meibutsu}</td>
-                    <td>{r.stamps}</td>
-                    <td>{r.arrival}</td>
-                    <td className="total" data-testid={`total-${r.playerId}`}>{r.total}</td>
+                    <td className="col-num">{r.money}</td>
+                    <td className="col-num">{r.memories}</td>
+                    <td className="col-num">{r.reputation}</td>
+                    <td className="col-num">{r.meibutsu}</td>
+                    <td className="col-num">{r.stamps}</td>
+                    <td className="col-num">{r.arrival}</td>
+                    <td className="col-total total" data-testid={`total-${r.playerId}`}>{r.total}</td>
                   </tr>
                 )
               })}

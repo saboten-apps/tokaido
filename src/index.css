@@ -1229,6 +1229,7 @@ button small {
   box-shadow: 0 4px 14px rgba(43, 40, 37, 0.08);
   border: 1px solid var(--border-paper);
   margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 .result th, .result td {
@@ -1243,6 +1244,23 @@ button small {
   font-weight: 700;
   font-size: 13px;
   white-space: nowrap;
+}
+
+.result th.col-traveler,
+.result td.col-traveler {
+  text-align: left;
+}
+
+.result .traveler-name {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.result td.col-traveler .role-sub {
+  color: var(--ink-sub);
+  font-size: 11px;
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 .result tr.me {
@@ -1267,6 +1285,83 @@ button small {
     grid-template-columns: 1fr 1fr;
     align-items: start;
     gap: 24px;
+  }
+
+  .result .traveler-name {
+    display: inline;
+  }
+
+  .result td.col-traveler .role-sub {
+    display: inline;
+    margin-left: 4px;
+  }
+}
+
+@media (max-width: 767px) {
+  .result {
+    padding: 16px 12px 36px;
+  }
+
+  .result table {
+    font-size: 12px;
+  }
+
+  .result th, .result td {
+    padding: 7px 3px;
+  }
+
+  .result th {
+    font-size: 11px;
+    letter-spacing: -0.02em;
+  }
+
+  .result th.col-traveler,
+  .result td.col-traveler {
+    padding-left: 6px;
+    padding-right: 4px;
+    min-width: 72px;
+  }
+
+  .result .traveler-name {
+    display: block;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .result td.col-traveler .role-sub {
+    display: block;
+    font-size: 10px;
+    white-space: nowrap;
+    margin-top: 1px;
+  }
+
+  .result .col-num {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+
+  .result .total {
+    font-size: 14px;
+  }
+
+  .stampbook {
+    padding: 8px 10px;
+    box-sizing: border-box;
+  }
+
+  .stamps {
+    grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+    gap: 5px;
+  }
+
+  .stamps li {
+    padding: 4px 2px;
+    min-height: 40px;
+    font-size: 11px;
+  }
+
+  .stamp-no {
+    font-size: 9px;
   }
 }
 
