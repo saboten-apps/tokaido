@@ -119,10 +119,17 @@ interface ActionProps {
 /** 行動の欄（振る・早足・泊まり方・働く）と、判断の画面（出来事・名物・分かれ道）。aw の人の分だけ出す */
 export function ActionPanel({ state, aw, onAct }: ActionProps) {
   const awPlayer: Player | null = aw ? (state.players.find((p) => p.id === aw.playerId) ?? null) : null
-  if (!aw || !awPlayer) return null
-  const tired = isTired(awPlayer, cfg)
-  const pbs = state.board.playerStates[awPlayer.id]
+  const [prevId, setPrevId] = useState<string | null>(awPlayer?.id ?? null)
+  const [moreOpen, setMoreOpen] = useState(false)
+  if (awPlayer && awPlayer.id !== prevId) {
+    setPrevId(awPlayer.id)
+    setMoreOpen(false)
+  }
+  const tired = awPlayer ? isTired(awPlayer, cfg) : false
+  const pbs = awPlayer ? state.board.playerStates[awPlayer.id] : null
   const ahead = pbs ? nextShukuAhead(state.board, pbs.position, pbs.route) : null
+
+  if (!aw || !awPlayer) return null
 
   if (aw.kind === 'roll') {
     return (
@@ -135,34 +142,49 @@ export function ActionPanel({ state, aw, onAct }: ActionProps) {
           )}
         </div>
         <StaminaGauge value={awPlayer.stats.stamina} id={`dock-${awPlayer.id}`} large />
-        <button className="primary" data-testid="roll" onClick={() => onAct({ type: 'roll' })}>
-          サイコロを振る
-        </button>
-        {ahead && (
-          <button data-testid="stroll" disabled={ahead.distance > maxFaceFor(awPlayer, cfg)} onClick={() => onAct({ type: 'stroll' })}>
-            宿場をめざす（{ahead.name}まで{ahead.distance}マス{awPlayer.visited.includes(ahead.name) ? '' : '・スタンプ'}。通り過ぎずに止まる）
+        <div className="dock-actions-main">
+          <button className="primary" data-testid="roll" onClick={() => onAct({ type: 'roll' })}>
+            サイコロを振る
           </button>
-        )}
-        <button data-testid="hurry" disabled={!canHurry(awPlayer, cfg)} onClick={() => onAct({ type: 'hurry' })}>
-          早足で振る（+{cfg.balance.travel.hurryBonus}マス・体力-{cfg.balance.roles[awPlayer.role].hurryStamina ?? cfg.balance.travel.hurryStamina}）
-        </button>
-        <span className="lodging" role="group" aria-label="泊まり方">
-          泊まり方：
-          {(['kichin', 'hatago'] as const).map((id) => (
-            <button
-              key={id}
-              data-testid={`lodging-${id}`}
-              aria-pressed={awPlayer.lodging === id}
-              className={awPlayer.lodging === id ? 'on' : ''}
-              onClick={() => onAct({ type: 'lodging', value: id })}
-            >
-              {cfg.balance.lodging[id].name}<small>-{innCostFor(awPlayer, cfg, id)}文・体力+{cfg.balance.lodging[id].stamina}</small>
+          {ahead && (
+            <button data-testid="stroll" disabled={ahead.distance > maxFaceFor(awPlayer, cfg)} onClick={() => onAct({ type: 'stroll' })}>
+              宿場をめざす（{ahead.name}まで{ahead.distance}マス{awPlayer.visited.includes(ahead.name) ? '' : '・スタンプ'}。通り過ぎずに止まる）
             </button>
-          ))}
-        </span>
-        <button data-testid="work" onClick={() => onAct({ type: 'work' })}>
-          働いて稼ぐ（+{cfg.balance.travel.workMoney + cfg.balance.roles[awPlayer.role].workMoneyBonus}文・進まない）
-        </button>
+          )}
+        </div>
+        <div className={`dock-more ${moreOpen ? 'open' : ''}`}>
+          <button
+            type="button"
+            className="dock-more-toggle"
+            data-testid="dock-more"
+            aria-expanded={moreOpen}
+            onClick={() => setMoreOpen((v) => !v)}
+          >
+            {moreOpen ? 'ほかの行動 ▴' : 'ほかの行動 ▾'}
+          </button>
+          <div className="dock-more-body">
+            <button data-testid="hurry" disabled={!canHurry(awPlayer, cfg)} onClick={() => onAct({ type: 'hurry' })}>
+              早足で振る（+{cfg.balance.travel.hurryBonus}マス・体力-{cfg.balance.roles[awPlayer.role].hurryStamina ?? cfg.balance.travel.hurryStamina}）
+            </button>
+            <span className="lodging" role="group" aria-label="泊まり方">
+              泊まり方：
+              {(['kichin', 'hatago'] as const).map((id) => (
+                <button
+                  key={id}
+                  data-testid={`lodging-${id}`}
+                  aria-pressed={awPlayer.lodging === id}
+                  className={awPlayer.lodging === id ? 'on' : ''}
+                  onClick={() => onAct({ type: 'lodging', value: id })}
+                >
+                  {cfg.balance.lodging[id].name}<small>-{innCostFor(awPlayer, cfg, id)}文・体力+{cfg.balance.lodging[id].stamina}</small>
+                </button>
+              ))}
+            </span>
+            <button data-testid="work" onClick={() => onAct({ type: 'work' })}>
+              働いて稼ぐ（+{cfg.balance.travel.workMoney + cfg.balance.roles[awPlayer.role].workMoneyBonus}文・進まない）
+            </button>
+          </div>
+        </div>
       </section>
     )
   }
