@@ -236,6 +236,30 @@
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
 
+### 2026-11-18 Antigravity（全55宿の場面作り込み：第3群 21〜30 鞠子〜浜松）
+- ブランチ: `antigravity/scenes-1`
+- 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。
+- 新風物部品・改修：
+  - `plum`: 鞠子「名物茶店」の丁子屋を彩る紅白の梅
+  - `kite`: 掛川「秋葉山遠望」の空に舞う大凧と尾の吹き流し
+  - `kettle`: 袋井「出茶屋ノ図」の大木の枝から吊るされた大鉄薬缶と立ち上る湯気・焚火
+  - `rock`: 日坂「佐夜ノ中山」の街道中央に鎮座する夜泣き石と注連縄
+  - 岡部の宇津之山山峡、島田・金谷・大井川の広大な川筋、浜松の冬枯れの松と焚火
+- 作り込み完了宿場（第3群 21〜30）:
+  21. 鞠子（名物茶店）: day, teahouse:thatched, plum, mountains:round, street
+  22. 岡部（宇津之山）: mist, mountains:cliff, steps, cedar, river
+  23. 藤枝（人馬継立）: day, street, horses, distanthills
+  24. 島田（大井川駿岸）: day, river:vast, porters, distanthills, street
+  25. 金谷（大井川遠岸）: day, river:vast, steps, teafields, mountains:layered
+  26. 日坂（佐夜ノ中山）: day, rock, steps, mountains:cliff, teahouse:thatched（小夜の中山も反映）
+  27. 掛川（秋葉山遠望）: day, bridge:wood, river, castle:small, kite, distanthills
+  28. 袋井（出茶屋ノ図）: day, teahouse:thatched, kettle, signpost=東海道 どまん中, paddies
+  29. 見附（天竜川図）: mist, river:vast, ferry=river, kasumi, pinelane
+  30. 浜松（冬枯ノ図）★代表: day, castle:big, bonfire, pinelane, distanthills（大井川も反映）
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件全通過）
+- スクリーンショット（比較画像）：`浜松-compare.png`（★代表）、`袋井-compare.png`
+- 次：第4群（31〜40：舞坂〜池鯉鮒）
+
 ### 2026-11-18 Antigravity（全55宿の場面作り込み：第2群 11〜20 箱根〜府中）
 - ブランチ: `antigravity/scenes-1`
 - 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。

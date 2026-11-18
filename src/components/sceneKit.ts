@@ -597,13 +597,17 @@ export const BUILDERS: Record<string, Builder> = {
     c.g.add(s)
   },
   rock(c) {
-    const r = new THREE.Mesh(new THREE.IcosahedronGeometry(2.4, 1), c.m(0x8d8a80))
-    r.scale.set(1.4, 1.05, 1.1)
-    r.position.set(-4.4, 1.2, -6)
-    const moss = new THREE.Mesh(new THREE.IcosahedronGeometry(1.2, 1), c.m(0x5f7d4a))
-    moss.scale.set(1.3, 0.5, 1)
-    moss.position.set(-4.4, 2.4, -6)
-    c.g.add(r, moss)
+    // 佐夜ノ中山の夜泣き石：丸みを帯びた大岩と注連縄
+    const r = new THREE.Mesh(new THREE.IcosahedronGeometry(2.4, 2), c.m(0x6e6b63))
+    r.scale.set(1.3, 1.15, 1.1)
+    r.position.set(0.6, 1.7, -6)
+    const moss = new THREE.Mesh(new THREE.IcosahedronGeometry(1.3, 1), c.m(0x4a633a))
+    moss.scale.set(1.2, 0.5, 1)
+    moss.position.set(0.6, 2.9, -6)
+    const rope = new THREE.Mesh(new THREE.TorusGeometry(2.1, 0.1, 6, 16), toon(0xd6c496))
+    rope.rotation.x = Math.PI / 2
+    rope.position.set(0.6, 1.7, -6)
+    c.g.add(r, moss, rope)
   },
   tunnel(c) {
     const z = -14
@@ -898,6 +902,63 @@ export const BUILDERS: Record<string, Builder> = {
         cone(c, Math.max(w, d) * 0.85, 1.4, 0x282420, x, 2.7, z, 4, Math.PI / 4)
         cone(c, Math.max(w, d) * 0.83, 1.25, 0xf6fafc, x, 2.85, z, 4, Math.PI / 4)
       }
+    }
+  },
+  plum(c) {
+    // 鞠子 名物茶店の紅白梅
+    for (const [x, z, col] of [[-4.5, -3, 0xfce4ec], [4.8, -8, 0xef5350], [-6, -11, 0xffffff]] as const) {
+      cyl(c, 0.18, 0.28, 4.0, 0x4a3220, x, 2.0, z, 6)
+      const branch1 = cyl(c, 0.1, 0.14, 2.2, 0x4a3220, x + 0.6, 3.6, z + 0.3, 5)
+      branch1.rotation.z = -0.5
+      const branch2 = cyl(c, 0.08, 0.12, 2.0, 0x4a3220, x - 0.6, 3.8, z - 0.3, 5)
+      branch2.rotation.z = 0.5
+      for (let k = 0; k < 12; k++) {
+        const bx = x + (c.rand() - 0.5) * 2.2
+        const by = 2.8 + c.rand() * 2.0
+        const bz = z + (c.rand() - 0.5) * 2.2
+        const fl = new THREE.Mesh(new THREE.SphereGeometry(0.22, 6, 6), toon(col))
+        fl.position.set(bx, by, bz)
+        c.g.add(fl)
+      }
+    }
+  },
+  kite(c) {
+    // 掛川 秋葉山遠望の空に舞う大凧
+    const k1 = box(c, 2.2, 2.8, 0.08, 0xc93a2b, 8, 14, -26)
+    k1.rotation.set(-0.3, 0.2, 0.25)
+    box(c, 0.4, 2.4, 0.1, 0xfbf7ed, 8, 14, -25.95).rotation.set(-0.3, 0.2, 0.25)
+    box(c, 1.8, 0.4, 0.1, 0xfbf7ed, 8, 14, -25.95).rotation.set(-0.3, 0.2, 0.25)
+    const tail = cyl(c, 0.04, 0.04, 4.0, 0xfbf7ed, 7.6, 11.2, -26, 4)
+    tail.rotation.set(-0.1, 0, 0.15)
+    const k2 = box(c, 1.2, 1.5, 0.05, 0x224488, -12, 16, -38)
+    k2.rotation.set(-0.25, -0.2, -0.3)
+    c.effects.push((t) => {
+      k1.position.y = 14 + Math.sin(t * 1.5) * 0.4
+      k1.rotation.z = 0.25 + Math.sin(t * 2) * 0.08
+    })
+  },
+  kettle(c) {
+    // 袋井 出茶屋の大木と吊るし大薬缶
+    cyl(c, 0.6, 0.8, 8.5, 0x5a422d, 3.8, 4.25, -5, 8)
+    const branch = cyl(c, 0.25, 0.35, 4.5, 0x5a422d, 2.2, 6.2, -5, 6)
+    branch.rotation.z = 1.1
+    const leaf = new THREE.Mesh(new THREE.SphereGeometry(3.2, 8, 6), c.m(0x4a733a))
+    leaf.scale.set(1.4, 1.0, 1.2)
+    leaf.position.set(3.8, 8.5, -5)
+    c.g.add(leaf)
+    cyl(c, 0.02, 0.02, 2.0, 0x222222, 1.4, 4.8, -5, 4)
+    const kettleBody = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.65, 0.7, 10), toon(0x2a2a2c))
+    kettleBody.position.set(1.4, 3.6, -5)
+    cone(c, 0.45, 0.2, 0x555555, 1.4, 4.05, -5, 8)
+    const spout = cyl(c, 0.08, 0.12, 0.6, 0x2a2a2c, 1.9, 3.8, -5, 6)
+    spout.rotation.z = -0.7
+    c.g.add(kettleBody)
+    box(c, 1.2, 0.15, 1.2, 0x3d2817, 1.4, 0.08, -5)
+    cone(c, 0.35, 0.6, 0xe2551a, 1.4, 0.38, -5, 5)
+    for (let k = 0; k < 3; k++) {
+      const puff = new THREE.Mesh(new THREE.SphereGeometry(0.2 + k * 0.1, 6, 6), toon(0xf0eee6, THREE.FrontSide))
+      puff.position.set(1.4 + (k - 1) * 0.15, 4.3 + k * 0.35, -5)
+      c.g.add(puff)
     }
   },
 }

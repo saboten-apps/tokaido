@@ -247,98 +247,108 @@
  },
  "鞠子": {
   "motifs": [
-   "teahouse",
-   "street",
-   "teafields"
+   "teahouse:thatched",
+   "plum",
+   "mountains:round",
+   "street"
   ],
   "mood": "day"
  },
  "岡部": {
   "motifs": [
-   "tunnel",
+   "mountains:cliff",
    "steps",
-   "cedar"
+   "cedar",
+   "river"
   ],
   "mood": "mist"
  },
  "藤枝": {
   "motifs": [
    "street",
-   "paddies",
-   "mountains"
+   "horses",
+   "distanthills"
   ],
   "mood": "day"
  },
  "島田": {
   "motifs": [
-   "river",
+   "river:vast",
    "porters",
+   "distanthills",
    "street"
   ],
   "mood": "day"
  },
  "大井川": {
   "motifs": [
-   "river",
+   "river:vast",
    "porters",
-   "mountains"
+   "mountains:layered"
   ],
   "mood": "day"
  },
  "金谷": {
   "motifs": [
+   "river:vast",
    "steps",
    "teafields",
-   "street"
+   "mountains:layered"
   ],
   "mood": "day"
  },
  "小夜の中山": {
   "motifs": [
    "rock",
-   "temple",
-   "teafields",
-   "mountains"
+   "steps",
+   "mountains:cliff",
+   "temple"
   ],
   "mood": "dusk"
  },
  "日坂": {
   "motifs": [
    "rock",
-   "street",
-   "teafields"
+   "steps",
+   "mountains:cliff",
+   "teahouse:thatched"
   ],
   "mood": "day"
  },
  "掛川": {
   "motifs": [
-   "castle",
-   "street",
-   "paddies"
+   "bridge:wood",
+   "river",
+   "castle:small",
+   "kite",
+   "distanthills"
   ],
   "mood": "day"
  },
  "袋井": {
   "motifs": [
+   "teahouse:thatched",
+   "kettle",
    "signpost=東海道 どまん中",
-   "street",
    "paddies"
   ],
   "mood": "day"
  },
  "見附": {
   "motifs": [
-   "river",
+   "river:vast",
    "ferry=river",
-   "street"
+   "kasumi",
+   "pinelane"
   ],
-  "mood": "day"
+  "mood": "mist"
  },
  "浜松": {
   "motifs": [
    "castle:big",
-   "street",
-   "pinelane"
+   "bonfire",
+   "pinelane",
+   "distanthills"
   ],
   "mood": "day"
  },
