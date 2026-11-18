@@ -133,9 +133,11 @@
  },
  "箱根": {
   "motifs": [
-   "sekisho",
    "lake",
-   "mountains:near"
+   "mountains:layered",
+   "fuji:distant",
+   "procession",
+   "sekisho"
   ],
   "mood": "morning"
  },
@@ -143,84 +145,95 @@
   "motifs": [
    "lake",
    "fuji",
-   "mountains:near"
+   "mountains:layered"
   ],
   "mood": "morning"
  },
  "三島": {
   "motifs": [
    "shrine",
-   "street",
-   "fuji"
+   "torii",
+   "cedar",
+   "kasumi"
   ],
-  "mood": "day"
+  "mood": "mist"
  },
  "沼津": {
   "motifs": [
+   "river:wide",
+   "moon",
    "pinelane",
-   "sea",
-   "fuji"
+   "teahouse:thatched"
   ],
-  "mood": "day"
+  "mood": "dusk"
  },
  "原": {
   "motifs": [
-   "paddies",
    "fuji:big",
-   "street"
+   "marsh",
+   "paddies",
+   "pinelane"
   ],
   "mood": "morning"
  },
  "吉原": {
   "motifs": [
    "pinelane",
-   "fuji:left"
+   "fuji:left",
+   "dike",
+   "street"
   ],
   "mood": "day"
  },
  "蒲原": {
   "motifs": [
-   "street",
-   "mountains"
+   "snowroofs",
+   "mountains:snow",
+   "pinelane"
   ],
   "mood": "snow"
  },
  "由比": {
   "motifs": [
-   "indigo",
-   "sea",
-   "street"
+   "mountains:cliff",
+   "sea:wide",
+   "fuji",
+   "pinelane"
   ],
   "mood": "day"
  },
  "薩埵峠": {
   "motifs": [
-   "steps",
-   "sea",
+   "mountains:cliff",
+   "sea:wide",
    "fuji"
   ],
   "mood": "day"
  },
  "興津": {
   "motifs": [
-   "temple",
-   "sea",
-   "pinelane"
+   "river:wide",
+   "mountains:layered",
+   "pinelane",
+   "street"
   ],
   "mood": "day"
  },
  "江尻": {
   "motifs": [
-   "sea",
-   "harbor",
-   "pinelane"
+   "sea:wide",
+   "boats:sails",
+   "pinelane",
+   "harbor"
   ],
   "mood": "day"
  },
  "府中": {
   "motifs": [
-   "castle",
-   "street"
+   "river:vast",
+   "porters",
+   "mountains:layered",
+   "fuji:distant"
   ],
   "mood": "day"
  },

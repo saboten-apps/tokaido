@@ -236,6 +236,29 @@
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
 
+### 2026-11-18 Antigravity（全55宿の場面作り込み：第2群 11〜20 箱根〜府中）
+- ブランチ: `antigravity/scenes-1`
+- 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。
+- 新風物部品・改修：
+  - `marsh`: 原「朝之富士」の浮島ヶ原に広がる広大な湿地・葦原と水面
+  - `moon`: 沼津「黄昏図」の狩野川沿いに浮かぶ大きな満月と淡い夜光
+  - `snowroofs`: 蒲原「夜之雪」のしんしんと雪が積もる茅葺き・瓦屋根の静寂な町並み
+  - 箱根の屏風山（`mountains:layered`）と芦ノ湖の青、三島の朝霧（`mist` と `kasumi`）、由比の薩埵峠断崖（`mountains:cliff`）と駿河湾
+- 作り込み完了宿場（第2群 11〜20）:
+  11. 箱根（湖水図）: morning, lake, mountains:layered, fuji:distant, procession, sekisho
+  12. 三島（朝霧）: mist, shrine, torii, cedar, kasumi
+  13. 沼津（黄昏図）: dusk, river:wide, moon, pinelane, teahouse:thatched
+  14. 原（朝之富士）: morning, fuji:big, marsh, paddies, pinelane
+  15. 吉原（左富士）: day, pinelane, fuji:left, dike, street
+  16. 蒲原（夜之雪）: snow, snowroofs, mountains:snow, pinelane
+  17. 由比（薩埵嶺）: day, mountains:cliff, sea:wide, fuji, pinelane（薩埵峠も反映）
+  18. 興津（興津川）: day, river:wide, mountains:layered, pinelane, street
+  19. 江尻（三保遠望）: day, sea:wide, boats:sails, pinelane, harbor
+  20. 府中（安倍川）: day, river:vast, porters, mountains:layered, fuji:distant
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件全通過）
+- スクリーンショット（比較画像）：`箱根-compare.png`、`蒲原-compare.png`
+- 次：第3群（21〜30：鞠子〜浜松）
+
 ### 2026-11-18 Antigravity（全55宿の場面作り込み：第1群 1〜10 日本橋〜小田原）
 - ブランチ: `antigravity/scenes-1`
 - 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。

@@ -869,6 +869,37 @@ export const BUILDERS: Record<string, Builder> = {
       }
     }
   },
+  moon(c) {
+    const m = new THREE.Mesh(new THREE.SphereGeometry(2.4, 16, 12), c.m(0xfffae0))
+    m.position.set(16, 18, -60)
+    m.geometry.userData.noOutline = true
+    const light = new THREE.PointLight(0xfff5cc, 2.5, 30)
+    light.position.set(16, 18, -55)
+    c.g.add(m, light)
+  },
+  marsh(c) {
+    plane(c, 70, 40, 0x4a6d7d, -15, 0.01, -24, 0.2)
+    for (let i = 0; i < 24; i++) {
+      const x = -35 + c.rand() * 40
+      const z = -8 - c.rand() * 32
+      cyl(c, 0.05, 0.08, 2.2, 0x8a9948, x, 1.1, z, 5)
+      cone(c, 0.25, 0.8, 0x6e7d38, x, 2.0, z, 5)
+    }
+  },
+  snowroofs(c) {
+    for (let z = 6; z > -36; z -= 4.2) {
+      for (const side of [-1, 1]) {
+        const x = side * (5.5 + c.rand() * 0.5)
+        const w = 3.6 + c.rand() * 0.8
+        const d = 3.2
+        box(c, w, 2.0, d, 0x3d3530, x, 1.0, z)
+        box(c, w * 0.6, 1.2, 0.05, 0xf0ece1, x - side * 0.2, 0.8, z + side * 1.62)
+        box(c, w + 0.6, 0.2, d + 0.6, 0x221e1a, x, 2.1, z)
+        cone(c, Math.max(w, d) * 0.85, 1.4, 0x282420, x, 2.7, z, 4, Math.PI / 4)
+        cone(c, Math.max(w, d) * 0.83, 1.25, 0xf6fafc, x, 2.85, z, 4, Math.PI / 4)
+      }
+    }
+  },
 }
 
 /** "motif[:variant][=arg]" を、組み立てる */
