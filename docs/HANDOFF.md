@@ -266,6 +266,39 @@
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
 
+### 2026-11-19 Antigravity（風物・人馬作り込み：第1群 1〜10 日本橋〜小田原）
+- ブランチ: `antigravity/scenes-2`
+- 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
+- 新風物部品・基盤整備（`sceneKit.ts`）:
+  - `traveler`: 低ポリ旅人（着物・頭・菅笠・道中合羽・背負い荷・肩掛け・天秤棒）。歩行（上下動・左右揺れ）や呼吸の微小アニメーション（`effects`）対応。
+  - `packhorse`: 低ポリ馬（胴体・首・頭・耳・4脚・尾・鞍・荷駄）、馬に乗る旅人（横座り/跨ぎ・合羽・笠）、手綱を引く口取り（馬方）。歩行・揺れアニメーション対応。
+  - `travelers`: 各種バリエーション（`three` 三人連れ、`bonfire` 焚火、`maku` 早立、`bridge` 橋の行き交い、`shop` 店先、`rain` 雨合羽、`snow` 雪合羽、`two` 二人連れ）。
+  - `packhorse`: `rider`（馬乗り旅人と馬方）、`standing`（繋ぎ馬）、荷駄馬。
+  - `bigpine`: `bonfire`（浜松の冬枯れ大松）、`lane`（吉原左富士の街道大松）。
+  - `smoke`: 焚火から立ちのぼり風にたなびく煙（パーティクル上昇効果）。
+  - `ship:big`: 桑名七里渡口の大千石船（画面の2〜3割を占める大帆船・白大一枚帆・帆柱・水夫・波揺れ）。
+  - `honjin:maku`: 関本陣の白大幔幕（黒家紋の円・大屋根・玄関）。
+  - `arimatsu:shop`: 鳴海有松絞り問屋（大藍染絞り暖簾・吊るされた反物・格子）。
+  - `sanjo_bridge`: 京都三条大橋（太い橋桁・金の擬宝珠・高欄・木製橋脚）。
+  - `fuji:huge`: 原の画面を突き抜ける超巨大朝富士。
+  - `mountains`: `higashiyama`（京都東山連峰）、`suzuka`（鈴鹿峠奇峰）、層状岩山（黄土・青緑・茶褐色の縞層）強化。
+- 作り込み完了宿場（第1群 1〜10）:
+  1. 日本橋（朝之景）: river:wide, bridge:wood, procession, fishmarket, travelers:bridge, street, distanthills
+  - 高輪の大木戸: stonegate, sea, street, travelers:walking
+  2. 品川（日之出）: sea:wide, boats:sails, teahouse, travelers:two, street, kasumi:morning
+  - 六郷の渡し: river:wide, ferry=river, packhorse:cargo, travelers:walking, paddies
+  3. 川崎（六郷渡舟）: river:wide, ferry=river, travelers:two, fuji:distant, teahouse:thatched, pinelane
+  4. 神奈川（台之景）: sea:wide, steps, teahouse, travelers:two, boats:sails, pinelane
+  5. 保土ヶ谷（新町橋）: river, bridge:wood, soba, packhorse:rider, travelers:two, pinelane
+  6. 戸塚（元町別道）: signpost=左 かまくら道, teahouse:thatched, packhorse:standing, travelers:two, river, bridge:wood, pinelane
+  7. 藤沢（遊行寺）: river, bridge:long, torii:big, temple, travelers:bridge, mountains:layered
+  8. 平塚（縄手道）: dike, travelers:two, paddies, mountains:round, fuji:distant, pinelane
+  9. 大磯（虎ヶ雨）: pinelane, travelers:rain, packhorse:rider, sea:wide, dike, kasumi
+  - 大磯の松並木: pinelane, travelers:walking, sea, lantern
+  10. 小田原（酒匂川）: river:wide, porters, travelers:two, castle, mountains:layered, pinelane
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件通過）
+- 次：第2群（11〜20：箱根〜府中）
+
 ### 2026-11-18 Antigravity（全55宿の場面作り込み：第6群 51〜55 水口〜京都 三条大橋・全場面完成）
 - ブランチ: `antigravity/scenes-1`
 - 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。
