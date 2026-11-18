@@ -354,17 +354,20 @@
  },
  "舞坂": {
   "motifs": [
-   "lake",
+   "lake:wide",
    "ferry=lake",
-   "pinelane"
+   "stakes",
+   "pinelane",
+   "fuji:distant"
   ],
   "mood": "day"
  },
  "浜名の今切": {
   "motifs": [
-   "lake",
-   "sea",
-   "ferry=lake"
+   "lake:wide",
+   "stakes",
+   "ferry=lake",
+   "fuji:distant"
   ],
   "mood": "dusk"
  },
@@ -372,30 +375,33 @@
   "motifs": [
    "sekisho",
    "lake",
-   "ferry=lake"
+   "ferry=lake",
+   "stakes"
   ],
   "mood": "day"
  },
  "白須賀": {
   "motifs": [
    "steps",
-   "sea",
-   "street"
+   "sea:wide",
+   "procession",
+   "pinelane"
   ],
   "mood": "day"
  },
  "二川": {
   "motifs": [
+   "teahouse:thatched",
+   "pinelane",
    "street",
-   "inn",
    "paddies"
   ],
   "mood": "day"
  },
  "吉田": {
   "motifs": [
+   "bridge:long",
    "river",
-   "bridge",
    "castle:small",
    "hanabi"
   ],
@@ -403,42 +409,45 @@
  },
  "御油": {
   "motifs": [
-   "pinelane",
    "inn",
-   "paddies"
+   "pinelane",
+   "street",
+   "lantern"
   ],
-  "mood": "day"
+  "mood": "dusk"
  },
  "赤坂": {
   "motifs": [
    "inn",
+   "sotetsu",
    "lantern",
-   "pinelane"
+   "street"
   ],
-  "mood": "dusk"
+  "mood": "night"
  },
  "藤川": {
   "motifs": [
    "stakes",
-   "street",
-   "horses"
+   "horses",
+   "procession",
+   "pinelane"
   ],
   "mood": "day"
  },
  "岡崎": {
   "motifs": [
+   "bridge:long",
+   "river:wide",
    "castle",
-   "river",
-   "bridge",
-   "street"
+   "procession"
   ],
   "mood": "day"
  },
  "岡崎の城下": {
   "motifs": [
    "castle",
-   "river",
-   "bridge",
+   "river:wide",
+   "bridge:long",
    "street"
   ],
   "mood": "day"
@@ -446,8 +455,9 @@
  "池鯉鮒": {
   "motifs": [
    "horses",
-   "flowers",
-   "street"
+   "paddies",
+   "pinelane",
+   "distanthills"
   ],
   "mood": "day"
  },

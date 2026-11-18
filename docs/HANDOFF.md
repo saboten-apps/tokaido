@@ -236,6 +236,27 @@
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
 
+### 2026-11-18 Antigravity（全55宿の場面作り込み：第4群 31〜40 舞坂〜池鯉鮒）
+- ブランチ: `antigravity/scenes-1`
+- 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。
+- 新風物部品・改修：
+  - `sotetsu`: 赤坂「旅舎招婦ノ図」の旅籠大橋屋の中庭に茂る名物蘇鉄
+  - 舞坂・新居・今切の渡し舟と海中の木杭、白須賀の高台汐見坂から見下ろす遠州灘と大名行列、吉田の豊川橋と吉田城・夜空の手筒花火、御油の夕暮れ松並木と旅籠町、藤川の棒示杭と出迎える大名行列、岡崎の東海道最長・矢矧之橋と岡崎城、池鯉鮒の初夏馬市
+- 作り込み完了宿場（第4群 31〜40）:
+  31. 舞坂（今切真景）: day, lake:wide, ferry=lake, stakes, pinelane, fuji:distant（浜名の今切も反映）
+  32. 新居（渡舟ノ図）: day, sekisho, lake, ferry=lake, stakes
+  33. 白須賀（汐見阪図）: day, steps, sea:wide, procession, pinelane
+  34. 二川（猿ヶ馬場）: day, teahouse:thatched, pinelane, street, paddies
+  35. 吉田（豊川橋）: night, bridge:long, river, castle:small, hanabi
+  36. 御油（旅人留女）: dusk, inn, pinelane, street, lantern
+  37. 赤坂（旅舎招婦ノ図）: night, inn, sotetsu, lantern, street
+  38. 藤川（棒鼻ノ図）: day, stakes, horses, procession, pinelane
+  39. 岡崎（矢矧之橋）: day, bridge:long, river:wide, castle, procession（岡崎の城下も反映）
+  40. 池鯉鮒（首夏馬市）: day, horses, paddies, pinelane, distanthills
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件全通過）
+- スクリーンショット（比較画像）：`岡崎-compare.png`、`白須賀-compare.png`
+- 次：第5群（41〜50：鳴海〜土山）
+
 ### 2026-11-18 Antigravity（全55宿の場面作り込み：第3群 21〜30 鞠子〜浜松）
 - ブランチ: `antigravity/scenes-1`
 - 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。

@@ -961,6 +961,18 @@ export const BUILDERS: Record<string, Builder> = {
       c.g.add(puff)
     }
   },
+  sotetsu(c) {
+    // 赤坂 旅籠大橋屋の中庭の名物蘇鉄
+    for (const [x, z] of [[-3.8, -4], [-2.2, -6.5]] as const) {
+      cyl(c, 0.35, 0.45, 1.8, 0x4a3828, x, 0.9, z, 8)
+      for (let k = 0; k < 9; k++) {
+        const a = (k / 9) * Math.PI * 2
+        const leaf = box(c, 0.22, 0.04, 2.2, 0x244f24, x + Math.sin(a) * 0.9, 1.7, z + Math.cos(a) * 0.9)
+        leaf.rotation.y = a
+        leaf.rotation.x = 0.4
+      }
+    }
+  },
 }
 
 /** "motif[:variant][=arg]" を、組み立てる */
