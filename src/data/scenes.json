@@ -405,6 +405,7 @@
    "lake:wide",
    "ferry=lake",
    "stakes",
+   "travelers:two",
    "pinelane",
    "fuji:distant"
   ],
@@ -415,6 +416,7 @@
    "lake:wide",
    "stakes",
    "ferry=lake",
+   "travelers:walking",
    "fuji:distant"
   ],
   "mood": "dusk"
@@ -422,8 +424,9 @@
  "新居": {
   "motifs": [
    "sekisho",
-   "lake",
+   "lake:wide",
    "ferry=lake",
+   "travelers:walking",
    "stakes"
   ],
   "mood": "day"
@@ -433,6 +436,7 @@
    "steps",
    "sea:wide",
    "procession",
+   "travelers:two",
    "pinelane"
   ],
   "mood": "day"
@@ -440,6 +444,7 @@
  "二川": {
   "motifs": [
    "teahouse:thatched",
+   "travelers:shop",
    "pinelane",
    "street",
    "paddies"
@@ -451,6 +456,7 @@
    "bridge:long",
    "river",
    "castle:small",
+   "travelers:bridge",
    "hanabi"
   ],
   "mood": "night"
@@ -458,6 +464,7 @@
  "御油": {
   "motifs": [
    "inn",
+   "travelers:two",
    "pinelane",
    "street",
    "lantern"
@@ -468,6 +475,7 @@
   "motifs": [
    "inn",
    "sotetsu",
+   "travelers:shop",
    "lantern",
    "street"
   ],
@@ -477,7 +485,9 @@
   "motifs": [
    "stakes",
    "horses",
+   "packhorse:cargo",
    "procession",
+   "travelers:two",
    "pinelane"
   ],
   "mood": "day"
@@ -487,7 +497,8 @@
    "bridge:long",
    "river:wide",
    "castle",
-   "procession"
+   "procession",
+   "travelers:bridge"
   ],
   "mood": "day"
  },
@@ -496,6 +507,7 @@
    "castle",
    "river:wide",
    "bridge:long",
+   "travelers:walking",
    "street"
   ],
   "mood": "day"
@@ -503,6 +515,8 @@
  "池鯉鮒": {
   "motifs": [
    "horses",
+   "packhorse:standing",
+   "travelers:two",
    "paddies",
    "pinelane",
    "distanthills"

@@ -266,6 +266,32 @@
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
 
+### 2026-11-19 Antigravity（風物・人馬作り込み：第4群 31〜40 舞坂〜池鯉鮒）
+- ブランチ: `antigravity/scenes-2`
+- 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
+- 作り込み完了宿場（第4群 31〜40）:
+  31. 舞坂（今切真景）: lake:wide, ferry=lake, stakes, travelers:two, pinelane, fuji:distant
+  - 浜名の今切: lake:wide, stakes, ferry=lake, travelers:walking, fuji:distant
+  32. 新居（関所）: sekisho, lake:wide, ferry=lake, travelers:walking, stakes
+  33. 白須賀（汐見坂）: steps, sea:wide, procession, travelers:two, pinelane
+  34. 二川（猿が馬場）: teahouse:thatched, travelers:shop, pinelane, street, paddies
+  35. 吉田（豊川橋）: bridge:long, river, castle:small, travelers:bridge, hanabi
+  36. 御油（旅人留女）: inn, travelers:two, pinelane, street, lantern
+  37. 赤坂（旅籠屋招婦）: inn, sotetsu, travelers:shop, lantern, street
+  38. 藤川（棒鼻ノ図）: stakes, horses, packhorse:cargo, procession, travelers:two, pinelane
+  39. 岡崎（矢矧之橋）: bridge:long, river:wide, castle, procession, travelers:bridge
+  - 岡崎の城下: castle, river:wide, bridge:long, travelers:walking, street
+  40. 池鯉鮒（首夏馬市）: horses, packhorse:standing, travelers:two, paddies, pinelane, distanthills
+- 特記事項:
+  - 岡崎（矢矧之橋）: 矢矧川に架かる大木橋（`bridge:long`）と遠景の岡崎城（`castle`）、橋上を行き交う大名行列（`procession`）と旅人たち（`travelers:bridge`）。
+  - 池鯉鮒（首夏馬市）: 草原で商談される繋ぎ馬（`packhorse:standing`）と放牧馬（`horses`）、馬喰や旅人たち（`travelers:two`）。
+  - 舞坂・新居: 浜名湖今切の広い青水面（`lake:wide`）と杭（`stakes`）、今切関所、渡し舟、旅人。
+  - 吉田（豊川橋）: 豊川橋と夜空に打ち上がる花火（`hanabi`）、城、橋上の旅人。
+  - 御油・赤坂: 東海道屈指の旅籠街。留女や旅人で賑わう夕暮れの御油、中庭の蘇鉄が印象的な赤坂の夜の旅籠（`travelers:shop`）。
+  - 藤川（棒鼻ノ図）: 宿場境の棒鼻、馬列と大名行列、出迎える役人・旅人。
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件通過）
+- 次：第5群（41〜50：鳴海〜土山）
+
 ### 2026-11-19 Antigravity（風物・人馬作り込み：第3群 21〜30 鞠子〜浜松）
 - ブランチ: `antigravity/scenes-2`
 - 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
