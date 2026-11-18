@@ -236,6 +236,26 @@
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
 
+### 2026-11-18 Antigravity（全55宿の場面作り込み：第5群 41〜50 鳴海〜土山）
+- ブランチ: `antigravity/scenes-1`
+- 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。
+- 新風物部品・改修：
+  - 鳴海の有松絞り問屋街と揺れる反物、宮の熱田神事の篝火と疾走する神馬、桑名の七里渡口に立つ大鳥居・城郭の櫓・千石船群、四日市三重川の板橋・風にしなる柳と追分道標、石薬師の門前と鈴鹿連峰、庄野白雨の豪雨にしなる竹藪と急坂、亀山雪晴の白銀の山城と行列、関の本陣早立・長大な格子町家、坂下の筆捨嶺奇峰、土山の春之雨・田村川板橋
+- 作り込み完了宿場（第5群 41〜50）:
+  41. 鳴海（名物有松絞）: day, indigo:colors, street, machiya
+  42. 宮（熱田神事）: night, shrine, torii:big, bonfire, horses
+  43. 桑名（七里渡口）★代表: day, torii:big, sea:wide, tower, boats:sails（七里の渡し反映）
+  44. 四日市（三重川）: day, river, bridge:plank, willow, dike, signpost=伊勢街道 追分
+  45. 石薬師（石薬師寺）: day, temple, paddies, mountains:layered, pinelane
+  46. 庄野（白雨）: rain, bamboo, steps, dike, street
+  47. 亀山（雪晴）: day, castle:small, mountains:snow, snowroofs, procession
+  48. 関（本陣早立）: morning, street:long, procession, lantern, torii（関の茶屋反映）
+  49. 坂下（筆捨嶺）: mist, mountains:cliff, cedar, steps, teahouse:thatched（鈴鹿峠反映）
+  50. 土山（春之雨）: rain, river, bridge:plank, procession, teafields
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件全通過）
+- スクリーンショット（比較画像）：`桑名-compare.png`（★代表）、`庄野-compare.png`
+- 次：第6群（51〜55：水口〜京都 三条大橋）
+
 ### 2026-11-18 Antigravity（全55宿の場面作り込み：第4群 31〜40 舞坂〜池鯉鮒）
 - ブランチ: `antigravity/scenes-1`
 - 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。

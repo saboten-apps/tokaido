@@ -464,21 +464,24 @@
  "鳴海": {
   "motifs": [
    "indigo:colors",
-   "street"
+   "street",
+   "machiya"
   ],
   "mood": "day"
  },
  "宮": {
   "motifs": [
    "shrine",
-   "harbor",
-   "street"
+   "torii:big",
+   "bonfire",
+   "horses"
   ],
-  "mood": "day"
+  "mood": "night"
  },
  "七里の渡し": {
   "motifs": [
-   "sea",
+   "sea:wide",
+   "boats:sails",
    "ferry=sea",
    "lantern"
   ],
@@ -487,32 +490,36 @@
  "桑名": {
   "motifs": [
    "torii:big",
-   "sea",
+   "sea:wide",
    "tower",
-   "street"
+   "boats:sails"
   ],
   "mood": "day"
  },
  "四日市": {
   "motifs": [
-   "signpost=伊勢街道 追分",
-   "torii",
-   "street"
+   "river",
+   "bridge:plank",
+   "willow",
+   "dike",
+   "signpost=伊勢街道 追分"
   ],
   "mood": "day"
  },
  "石薬師": {
   "motifs": [
    "temple",
-   "street",
+   "paddies",
+   "mountains:layered",
    "pinelane"
   ],
   "mood": "day"
  },
  "庄野": {
   "motifs": [
+   "bamboo",
    "steps",
-   "pinelane",
+   "dike",
    "street"
   ],
   "mood": "rain"
@@ -520,32 +527,35 @@
  "亀山": {
   "motifs": [
    "castle:small",
-   "street",
-   "mountains"
+   "mountains:snow",
+   "snowroofs",
+   "procession"
   ],
   "mood": "day"
  },
  "関の茶屋": {
   "motifs": [
-   "teahouse",
-   "street",
-   "cedar"
+   "teahouse:thatched",
+   "cedar",
+   "street"
   ],
   "mood": "day"
  },
  "関": {
   "motifs": [
    "street:long",
-   "torii",
-   "lantern"
+   "procession",
+   "lantern",
+   "torii"
   ],
-  "mood": "day"
+  "mood": "morning"
  },
  "坂下": {
   "motifs": [
-   "mountains:near",
+   "mountains:cliff",
    "cedar",
-   "steps"
+   "steps",
+   "teahouse:thatched"
   ],
   "mood": "mist"
  },
@@ -553,16 +563,17 @@
   "motifs": [
    "steps",
    "cedar",
-   "mountains:near",
+   "mountains:cliff",
    "lantern"
   ],
   "mood": "mist"
  },
  "土山": {
   "motifs": [
-   "teafields",
-   "street",
-   "steps"
+   "river",
+   "bridge:plank",
+   "procession",
+   "teafields"
   ],
   "mood": "rain"
  },
