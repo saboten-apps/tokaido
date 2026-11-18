@@ -236,6 +236,21 @@
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
 
+### 2026-11-18 Antigravity（全55宿の場面作り込み：第6群 51〜55 水口〜京都 三条大橋・全場面完成）
+- ブランチ: `antigravity/scenes-1`
+- 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。
+- 新風物部品・改修：
+  - 水口の名物干瓢干しと松・水口城、石部の夕暮れ目川茶店と街道松並木、草津の追分立場姥が餅茶屋と大名駕籠行列、大津の走井茶店と名木柳・清水、京都 三条大橋の鴨川に架かる木造長橋（金色の擬宝珠）・五重塔・多層の東山連峰・京都町家の夕暮れ
+- 作り込み完了宿場（第6群 51〜55）:
+  51. 水口（名物干瓢）: day, kanpyo, castle:small, pinelane, street
+  52. 石部（目川ノ里）: dusk, teahouse:thatched, street, pinelane, lantern, signpost=京立ち石部泊まり
+  53. 草津（名物立場）: day, teahouse:thatched, inn, signpost=追分 東海道・中山道, procession（琵琶湖のほとり反映）
+  54. 大津（走井茶店）: day, teahouse:thatched, willow, street, signpost=逢坂の関
+  55. 京都 三条大橋（三条大橋）★代表: dusk, river:wide, bridge:long, pagoda, mountains:layered, machiya
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件全通過）
+- スクリーンショット（比較画像）：`京都 三条大橋-compare.png`（★代表）
+- これにより東海道五十三次（日本橋〜京都 三条大橋 全55宿および分岐・名所マス計73箇所）すべての場面作り込みが完了。
+
 ### 2026-11-18 Antigravity（全55宿の場面作り込み：第5群 41〜50 鳴海〜土山）
 - ブランチ: `antigravity/scenes-1`
 - 広重『東海道五拾三次』の絵に合わせた3D場面（`sceneKit.ts` / `scenes.json`）の作り込み。

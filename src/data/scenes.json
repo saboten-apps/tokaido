@@ -579,51 +579,56 @@
  },
  "水口": {
   "motifs": [
-   "castle:small",
    "kanpyo",
+   "castle:small",
+   "pinelane",
    "street"
   ],
   "mood": "day"
  },
  "石部": {
   "motifs": [
+   "teahouse:thatched",
    "street",
-   "signpost=京立ち石部泊まり",
-   "lantern"
+   "pinelane",
+   "lantern",
+   "signpost=京立ち石部泊まり"
   ],
   "mood": "dusk"
  },
  "琵琶湖のほとり": {
   "motifs": [
-   "lake",
+   "lake:wide",
    "ferry=lake",
+   "distanthills",
    "pinelane"
   ],
   "mood": "day"
  },
  "草津": {
   "motifs": [
+   "teahouse:thatched",
    "inn",
    "signpost=追分 東海道・中山道",
-   "street"
+   "procession"
   ],
   "mood": "day"
  },
  "大津": {
   "motifs": [
-   "lake",
+   "teahouse:thatched",
+   "willow",
    "street",
    "signpost=逢坂の関"
   ],
-  "mood": "dusk"
+  "mood": "day"
  },
  "京都 三条大橋": {
   "motifs": [
-   "river",
-   "bridge:red",
+   "river:wide",
+   "bridge:long",
    "pagoda",
-   "mountains:low",
-   "maples",
+   "mountains:layered",
    "machiya"
   ],
   "mood": "dusk"
