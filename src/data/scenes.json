@@ -652,8 +652,9 @@
  "水口": {
   "motifs": [
    "kanpyo",
-   "castle:small",
-   "pinelane",
+   "travelers:two",
+   "paddies",
+   "distanthills",
    "street"
   ],
   "mood": "day"
@@ -661,46 +662,48 @@
  "石部": {
   "motifs": [
    "teahouse:thatched",
-   "street",
-   "pinelane",
-   "lantern",
-   "signpost=京立ち石部泊まり"
+   "smoke",
+   "travelers:shop",
+   "travelers:walking",
+   "street"
   ],
-  "mood": "dusk"
+  "mood": "day"
  },
  "琵琶湖のほとり": {
   "motifs": [
    "lake:wide",
-   "ferry=lake",
-   "distanthills",
+   "boats:sails",
+   "travelers:two",
    "pinelane"
   ],
   "mood": "day"
  },
  "草津": {
   "motifs": [
-   "teahouse:thatched",
-   "inn",
+   "teahouse",
+   "travelers:two",
+   "street:long",
    "signpost=追分 東海道・中山道",
-   "procession"
+   "distanthills"
   ],
   "mood": "day"
  },
  "大津": {
   "motifs": [
    "teahouse:thatched",
+   "travelers:shop",
    "willow",
-   "street",
-   "signpost=逢坂の関"
+   "signpost=逢坂の関",
+   "street"
   ],
   "mood": "day"
  },
  "京都 三条大橋": {
   "motifs": [
+   "sanjo_bridge",
    "river:wide",
-   "bridge:long",
-   "pagoda",
-   "mountains:layered",
+   "travelers:bridge",
+   "mountains:higashiyama",
    "machiya"
   ],
   "mood": "dusk"

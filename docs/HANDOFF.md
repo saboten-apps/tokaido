@@ -266,6 +266,27 @@
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
 
+### 2026-11-19 Antigravity（風物・人馬作り込み：第6群 51〜55 水口〜京都 三条大橋・全場面完成）
+- ブランチ: `antigravity/scenes-2`
+- 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
+- 作り込み完了宿場（第6群 51〜55）:
+  51. 水口（名物干瓢）: kanpyo, travelers:two, paddies, distanthills, street
+  52. 石部（目川ノ里）: teahouse:thatched, smoke, travelers:shop, travelers:walking, street
+  - 琵琶湖のほとり: lake:wide, boats:sails, travelers:two, pinelane
+  53. 草津（名物立場）: teahouse, travelers:two, street:long, signpost=追分 東海道・中山道, distanthills
+  54. 大津（走井茶屋）: teahouse:thatched, travelers:shop, willow, signpost=逢坂の関, street
+  55. 京都 三条大橋: sanjo_bridge, river:wide, travelers:bridge, mountains:higashiyama, machiya
+- 特記事項:
+  - 京都 三条大橋: 鴨川に架かる大木橋（金の擬宝珠の高欄・太い橋脚、`sanjo_bridge`）、橋上を行き交う多様な人々（`travelers:bridge`）、東山連峰（`mountains:higashiyama`）、町家を配し、東海道の終点・京の都の壮麗な情景を再現。
+  - 水口（名物干瓢）: 水口名物の干瓢干し（竹竿に白く干された干瓢、`kanpyo`）と田んぼ、働く女性や旅人たち。
+  - 石部（目川ノ里）: 目川の田楽茶屋と立ちのぼる煙（`smoke`）、名物を味わう旅人と歩く旅人。
+  - 草津・大津: 追分立場の賑わい、逢坂山の名物走井餅の茶屋と大柳。
+  - 琵琶湖のほとり: 広い青水面（`lake:wide`）と白帆の舟、松並木。
+- 全55宿（全73マス）の作り込み完了：
+  - 全マスで広重の浮世絵に基づく主役風物（大松・大富士・大帆船・本陣幔幕・有松絞問屋・三条大橋等）と低ポリ旅人・人馬の配置を完了。
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件通過）
+- 次：全55宿の総点検（check, e2e, e2e:online, mesh, stats）、比較スクリーンショット撮影、報告作成
+
 ### 2026-11-19 Antigravity（風物・人馬作り込み：第5群 41〜50 鳴海〜土山）
 - ブランチ: `antigravity/scenes-2`
 - 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
