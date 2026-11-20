@@ -556,8 +556,7 @@
    "ship:big",
    "castle:seaside",
    "torii:big",
-   "sea:wide",
-   "travelers:two"
+   "sea:kuwana"
   ],
   "mood": "day"
  },
@@ -566,7 +565,7 @@
    "river",
    "bridge:plank",
    "willow",
-   "travelers:rain",
+   "travelers:yokkaichi",
    "dike",
    "signpost=伊勢街道 追分"
   ],

@@ -433,6 +433,21 @@ export const BUILDERS: Record<string, Builder> = {
     }
   },
   sea(c, v) {
+    if (v === 'kuwana') {
+      // 桑名「七里渡口」の画面下半分に広く広がるベロ藍の濃淡の海
+      plane(c, 220, 65, 0x143c68, 0, 0.02, 10, 0.2) // 手前下半分の深いベロ藍
+      plane(c, 220, 35, 0x235284, 0, 0.025, 0, 0.2) // 中藍の層
+      plane(c, 220, 25, 0x3d709e, 0, 0.03, -14, 0.2) // 浅葱層
+      plane(c, 220, 4.0, 0xdfd3a8, 12, 0.035, -24, 1) // 遠景の岸辺・砂州
+      // 白波
+      const waves: THREE.Mesh[] = []
+      for (let i = 0; i < 18; i++) {
+        const wv = box(c, 5.0 + c.rand() * 4, 0.04, 0.25, 0xe8f2f8, (c.rand() - 0.5) * 80, 0.04, -12 + c.rand() * 26)
+        waves.push(wv)
+      }
+      c.effects.push((t) => waves.forEach((wv, i) => (wv.position.x += Math.sin(t * 0.9 + i) * 0.005)))
+      return
+    }
     const wide = v === 'wide'
     const x = wide ? -45 : -56
     const w = wide ? 120 : 90
@@ -731,17 +746,21 @@ export const BUILDERS: Record<string, Builder> = {
       return
     }
     if (v === 'seaside') {
-      // 桑名城などの海に突き出た城郭・蟠龍櫓
-      const s = 0.95
-      const x = 16
-      const z = -14
+      // 桑名城などの城郭・蟠龍櫓（右奥に小さく控えめに配置し、松を添える）
+      const s = 0.55
+      const x = 22
+      const z = -28
       box(c, 12 * s, 3.2 * s, 12 * s, 0x828078, x, 1.6 * s, z)
       box(c, 10 * s, 0.4 * s, 10 * s, 0x6f6c63, x, 3.4 * s, z)
       box(c, 6.5 * s, 2.2 * s, 6.5 * s, 0xf6f2e8, x, 4.6 * s, z)
       cone(c, 6.8 * s, 1.4 * s, 0x3a322d, x, 6.2 * s, z, 4, Math.PI / 4)
       box(c, 4.6 * s, 1.8 * s, 4.6 * s, 0xf6f2e8, x, 7.4 * s, z)
       cone(c, 5.0 * s, 1.2 * s, 0x3a322d, x, 8.8 * s, z, 4, Math.PI / 4)
-      box(c, 16 * s, 0.08, 16 * s, 0x224870, x, 0.04, z)
+      // 石垣の周りの小さな松
+      cyl(c, 0.14, 0.2, 2.4, 0x4a3220, x + 3.8, 1.2, z + 1.2, 6)
+      cone(c, 1.6, 2.2, 0x2e5b38, x + 3.8, 2.8, z + 1.2, 6)
+      cyl(c, 0.12, 0.16, 2.0, 0x4a3220, x - 3.4, 1.0, z + 1.6, 6)
+      cone(c, 1.4, 1.8, 0x2e5b38, x - 3.4, 2.4, z + 1.6, 6)
       return
     }
     const s = v === 'big' ? 1.15 : v === 'small' ? 0.7 : 0.9
@@ -1537,11 +1556,57 @@ export const BUILDERS: Record<string, Builder> = {
       return
     }
     if (v === 'maku') {
-      // 関「本陣早立」の早朝の旅立ち（提灯・荷造り・見送りの人々）
-      traveler(c, { x: -1.6, z: -4.5, ry: 0.3, color: 0x243a5e, hat: true, pack: 'back', motion: 'walk', walkRange: 1.5 })
-      traveler(c, { x: -0.2, z: -3.8, ry: -0.4, color: 0xa83a2c, hat: true, kappa: true, pack: 'back', motion: 'walk', walkRange: 1.5, phase: 1.2 })
-      traveler(c, { x: 1.8, z: -5.2, ry: -1.2, color: 0xb89548, hat: false, pack: 'shoulder', motion: 'breathe' })
-      traveler(c, { x: 3.2, z: -6.0, ry: 1.5, color: 0x222222, hat: false, motion: 'breathe' })
+      // 関「本陣早立」の幔幕の前に座る人・立つ人（4人）
+      // 1. 座る旅人（縁側・床几で一服）
+      traveler(c, {
+        x: -4.8,
+        y: 0.1,
+        z: -1.2,
+        ry: 0.4,
+        scale: 1.15,
+        pose: 'sit',
+        color: 0x243a5e,
+        hat: true,
+        motion: 'breathe',
+      })
+      // 2. 座って出立を待つ旅人
+      traveler(c, {
+        x: -2.0,
+        y: 0.1,
+        z: -0.8,
+        ry: -0.3,
+        scale: 1.15,
+        pose: 'sit',
+        color: 0x8a3a2a,
+        hat: false,
+        motion: 'breathe',
+      })
+      // 3. 立つ人（見送りの宿の者）
+      traveler(c, {
+        x: 1.6,
+        z: -1.0,
+        ry: -0.5,
+        scale: 1.15,
+        pose: 'stand',
+        color: 0x3d5c3f,
+        hat: false,
+        motion: 'breathe',
+      })
+      // 4. 立つ旅人（笠と背負い荷、早立ちの支度）
+      traveler(c, {
+        x: 4.8,
+        z: -1.4,
+        ry: 0.6,
+        scale: 1.15,
+        pose: 'stand',
+        color: 0x253b5a,
+        hat: true,
+        pack: 'back',
+        kappa: true,
+        kappaColor: 0x8a3a2a,
+        motion: 'walk',
+        walkRange: 1.2,
+      })
       return
     }
     if (v === 'bridge') {
@@ -1561,6 +1626,47 @@ export const BUILDERS: Record<string, Builder> = {
           phase: i * 0.8,
         })
       }
+      return
+    }
+    if (v === 'yokkaichi') {
+      // 四日市「三重川」の突風に煽られる旅人たち
+      // 1. 飛ばされた笠を追いかけて前かがみに走る旅人
+      traveler(c, {
+        x: 1.2,
+        z: -1.0,
+        ry: -1.6,
+        scale: 1.15,
+        pose: 'stand',
+        color: 0x243a5e,
+        hat: false, // 笠が飛んだ
+        kappa: true,
+        kappaColor: 0x9b3b2b,
+        motion: 'walk',
+        walkSpeed: 1.4,
+        walkRange: 1.6,
+      })
+      // 転がっていく笠
+      const blownHat = cone(c, 0.45, 0.16, 0xc8a658, 2.8, 0.15, -1.0, 8)
+      blownHat.rotation.z = 0.4
+      c.effects.push((t) => {
+        blownHat.position.x = 2.8 + Math.sin(t * 2.0) * 0.4
+        blownHat.rotation.y = t * 3.0
+      })
+      // 2. 橋の上で合羽を押さえながら歩く旅人
+      traveler(c, {
+        x: -2.0,
+        y: 0.35,
+        z: -3.5,
+        ry: 1.4,
+        scale: 1.15,
+        color: 0x486b45,
+        hat: true,
+        kappa: true,
+        pack: 'shoulder',
+        motion: 'walk',
+        walkSpeed: 0.6,
+        walkRange: 1.2,
+      })
       return
     }
     if (v === 'akasaka') {
@@ -1761,85 +1867,145 @@ export const BUILDERS: Record<string, Builder> = {
       })
     })
   },
-  ship(c, v) {
-    // 桑名「七里渡口」の画面の2〜3割を占める巨大な帆船（千石船 / 弁才船）
-    const s = v === 'big' ? 1.5 : 1.0
-    const x = -10
-    const z = -12
+  ship(c, _v) {
+    // 桑名「七里渡口」の主役：巨大な白一枚帆の千石船
+    // 帆は大きな白い面（船体より高く、大きく）、船体は低く細長い舟の形（先が少し反る）
     const shipGroup = new THREE.Group()
 
-    const hull = new THREE.Mesh(new THREE.BoxGeometry(16 * s, 2.6 * s, 5.2 * s), c.m(0x735232))
-    hull.position.y = 1.3 * s
-    const bow = new THREE.Mesh(new THREE.ConeGeometry(2.6 * s, 4.8 * s, 4), c.m(0x735232))
-    bow.rotation.z = -Math.PI / 2
+    // 船体：低く細長い舟の形（長さ22、高さ1.25、幅3.4）
+    const hullLen = 22
+    const hullH = 1.25
+    const hullW = 3.4
+    const hull = new THREE.Mesh(new THREE.BoxGeometry(hullLen, hullH, hullW), c.m(0x6e4e2f))
+    hull.position.y = hullH * 0.5
+    // 先が少し反る舳先（ConeGeometryを少し上向きに角度をつけて反りを表現）
+    const bow = new THREE.Mesh(new THREE.ConeGeometry(hullW * 0.5, 4.2, 4), c.m(0x6e4e2f))
+    bow.rotation.z = -Math.PI / 2 + 0.18
     bow.rotation.x = Math.PI / 4
-    bow.position.set(9.5 * s, 1.6 * s, 0)
-    const stern = new THREE.Mesh(new THREE.BoxGeometry(3.5 * s, 2.8 * s, 4.6 * s), c.m(0x5e4125))
-    stern.position.set(-7.5 * s, 2.2 * s, 0)
+    bow.position.set(hullLen * 0.5 + 1.6, hullH * 0.7, 0)
+    // 船尾
+    const stern = new THREE.Mesh(new THREE.BoxGeometry(3.2, 1.8, hullW * 0.95), c.m(0x5a3e24))
+    stern.position.set(-hullLen * 0.5 + 1.2, hullH + 0.3, 0)
     shipGroup.add(hull, bow, stern)
 
-    const mastH = 20 * s
-    const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.18 * s, 0.28 * s, mastH, 8), c.m(0x523920))
-    mast.position.set(0.5 * s, mastH * 0.5 + 1.5 * s, 0)
-    mast.rotation.z = -0.06
+    // 帆柱（細く高く）
+    const mastH = 26
+    const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.28, mastH, 8), c.m(0x4a341e))
+    mast.position.set(0.8, mastH * 0.5 + 0.8, 0)
+    mast.rotation.z = -0.05
     shipGroup.add(mast)
 
-    const sailW = 10 * s
-    const sailH = 14 * s
-    const sail = new THREE.Mesh(new THREE.BoxGeometry(0.12 * s, sailH, sailW), c.m(0xf7f4ec))
-    sail.position.set(0.5 * s, 11 * s, 0)
-    const topYard = new THREE.Mesh(new THREE.CylinderGeometry(0.08 * s, 0.08 * s, sailW * 1.1, 6), c.m(0x4a3219))
+    // 帆：大きな白い面（船体より高く、大きく！）
+    const sailW = 16
+    const sailH = 21
+    const sail = new THREE.Mesh(new THREE.BoxGeometry(0.12, sailH, sailW), c.m(0xfaf7ee))
+    sail.position.set(0.8, 14.2, 0)
+    // 帆桁（上下）
+    const topYard = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, sailW * 1.08, 6), c.m(0x3a2817))
     topYard.rotation.x = Math.PI / 2
-    topYard.position.set(0.5 * s, 18 * s, 0)
-    const btmYard = new THREE.Mesh(new THREE.CylinderGeometry(0.08 * s, 0.08 * s, sailW * 1.05, 6), c.m(0x4a3219))
+    topYard.position.set(0.8, 24.5, 0)
+    const btmYard = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, sailW * 1.04, 6), c.m(0x3a2817))
     btmYard.rotation.x = Math.PI / 2
-    btmYard.position.set(0.5 * s, 4 * s, 0)
+    btmYard.position.set(0.8, 3.8, 0)
     shipGroup.add(sail, topYard, btmYard)
 
-    const sailor1 = new THREE.Mesh(new THREE.CylinderGeometry(0.18 * s, 0.24 * s, 0.65 * s, 6), c.m(0x253b5c))
-    sailor1.position.set(4 * s, 2.9 * s, 0.8 * s)
-    const sailor2 = new THREE.Mesh(new THREE.CylinderGeometry(0.18 * s, 0.24 * s, 0.65 * s, 6), c.m(0x8a3828))
-    sailor2.position.set(-5 * s, 3.8 * s, -0.6 * s)
-    shipGroup.add(sailor1, sailor2)
+    // 船上の水夫たち
+    traveler(c, { x: 5.5, y: 1.2, z: 0.6, scale: 0.85, color: 0x243a5e, hat: true, motion: 'breathe' })
+    traveler(c, { x: -6.0, y: 1.8, z: -0.4, scale: 0.85, color: 0x8a3a2a, hat: false, motion: 'breathe' })
 
-    shipGroup.position.set(x, 0.1, z)
-    shipGroup.rotation.y = 0.35
+    shipGroup.position.set(-7, 0.05, -7)
+    shipGroup.rotation.y = 0.32
     c.g.add(shipGroup)
 
     c.effects.push((t) => {
-      shipGroup.rotation.z = Math.sin(t * 0.8) * 0.025
-      shipGroup.position.y = 0.1 + Math.sin(t * 0.8) * 0.06
+      shipGroup.rotation.z = Math.sin(t * 0.75) * 0.02
+      shipGroup.position.y = 0.05 + Math.sin(t * 0.75) * 0.05
     })
+
+    // 遠くに小さな帆船を2つ
+    for (const [bx, bz, bs] of [[-18, -34, 0.22], [-30, -46, 0.16]] as const) {
+      boat(c, bx, bz, 0.4, bs, true)
+    }
   },
   honjin(c, v) {
     if (v === 'maku') {
-      // 関「本陣早立」の白い大きな幔幕（家紋の円）が張られた本陣
-      const z = -8.5
-      for (const side of [-1, 1]) cyl(c, 0.35, 0.42, 5.0, 0x4a3422, side * 3.6, 2.5, z, 10)
-      box(c, 8.8, 0.6, 0.8, 0x3d2a1b, 0, 5.0, z)
-      box(c, 10.2, 0.5, 3.8, 0x2e2622, 0, 5.5, z)
-      cone(c, 7.8, 1.8, 0x2e2622, 0, 6.4, z, 4, Math.PI / 4)
+      // 関「本陣早立」の画面幅いっぱいに軒から垂れる白い幔幕（藍の円の家紋5個）
+      const z = -6.5
+      // 画面幅いっぱいに広がる本陣の大屋根と軒
+      for (const side of [-1, 1]) {
+        cyl(c, 0.42, 0.48, 5.4, 0x4a3422, side * 7.5, 2.7, z, 10)
+        cyl(c, 0.38, 0.44, 5.4, 0x4a3422, side * 13.5, 2.7, z, 10)
+      }
+      box(c, 30, 0.7, 1.2, 0x3d2a1b, 0, 5.2, z) // 軒桁
+      box(c, 32, 0.6, 4.5, 0x2e2622, 0, 5.8, z) // 庇
+      cone(c, 16, 2.6, 0x2e2622, 0, 7.2, z - 1.2, 4, Math.PI / 4) // 大屋根
 
-      const makuW = 8.0
-      const makuH = 2.4
-      const maku = new THREE.Mesh(new THREE.BoxGeometry(makuW, makuH, 0.08), c.m(0xfbf8f0))
-      maku.position.set(0, 3.0, z + 0.1)
+      // 画面の幅いっぱいに垂れる白い幔幕
+      const makuW = 28.0
+      const makuH = 3.2
+      const maku = new THREE.Mesh(new THREE.BoxGeometry(makuW, makuH, 0.08), c.m(0xfbf8f2))
+      maku.position.set(0, 3.2, z + 0.1)
       c.g.add(maku)
 
-      for (const dx of [-2.4, 0, 2.4]) {
-        const monRing = new THREE.Mesh(new THREE.TorusGeometry(0.48, 0.08, 6, 20), c.m(0x1a1a1c))
-        monRing.position.set(dx, 3.0, z + 0.16)
-        c.g.add(monRing)
+      // 藍の円の家紋を5個等間隔に配置
+      for (const dx of [-9.2, -4.6, 0, 4.6, 9.2]) {
+        const monOuter = new THREE.Mesh(new THREE.TorusGeometry(0.55, 0.09, 8, 24), c.m(0x1a335c))
+        monOuter.position.set(dx, 3.2, z + 0.16)
+        const monInner = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.05, 12), c.m(0x1a335c))
+        monInner.rotation.x = Math.PI / 2
+        monInner.position.set(dx, 3.2, z + 0.16)
+        c.g.add(monOuter, monInner)
       }
 
-      box(c, 12, 3.2, 5.5, 0xd8c8a6, 0, 1.6, z - 3.2)
-      box(c, 12.6, 0.3, 1.8, 0x6e5238, 0, 0.5, z - 0.6)
-      for (let k = 0; k < 5; k++) box(c, 1.8, 1.8, 0.08, 0xf6f2e8, -4 + k * 2.0, 1.8, z - 0.7)
-      cone(c, 9.5, 2.4, 0x3a322d, 0, 4.4, z - 3.2, 4, Math.PI / 4)
+      // 本陣の建物母屋・障子・縁側
+      box(c, 28, 3.4, 6.0, 0xd8c8a6, 0, 1.7, z - 3.5)
+      box(c, 28.6, 0.35, 2.0, 0x6e5238, 0, 0.5, z - 0.7) // 縁側
+      for (let k = 0; k < 10; k++) box(c, 2.0, 2.2, 0.08, 0xf6f2e8, -10 + k * 2.2, 2.0, z - 0.8) // 障子
       return
     }
   },
   arimatsu(c, v) {
+    if (v === 'yokkaichi') {
+      // 四日市「三重川」の突風に煽られる旅人たち
+      // 1. 飛ばされた笠を追いかけて前かがみに走る旅人
+      traveler(c, {
+        x: 1.2,
+        z: -1.0,
+        ry: -1.6,
+        scale: 1.15,
+        pose: 'stand',
+        color: 0x243a5e,
+        hat: false, // 笠が飛んだ
+        kappa: true,
+        kappaColor: 0x9b3b2b,
+        motion: 'walk',
+        walkSpeed: 1.4,
+        walkRange: 1.6,
+      })
+      // 転がっていく笠
+      const blownHat = cone(c, 0.45, 0.16, 0xc8a658, 2.8, 0.15, -1.0, 8)
+      blownHat.rotation.z = 0.4
+      c.effects.push((t) => {
+        blownHat.position.x = 2.8 + Math.sin(t * 2.0) * 0.4
+        blownHat.rotation.y = t * 3.0
+      })
+      // 2. 橋の上で合羽を押さえながら歩く旅人
+      traveler(c, {
+        x: -2.0,
+        y: 0.35,
+        z: -3.5,
+        ry: 1.4,
+        scale: 1.15,
+        color: 0x486b45,
+        hat: true,
+        kappa: true,
+        pack: 'shoulder',
+        motion: 'walk',
+        walkSpeed: 0.6,
+        walkRange: 1.2,
+      })
+      return
+    }
     if (v === 'akasaka') {
       // 赤坂「旅舎招婦ノ図」の旅籠の座敷・縁側でくつろぐ旅人と給仕の仲居
       // 1. 座敷で膳に向かってくつろぐ旅人
