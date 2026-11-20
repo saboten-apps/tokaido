@@ -111,6 +111,70 @@
 
 ## 記録（新しいものを上に）
 
+- 2026-11-21 **3D場面の仕上げ・風物と人馬の再調整完了（全55宿・73場面）（Antigravity／デザイン）**：
+  - **ブランチ**：`antigravity/scenes-3`
+  - **コミット**：
+    - `3fd03a3` feat(scenes): 日本橋・川崎・箱根の主役風物強化と人物・馬の拡大（第1群 1〜10 日本橋〜箱根）
+    - `86dd583` feat(scenes): 原の富士・蒲原の雪景・由比・江尻の造形刷新（第2群 11〜20 三島〜鞠子）
+    - `4acccff` feat(scenes): 島田・大井川の川越し輦台・人足造形強化（第3群 21〜30 岡部〜舞坂）
+    - `3e3c334` feat(scenes): 赤坂の旅籠・仲居給仕と岡崎の城下風情強化（第4群 31〜40 新居〜鳴海）
+    - `56cb31d` feat(scenes): 桑名の千石船・関の幔幕・四日市の突風造形強化（第5群 41〜50 宮〜土山）
+    - `9c57577` feat(scenes): 大津の走井名水井戸・草津・三条大橋の景観強化（第6群 51〜55 水口〜京都 三条大橋）
+  - **変更点**：
+    1. 指定6箇所の集中造形刷新：
+       - 桑名：巨大白一枚帆（船体より高く大きく）、低く細長く先端が反る船体、画面下半分にベロ藍の広い海、遠景の小帆船2隻、城と松は右奥へ小さく配置。
+       - 原：富士山頂上部1/3を明るい雪白、藍色濃淡と稜線に沿う雪筋の縦影、朝焼けの朱から藍の空、手前に三人連れ旅人（天秤棒・荷担ぎ）を大型配置。
+       - 関：画面幅いっぱいに軒から垂れる白い大幔幕（藍の丸家紋5個）、その前に座る人・立つ人計4人を配置。
+       - 蒲原：屋根と地面を白に、道の左右に家並み（屋根に雪の帽子）、並木円錐を抑え、白と藍の濃淡山、旅人2人を大型配置。
+       - 箱根：山を4つに厳選・大型化（青緑・黄・茶の層状岩山）、左手前に巨峰、左下に広い青い芦ノ湖、関所は小型化。
+       - 人と馬の大きさ：基準スケールを1.5倍に拡大し、街道沿い・画面下半分へ配置。
+    2. 全55宿（全73マス）の総点検と風物・人馬強化：
+       - 日本橋（魚河岸天秤棒・大名行列）、川崎（大渡舟・旅人）、由比（薩埵峠崖・旅人）、江尻（三保松原と白帆）、島田・大井川（川越し輦台・人足）、金谷（大井川対岸）、赤坂（旅籠・仲居給仕）、岡崎（矢作橋・城下）、四日市（突風・飛ぶ笠）、亀山（雪晴れ登城）、石部（田楽茶屋）、草津（追分立場）、大津（走井名水井戸・茶屋）等の造形を向上。
+    3. 比較スクリーンショットの撮影と検証（`shots-scenes3/`）：
+       - 正規形式（schemaVersion: 5）のセーブデータによる指定マス再現・390x664スマホ幅で浮世絵と並べた比較画像全13宿を生成・目視確認。
+  - **確認結果**：
+    - `npm run check`：oxlint 0 warning / 0 error、vitest 14 files / 129 tests passed、tsc build 成功。
+    - `npm run test:e2e`：Playwright 50 tests 全件 passed（CI=1）。
+    - `npm run test:e2e:online`：Playwright 3 tests 全件 passed（Worker 2ブラウザ対戦含む）。
+    - 部品数（Mesh）：最大値は「京都 三条大橋」の 407 個（上限 500 個以下、`outlineAll` 700 個未満を全マス完全クリア）。
+    - 描画速度（`?stats=1`）：スマホ幅（390px）にて 3〜15 FPS（SwiftShader ソフトウェア描画環境）、描画回数 92〜792 回、三角形 2,804〜14,162。
+  - **次にやること**：さぼてんによるレビューと取り込み。
+
+
+- 2026-11-19 **絵の主役の風物と人・馬の作り込み完了（全55宿・73場面）（Antigravity／デザイン）**：
+  - **ブランチ**：`antigravity/scenes-2`
+  - **コミット**：
+    - `c9e2452` 第1群（1〜10：日本橋〜小田原）
+    - `fa0d9d6` 第2群（11〜20：箱根〜府中）
+    - `3a2a356` 第3群（21〜30：鞠子〜浜松）
+    - `3ea66a3` 第4群（31〜40：舞坂〜池鯉鮒）
+    - `010c4ad` 第5群（41〜50：鳴海〜土山）
+    - `16fbdc4` 第6群（51〜55：水口〜京都 三条大橋・全場面完成）
+  - **変更点**：
+    1. 絵の主役の風物を画面の2〜3割を占める大迫力で配置：
+       - 桑名：巨大千石船（`ship:big`、白大一枚帆・帆柱・波揺れ）と海に突き出た城郭・蟠龍櫓（`castle:seaside`）。
+       - 浜松：寒風にそびえる冬枯れの大松（`bigpine:bonfire`）と、焚き火にあたる旅人（`travelers:bonfire`）、たなびく煙（`smoke`）、遠景の浜松城。
+       - 関：本陣の大屋根と正面に張られた巨大な白大幔幕（黒家紋の円、`honjin:maku`）、早立ちする大名行列と提灯・旅人たち。
+       - 鳴海：藍染絞り暖簾と反物が吊るされた有松絞り問屋（`arimatsu:shop`）、馬上の旅人と馬方（`packhorse:rider`）。
+       - 吉原：街道を覆う大松（`bigpine:lane`）と、馬上の旅人と馬方、左手に見える富士（`fuji:left`）。
+       - 京都 三条大橋：鴨川に架かる大木橋（金の擬宝珠・高欄・太い橋脚、`sanjo_bridge`）、橋上を行き交う多様な人々（`travelers:bridge`）、東山連峰（`mountains:higashiyama`）。
+       - 原：画面の3割を覆う巨大富士（`fuji:huge`）と、笠・合羽・荷の旅人三人連れ（`travelers:three`）。
+    2. 低ポリ旅人（`traveler`）・人馬（`packhorse`）の部品化と各場面への配置：
+       - 笠・合羽・荷（背負い・肩掛け・天秤棒）を持つ旅人と、歩行・呼吸の微小アニメーション（`effects`）。
+       - 馬乗り旅人と手綱引く馬方、荷駄馬、繋ぎ馬。
+    3. 山と水景の刷新：
+       - 円錐の単調な並びを排し、層状岩山（`mountains:layered`、黄土・青緑・茶褐色の縞層）、断崖（`cliff`）、丸山（`round`）、鈴鹿峠奇峰（`suzuka`）、東山連峰（`higashiyama`）を各宿場に固有配置。
+       - 画面一杯に広がる深いベロ藍（プルシアンブルー）のグラデーション水面（`sea:wide`, `river:vast`, `lake:wide`）。
+    4. 比較スクリーンショットの撮影と検証（`shots-scenes2/`）：
+       - 正規セーブデータ（schemaVersion: 5）による確実な宿場指定ロードにより、桑名・浜松・関・鳴海・吉原・京都 三条大橋・原を含む全12宿で場所カードの一致と主役・人馬の描画を目視確認。
+  - **確認結果**：
+    - `npm run check`：oxlint 0 warning / 0 error、vitest 14 files / 129 tests passed、tsc build 成功。
+    - `npm run test:e2e`：Playwright 50 tests 全件 passed。
+    - `npm run test:e2e:online`：Playwright 3 tests 全件 passed（Worker 2ブラウザ対戦含む）。
+    - 部品数（Mesh）：最大値は「京都 三条大橋」の 407 個（上限 500 個以下、`outlineAll` 上限 700 個未満を全マスで完全クリア）。
+    - 描画速度（`?stats=1`）：スマホ幅（390px、Pixel 7相当）にて 4〜30 FPS（SwiftShader ソフトウェア描画環境）、描画回数 79〜795 回、三角形 2,758〜14,174。
+  - **次にやること**：さぼてんによるパッチ化、実機端末での動作確認。
+
 - 2026-11-18 **取り込み**：`antigravity/scenes-1`（デザイン改善 Phase1〜5・FIX1・FIX2・全55宿の場面作り込み）を、このブランチ（ccr-abfd3fc6-lcu3t4）にマージ（`03e7c9e`）。単体129・e2e50・online3 通過。リアル版の箱根試作は、`antigravity/real-hakone-1`（ローカルのみ・未push）。次：絵の主役の風物（桑名の帆船・浜松の大松と焚き火・鳴海の絞り・馬と旅人など）をデザイン担当へ差し戻し。
 
 - 2026-11-18 **全55宿の3D場面作り込み（広重風：図形＋平らな色）（Antigravity／デザイン）**：
@@ -265,6 +329,170 @@
 - 部屋・通信・サーバー処理・クライアント・Worker・画面を移植。`parts.tsx` に画面の部品を切り出し（ひとり用とオンラインで共有）。lint から `.wrangler` を除外。
 - 確認：`npm run check`（単体79件：room 11・roomServer 17を追加）、`npm run test:e2e`（18件）、`npm run test:e2e:online`（2件）。
 - 次：オンラインの駒のアニメーション、Cloudflare のデプロイ（Worker 名・トークンが要る）、E 絵、F 3D の試作、G 公開の準備。
+
+### 2026-11-19 Antigravity（風物・人馬作り込み：第6群 51〜55 水口〜京都 三条大橋・全場面完成）
+- ブランチ: `antigravity/scenes-2`
+- 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
+- 作り込み完了宿場（第6群 51〜55）:
+  51. 水口（名物干瓢）: kanpyo, travelers:two, paddies, distanthills, street
+  52. 石部（目川ノ里）: teahouse:thatched, smoke, travelers:shop, travelers:walking, street
+  - 琵琶湖のほとり: lake:wide, boats:sails, travelers:two, pinelane
+  53. 草津（名物立場）: teahouse, travelers:two, street:long, signpost=追分 東海道・中山道, distanthills
+  54. 大津（走井茶屋）: teahouse:thatched, travelers:shop, willow, signpost=逢坂の関, street
+  55. 京都 三条大橋: sanjo_bridge, river:wide, travelers:bridge, mountains:higashiyama, machiya
+- 特記事項:
+  - 京都 三条大橋: 鴨川に架かる大木橋（金の擬宝珠の高欄・太い橋脚、`sanjo_bridge`）、橋上を行き交う多様な人々（`travelers:bridge`）、東山連峰（`mountains:higashiyama`）、町家を配し、東海道の終点・京の都の壮麗な情景を再現。
+  - 水口（名物干瓢）: 水口名物の干瓢干し（竹竿に白く干された干瓢、`kanpyo`）と田んぼ、働く女性や旅人たち。
+  - 石部（目川ノ里）: 目川の田楽茶屋と立ちのぼる煙（`smoke`）、名物を味わう旅人と歩く旅人。
+  - 草津・大津: 追分立場の賑わい、逢坂山の名物走井餅の茶屋と大柳。
+  - 琵琶湖のほとり: 広い青水面（`lake:wide`）と白帆の舟、松並木。
+- 全55宿（全73マス）の作り込み完了：
+  - 全マスで広重の浮世絵に基づく主役風物（大松・大富士・大帆船・本陣幔幕・有松絞問屋・三条大橋等）と低ポリ旅人・人馬の配置を完了。
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件通過）
+- 次：全55宿の総点検（check, e2e, e2e:online, mesh, stats）、比較スクリーンショット撮影、報告作成
+
+### 2026-11-19 Antigravity（風物・人馬作り込み：第5群 41〜50 鳴海〜土山）
+- ブランチ: `antigravity/scenes-2`
+- 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
+- 作り込み完了宿場（第5群 41〜50）:
+  41. 鳴海（名物有松絞）: arimatsu:shop, packhorse:rider, travelers:shop, machiya
+  42. 宮（熱田神事）: shrine, torii:big, bonfire, horses, travelers:two
+  - 七里の渡し: sea:wide, boats:sails, travelers:two
+  43. 桑名（七里渡口）: ship:big, castle:seaside, torii:big, sea:wide, travelers:two
+  44. 四日市（三重川）: river, bridge:plank, willow, travelers:rain, dike, signpost=伊勢街道 追分
+  45. 石薬師（石薬師寺）: temple, paddies, mountains:suzuka, travelers:walking, pinelane
+  46. 庄野（白雨）: bamboo, travelers:rain, steps, dike, street
+  47. 亀山（雪晴）: castle:small, mountains:snow, snowroofs, procession, travelers:snow
+  - 関の茶屋: teahouse:thatched, travelers:two, pinelane, lantern
+  48. 関（本陣早立）: honjin:maku, travelers:maku, street:long, lantern, kasumi:morning
+  49. 坂下（筆捨嶺）: mountains:suzuka, cedar, steps, travelers:shop, teahouse:thatched
+  - 鈴鹿峠: mountains:suzuka, steps, cedar, travelers:walking
+  50. 土山（春之雨）: river, bridge:plank, procession, travelers:rain, teafields
+- 特記事項:
+  - 桑名（七里渡口）: 画面の2〜3割を覆う巨大千石船（`ship:big`）と海に突き出た城郭・蟠龍櫓（`castle:seaside`）、大鳥居、広い海面を配置し、桑名の迫力ある港の景観を再現。
+  - 鳴海（名物有松絞）: 藍染めの大絞り暖簾と反物が吊るされた有松絞り問屋（`arimatsu:shop`）、馬上の旅人と馬方（`packhorse:rider`）、買い物をする旅人たち。
+  - 関（本陣早立）: 本陣の大屋根と正面に張られた巨大な白大幔幕（黒家紋の円、`honjin:maku`）、早立ちする大名行列と提灯・旅人たち（`travelers:maku`）。
+  - 庄野（白雨）: 激しい夕立に煽られる竹林（`bamboo`）と、坂道を急ぐ合羽・笠の旅人たち（`travelers:rain`）。
+  - 亀山（雪晴）: 雪晴れの朝、雪を被った亀山城と大名行列、雪合羽の旅人（`travelers:snow`）。
+  - 四日市（三重川）: 三重川の板橋、風に吹かれる柳と合羽を押さえて歩く旅人（`travelers:rain`）。
+  - 坂下・鈴鹿峠・石薬師: 鈴鹿山脈の険しい奇峰・筆捨山（`mountains:suzuka`）。
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件通過）
+- 次：第6群（51〜55：水口〜京都 三条大橋・全場面完成）
+
+### 2026-11-19 Antigravity（風物・人馬作り込み：第4群 31〜40 舞坂〜池鯉鮒）
+- ブランチ: `antigravity/scenes-2`
+- 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
+- 作り込み完了宿場（第4群 31〜40）:
+  31. 舞坂（今切真景）: lake:wide, ferry=lake, stakes, travelers:two, pinelane, fuji:distant
+  - 浜名の今切: lake:wide, stakes, ferry=lake, travelers:walking, fuji:distant
+  32. 新居（関所）: sekisho, lake:wide, ferry=lake, travelers:walking, stakes
+  33. 白須賀（汐見坂）: steps, sea:wide, procession, travelers:two, pinelane
+  34. 二川（猿が馬場）: teahouse:thatched, travelers:shop, pinelane, street, paddies
+  35. 吉田（豊川橋）: bridge:long, river, castle:small, travelers:bridge, hanabi
+  36. 御油（旅人留女）: inn, travelers:two, pinelane, street, lantern
+  37. 赤坂（旅籠屋招婦）: inn, sotetsu, travelers:shop, lantern, street
+  38. 藤川（棒鼻ノ図）: stakes, horses, packhorse:cargo, procession, travelers:two, pinelane
+  39. 岡崎（矢矧之橋）: bridge:long, river:wide, castle, procession, travelers:bridge
+  - 岡崎の城下: castle, river:wide, bridge:long, travelers:walking, street
+  40. 池鯉鮒（首夏馬市）: horses, packhorse:standing, travelers:two, paddies, pinelane, distanthills
+- 特記事項:
+  - 岡崎（矢矧之橋）: 矢矧川に架かる大木橋（`bridge:long`）と遠景の岡崎城（`castle`）、橋上を行き交う大名行列（`procession`）と旅人たち（`travelers:bridge`）。
+  - 池鯉鮒（首夏馬市）: 草原で商談される繋ぎ馬（`packhorse:standing`）と放牧馬（`horses`）、馬喰や旅人たち（`travelers:two`）。
+  - 舞坂・新居: 浜名湖今切の広い青水面（`lake:wide`）と杭（`stakes`）、今切関所、渡し舟、旅人。
+  - 吉田（豊川橋）: 豊川橋と夜空に打ち上がる花火（`hanabi`）、城、橋上の旅人。
+  - 御油・赤坂: 東海道屈指の旅籠街。留女や旅人で賑わう夕暮れの御油、中庭の蘇鉄が印象的な赤坂の夜の旅籠（`travelers:shop`）。
+  - 藤川（棒鼻ノ図）: 宿場境の棒鼻、馬列と大名行列、出迎える役人・旅人。
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件通過）
+- 次：第5群（41〜50：鳴海〜土山）
+
+### 2026-11-19 Antigravity（風物・人馬作り込み：第3群 21〜30 鞠子〜浜松）
+- ブランチ: `antigravity/scenes-2`
+- 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
+- 作り込み完了宿場（第3群 21〜30）:
+  - 丸子の茶屋: teahouse:thatched, plum, travelers:two, street
+  21. 鞠子（名物茶店）: teahouse:thatched, plum, travelers:shop, mountains:round, street
+  22. 岡部（宇津之谷）: mountains:cliff, steps, travelers:walking, cedar, river
+  23. 藤枝（人馬継立）: street, horses, packhorse:cargo, travelers:two, distanthills
+  24. 島田（大井川駿岸）: river:vast, porters, travelers:walking, distanthills, street
+  - 大井川: river:vast, porters, travelers:two, distanthills
+  - 島田の川止め宿: inn, river:vast, travelers:two, street
+  - 川明けを待つ河原: river:vast, porters, travelers:walking, mountains:layered
+  - 川越しの朝: river:vast, porters, travelers:two, mountains:layered, kasumi:morning
+  25. 金谷（大井川遠望）: river:vast, steps, packhorse:cargo, travelers:walking, teafields, mountains:layered
+  - 小夜の中山: rock, steps, mountains:cliff, travelers:walking
+  26. 日坂（佐夜ノ中山）: rock, steps, travelers:two, mountains:cliff, teahouse:thatched
+  27. 掛川（秋葉道）: bridge:wood, river, castle:small, kite, travelers:two, distanthills
+  28. 袋井（出茶屋ノ図）: teahouse:thatched, kettle, travelers:shop, signpost=東海道 どまん中, paddies
+  29. 見附（天竜川図）: river:vast, ferry=river, travelers:two, kasumi, pinelane
+  30. 浜松（冬枯ノ図）: bigpine:bonfire, travelers:bonfire, smoke, bonfire, castle:distant, pinelane, distanthills
+- 特記事項:
+  - 浜松（冬枯ノ図）: 絵の主役である冬枯れの大松（`bigpine:bonfire`）と、焚き火にあたる旅人たち（`travelers:bonfire`）、風になびく煙のパーティクル（`smoke`）を中央に大写しで配置。遠景に浜松城（`castle:distant`）と松並木・遠山を配し、広重の構図を忠実に再現。
+  - 鞠子（名物茶店）: 茅葺き茶屋（丸子の茶屋）と梅の木、名物とろろ汁を食べる旅人と給仕（`travelers:shop`）。
+  - 藤枝（人馬継立）: 伝馬所の荷駄馬（`packhorse:cargo`）と繋ぎ馬（`horses`）、交代の旅人たち。
+  - 大井川・島田・金谷: 広大な水面（`river:vast`）と蓮台・肩車で渡る川越人足（`porters`）、荷駄馬、坂道を登る旅人。
+  - 日坂（佐夜ノ中山）: 街道真ん中の巨大な夜泣き石（`rock`）と急坂の石段（`steps`）、旅人二人連れ。
+  - 掛川（秋葉道）: 秋葉道の木橋を渡る旅人と、空高く揚がる大凧（`kite`）。
+  - 袋井（出茶屋ノ図）: 街道どまん中の出茶屋、大木に吊るされた巨大薬缶（`kettle`）と休む旅人。
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件通過）
+- 次：第4群（31〜40：舞坂〜池鯉鮒）
+
+### 2026-11-19 Antigravity（風物・人馬作り込み：第2群 11〜20 箱根〜府中）
+- ブランチ: `antigravity/scenes-2`
+- 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
+- 作り込み完了宿場（第2群 11〜20）:
+  11. 箱根（湖水図）: lake:wide, mountains:layered, distanthills, procession, torii:grand
+  - 箱根の山道: mountains:cliff, cedar, steps, packhorse:rider, travelers:walking
+  - 芦ノ湖と富士: lake:wide, fuji, torii, travelers:two
+  12. 三島（朝霧）: torii:big, packhorse:rider, travelers:two, kasumi:morning, distanthills
+  13. 沼津（黄昏図）: river:wide, dike, travelers:two, packhorse:standing, moon:full, pinelane
+  14. 原（朝之富士）: fuji:huge, travelers:three, paddies, marsh, distanthills
+  15. 吉原（左富士）: bigpine:lane, packhorse:rider, fuji:left, dike, travelers:two
+  16. 蒲原（夜之雪）: mountains:snow, snowroofs, travelers:snow, street:quiet, snow_particles
+  17. 由井（薩埵嶺）: cliff:steep, sea:wide, fuji, boats:sails, pinelane, travelers:two
+  - 薩埵峠: cliff:steep, sea:wide, fuji, pinelane, travelers:walking
+  18. 興津（興津川）: river:wide, packhorse:cargo, porters, travelers:two, distanthills
+  19. 江尻（三保遠望）: bay:wide, boats:sails, pinelane, travelers:two, fuji:distant, kasumi
+  20. 府中（安部川）: river:vast, porters, travelers:walking, packhorse:cargo, distanthills, teahouse:thatched
+- 特記事項:
+  - 原（朝之富士）: 画面の3割を覆う巨大富士（`fuji:huge`）と、菅笠・道中合羽・天秤棒の旅人三人連れ（`travelers:three`）を主役として配置。
+  - 吉原（左富士）: 街道を覆う大松（`bigpine:lane`）と、馬に乗る旅人と手綱引く馬方（`packhorse:rider`）、左手に見える富士（`fuji:left`）を忠実に再現。
+  - 箱根（湖水図）: 芦ノ湖の広い青水面（`lake:wide`）と険しい層状岩山、大名行列、杉並木。
+  - 蒲原（夜之雪）: 静まり返る夜の雪景色（`snowroofs`, `mountains:snow`）と雪笠・蓑を着た三人連れの旅人（`travelers:snow`）。
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件通過）
+- 次：第3群（21〜30：鞠子〜浜松）
+
+### 2026-11-19 Antigravity（風物・人馬作り込み：第1群 1〜10 日本橋〜小田原）
+- ブランチ: `antigravity/scenes-2`
+- 広重『東海道五拾三次』の絵に合わせた「絵の主役の風物」と「人・馬」の作り込み。
+- 新風物部品・基盤整備（`sceneKit.ts`）:
+  - `traveler`: 低ポリ旅人（着物・頭・菅笠・道中合羽・背負い荷・肩掛け・天秤棒）。歩行（上下動・左右揺れ）や呼吸の微小アニメーション（`effects`）対応。
+  - `packhorse`: 低ポリ馬（胴体・首・頭・耳・4脚・尾・鞍・荷駄）、馬に乗る旅人（横座り/跨ぎ・合羽・笠）、手綱を引く口取り（馬方）。歩行・揺れアニメーション対応。
+  - `travelers`: 各種バリエーション（`three` 三人連れ、`bonfire` 焚火、`maku` 早立、`bridge` 橋の行き交い、`shop` 店先、`rain` 雨合羽、`snow` 雪合羽、`two` 二人連れ）。
+  - `packhorse`: `rider`（馬乗り旅人と馬方）、`standing`（繋ぎ馬）、荷駄馬。
+  - `bigpine`: `bonfire`（浜松の冬枯れ大松）、`lane`（吉原左富士の街道大松）。
+  - `smoke`: 焚火から立ちのぼり風にたなびく煙（パーティクル上昇効果）。
+  - `ship:big`: 桑名七里渡口の大千石船（画面の2〜3割を占める大帆船・白大一枚帆・帆柱・水夫・波揺れ）。
+  - `honjin:maku`: 関本陣の白大幔幕（黒家紋の円・大屋根・玄関）。
+  - `arimatsu:shop`: 鳴海有松絞り問屋（大藍染絞り暖簾・吊るされた反物・格子）。
+  - `sanjo_bridge`: 京都三条大橋（太い橋桁・金の擬宝珠・高欄・木製橋脚）。
+  - `fuji:huge`: 原の画面を突き抜ける超巨大朝富士。
+  - `mountains`: `higashiyama`（京都東山連峰）、`suzuka`（鈴鹿峠奇峰）、層状岩山（黄土・青緑・茶褐色の縞層）強化。
+- 作り込み完了宿場（第1群 1〜10）:
+  1. 日本橋（朝之景）: river:wide, bridge:wood, procession, fishmarket, travelers:bridge, street, distanthills
+  - 高輪の大木戸: stonegate, sea, street, travelers:walking
+  2. 品川（日之出）: sea:wide, boats:sails, teahouse, travelers:two, street, kasumi:morning
+  - 六郷の渡し: river:wide, ferry=river, packhorse:cargo, travelers:walking, paddies
+  3. 川崎（六郷渡舟）: river:wide, ferry=river, travelers:two, fuji:distant, teahouse:thatched, pinelane
+  4. 神奈川（台之景）: sea:wide, steps, teahouse, travelers:two, boats:sails, pinelane
+  5. 保土ヶ谷（新町橋）: river, bridge:wood, soba, packhorse:rider, travelers:two, pinelane
+  6. 戸塚（元町別道）: signpost=左 かまくら道, teahouse:thatched, packhorse:standing, travelers:two, river, bridge:wood, pinelane
+  7. 藤沢（遊行寺）: river, bridge:long, torii:big, temple, travelers:bridge, mountains:layered
+  8. 平塚（縄手道）: dike, travelers:two, paddies, mountains:round, fuji:distant, pinelane
+  9. 大磯（虎ヶ雨）: pinelane, travelers:rain, packhorse:rider, sea:wide, dike, kasumi
+  - 大磯の松並木: pinelane, travelers:walking, sea, lantern
+  10. 小田原（酒匂川）: river:wide, porters, travelers:two, castle, mountains:layered, pinelane
+- 確認：`npm run check`（単体129件通過）、`npm run test:e2e`（50件通過）
+- 次：第2群（11〜20：箱根〜府中）
 
 ### 2026-11-18 Antigravity（全55宿の場面作り込み：第6群 51〜55 水口〜京都 三条大橋・全場面完成）
 - ブランチ: `antigravity/scenes-1`

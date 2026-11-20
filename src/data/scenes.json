@@ -5,6 +5,7 @@
    "bridge:wood",
    "procession",
    "fishmarket",
+   "travelers:bridge",
    "street",
    "distanthills"
   ],
@@ -14,7 +15,8 @@
   "motifs": [
    "stonegate",
    "sea",
-   "street"
+   "street",
+   "travelers:walking"
   ],
   "mood": "day"
  },
@@ -22,6 +24,8 @@
   "motifs": [
    "sea:wide",
    "boats:sails",
+   "procession",
+   "travelers:two",
    "teahouse",
    "street",
    "kasumi:morning"
@@ -30,8 +34,10 @@
  },
  "六郷の渡し": {
   "motifs": [
-   "river",
+   "river:wide",
    "ferry=river",
+   "packhorse:cargo",
+   "travelers:walking",
    "paddies"
   ],
   "mood": "day"
@@ -39,7 +45,8 @@
  "川崎": {
   "motifs": [
    "river:wide",
-   "ferry=river",
+   "ferry:kawasaki",
+   "travelers:two",
    "fuji:distant",
    "teahouse:thatched",
    "pinelane"
@@ -51,6 +58,7 @@
    "sea:wide",
    "steps",
    "teahouse",
+   "travelers:two",
    "boats:sails",
    "pinelane"
   ],
@@ -61,8 +69,9 @@
    "river",
    "bridge:wood",
    "soba",
-   "pinelane",
-   "street"
+   "packhorse:rider",
+   "travelers:two",
+   "pinelane"
   ],
   "mood": "day"
  },
@@ -70,6 +79,8 @@
   "motifs": [
    "signpost=左 かまくら道",
    "teahouse:thatched",
+   "packhorse:standing",
+   "travelers:two",
    "river",
    "bridge:wood",
    "pinelane"
@@ -80,8 +91,9 @@
   "motifs": [
    "river",
    "bridge:long",
-   "torii",
+   "torii:big",
    "temple",
+   "travelers:bridge",
    "mountains:layered"
   ],
   "mood": "day"
@@ -89,6 +101,7 @@
  "平塚": {
   "motifs": [
    "dike",
+   "travelers:two",
    "paddies",
    "mountains:round",
    "fuji:distant",
@@ -99,6 +112,8 @@
  "大磯": {
   "motifs": [
    "pinelane",
+   "travelers:rain",
+   "packhorse:rider",
    "sea:wide",
    "dike",
    "kasumi"
@@ -108,6 +123,7 @@
  "大磯の松並木": {
   "motifs": [
    "pinelane",
+   "travelers:walking",
    "sea",
    "lantern"
   ],
@@ -117,6 +133,7 @@
   "motifs": [
    "river:wide",
    "porters",
+   "travelers:two",
    "castle",
    "mountains:layered",
    "pinelane"
@@ -127,24 +144,27 @@
   "motifs": [
    "steps",
    "cedar",
+   "travelers:walking",
    "mountains:near"
   ],
   "mood": "mist"
  },
  "箱根": {
   "motifs": [
-   "lake",
-   "mountains:layered",
+   "lake:wide",
+   "mountains:hakone",
    "fuji:distant",
    "procession",
-   "sekisho"
+   "travelers:walking",
+   "sekisho:small"
   ],
   "mood": "morning"
  },
  "芦ノ湖と富士": {
   "motifs": [
-   "lake",
+   "lake:wide",
    "fuji",
+   "travelers:two",
    "mountains:layered"
   ],
   "mood": "morning"
@@ -152,7 +172,9 @@
  "三島": {
   "motifs": [
    "shrine",
-   "torii",
+   "torii:big",
+   "packhorse:rider",
+   "travelers:two",
    "cedar",
    "kasumi"
   ],
@@ -162,6 +184,7 @@
   "motifs": [
    "river:wide",
    "moon",
+   "travelers:two",
    "pinelane",
    "teahouse:thatched"
   ],
@@ -169,7 +192,8 @@
  },
  "原": {
   "motifs": [
-   "fuji:big",
+   "fuji:huge",
+   "travelers:three",
    "marsh",
    "paddies",
    "pinelane"
@@ -178,44 +202,49 @@
  },
  "吉原": {
   "motifs": [
-   "pinelane",
+   "bigpine:lane",
+   "packhorse:rider",
    "fuji:left",
-   "dike",
-   "street"
+   "travelers:walking",
+   "dike"
   ],
   "mood": "day"
  },
  "蒲原": {
   "motifs": [
    "snowroofs",
-   "mountains:snow",
-   "pinelane"
+   "travelers:snow",
+   "mountains:kambara"
   ],
   "mood": "snow"
+ },
+ "薩埵峠": {
+  "motifs": [
+   "mountains:cliff",
+   "sea:wide",
+   "fuji",
+   "travelers:walking",
+   "pinelane"
+  ],
+  "mood": "day"
  },
  "由比": {
   "motifs": [
    "mountains:cliff",
    "sea:wide",
    "fuji",
+   "travelers:two",
    "pinelane"
-  ],
-  "mood": "day"
- },
- "薩埵峠": {
-  "motifs": [
-   "mountains:cliff",
-   "sea:wide",
-   "fuji"
   ],
   "mood": "day"
  },
  "興津": {
   "motifs": [
    "river:wide",
+   "packhorse:cargo",
+   "travelers:two",
    "mountains:layered",
-   "pinelane",
-   "street"
+   "pinelane"
   ],
   "mood": "day"
  },
@@ -223,8 +252,10 @@
   "motifs": [
    "sea:wide",
    "boats:sails",
-   "pinelane",
-   "harbor"
+   "fuji:distant",
+   "harbor",
+   "travelers:two",
+   "pinelane"
   ],
   "mood": "day"
  },
@@ -232,6 +263,8 @@
   "motifs": [
    "river:vast",
    "porters",
+   "travelers:two",
+   "teahouse:thatched",
    "mountains:layered",
    "fuji:distant"
   ],
@@ -239,8 +272,9 @@
  },
  "丸子の茶屋": {
   "motifs": [
-   "teahouse",
-   "teafields",
+   "teahouse:thatched",
+   "plum",
+   "travelers:two",
    "street"
   ],
   "mood": "day"
@@ -249,6 +283,7 @@
   "motifs": [
    "teahouse:thatched",
    "plum",
+   "travelers:shop",
    "mountains:round",
    "street"
   ],
@@ -258,6 +293,7 @@
   "motifs": [
    "mountains:cliff",
    "steps",
+   "travelers:walking",
    "cedar",
    "river"
   ],
@@ -267,6 +303,8 @@
   "motifs": [
    "street",
    "horses",
+   "packhorse:cargo",
+   "travelers:two",
    "distanthills"
   ],
   "mood": "day"
@@ -275,6 +313,7 @@
   "motifs": [
    "river:vast",
    "porters",
+   "travelers:walking",
    "distanthills",
    "street"
   ],
@@ -284,7 +323,8 @@
   "motifs": [
    "river:vast",
    "porters",
-   "mountains:layered"
+   "travelers:two",
+   "distanthills"
   ],
   "mood": "day"
  },
@@ -292,6 +332,8 @@
   "motifs": [
    "river:vast",
    "steps",
+   "packhorse:cargo",
+   "travelers:walking",
    "teafields",
    "mountains:layered"
   ],
@@ -302,7 +344,7 @@
    "rock",
    "steps",
    "mountains:cliff",
-   "temple"
+   "travelers:walking"
   ],
   "mood": "dusk"
  },
@@ -310,6 +352,7 @@
   "motifs": [
    "rock",
    "steps",
+   "travelers:two",
    "mountains:cliff",
    "teahouse:thatched"
   ],
@@ -321,6 +364,7 @@
    "river",
    "castle:small",
    "kite",
+   "travelers:two",
    "distanthills"
   ],
   "mood": "day"
@@ -329,6 +373,7 @@
   "motifs": [
    "teahouse:thatched",
    "kettle",
+   "travelers:shop",
    "signpost=東海道 どまん中",
    "paddies"
   ],
@@ -338,6 +383,7 @@
   "motifs": [
    "river:vast",
    "ferry=river",
+   "travelers:two",
    "kasumi",
    "pinelane"
   ],
@@ -345,8 +391,11 @@
  },
  "浜松": {
   "motifs": [
-   "castle:big",
+   "bigpine:bonfire",
+   "travelers:bonfire",
+   "smoke",
    "bonfire",
+   "castle:distant",
    "pinelane",
    "distanthills"
   ],
@@ -357,6 +406,7 @@
    "lake:wide",
    "ferry=lake",
    "stakes",
+   "travelers:two",
    "pinelane",
    "fuji:distant"
   ],
@@ -367,6 +417,7 @@
    "lake:wide",
    "stakes",
    "ferry=lake",
+   "travelers:walking",
    "fuji:distant"
   ],
   "mood": "dusk"
@@ -374,8 +425,9 @@
  "新居": {
   "motifs": [
    "sekisho",
-   "lake",
+   "lake:wide",
    "ferry=lake",
+   "travelers:walking",
    "stakes"
   ],
   "mood": "day"
@@ -385,6 +437,7 @@
    "steps",
    "sea:wide",
    "procession",
+   "travelers:two",
    "pinelane"
   ],
   "mood": "day"
@@ -392,6 +445,7 @@
  "二川": {
   "motifs": [
    "teahouse:thatched",
+   "travelers:shop",
    "pinelane",
    "street",
    "paddies"
@@ -403,6 +457,7 @@
    "bridge:long",
    "river",
    "castle:small",
+   "travelers:bridge",
    "hanabi"
   ],
   "mood": "night"
@@ -410,6 +465,7 @@
  "御油": {
   "motifs": [
    "inn",
+   "travelers:two",
    "pinelane",
    "street",
    "lantern"
@@ -420,6 +476,7 @@
   "motifs": [
    "inn",
    "sotetsu",
+   "travelers:akasaka",
    "lantern",
    "street"
   ],
@@ -429,7 +486,9 @@
   "motifs": [
    "stakes",
    "horses",
+   "packhorse:cargo",
    "procession",
+   "travelers:two",
    "pinelane"
   ],
   "mood": "day"
@@ -439,7 +498,8 @@
    "bridge:long",
    "river:wide",
    "castle",
-   "procession"
+   "procession",
+   "travelers:bridge"
   ],
   "mood": "day"
  },
@@ -448,6 +508,7 @@
    "castle",
    "river:wide",
    "bridge:long",
+   "travelers:walking",
    "street"
   ],
   "mood": "day"
@@ -455,6 +516,8 @@
  "池鯉鮒": {
   "motifs": [
    "horses",
+   "packhorse:standing",
+   "travelers:two",
    "paddies",
    "pinelane",
    "distanthills"
@@ -463,8 +526,9 @@
  },
  "鳴海": {
   "motifs": [
-   "indigo:colors",
-   "street",
+   "arimatsu:shop",
+   "packhorse:rider",
+   "travelers:shop",
    "machiya"
   ],
   "mood": "day"
@@ -474,7 +538,8 @@
    "shrine",
    "torii:big",
    "bonfire",
-   "horses"
+   "horses",
+   "travelers:two"
   ],
   "mood": "night"
  },
@@ -482,17 +547,16 @@
   "motifs": [
    "sea:wide",
    "boats:sails",
-   "ferry=sea",
-   "lantern"
+   "travelers:two"
   ],
   "mood": "morning"
  },
  "桑名": {
   "motifs": [
+   "ship:big",
+   "castle:seaside",
    "torii:big",
-   "sea:wide",
-   "tower",
-   "boats:sails"
+   "sea:kuwana"
   ],
   "mood": "day"
  },
@@ -501,6 +565,7 @@
    "river",
    "bridge:plank",
    "willow",
+   "travelers:yokkaichi",
    "dike",
    "signpost=伊勢街道 追分"
   ],
@@ -510,7 +575,8 @@
   "motifs": [
    "temple",
    "paddies",
-   "mountains:layered",
+   "mountains:suzuka",
+   "travelers:walking",
    "pinelane"
   ],
   "mood": "day"
@@ -518,6 +584,7 @@
  "庄野": {
   "motifs": [
    "bamboo",
+   "travelers:rain",
    "steps",
    "dike",
    "street"
@@ -529,42 +596,46 @@
    "castle:small",
    "mountains:snow",
    "snowroofs",
-   "procession"
+   "procession",
+   "travelers:snow"
   ],
   "mood": "day"
  },
  "関の茶屋": {
   "motifs": [
    "teahouse:thatched",
-   "cedar",
-   "street"
+   "travelers:two",
+   "pinelane",
+   "lantern"
   ],
-  "mood": "day"
+  "mood": "dusk"
  },
  "関": {
   "motifs": [
+   "honjin:maku",
+   "travelers:maku",
    "street:long",
-   "procession",
    "lantern",
-   "torii"
+   "kasumi:morning"
   ],
   "mood": "morning"
  },
  "坂下": {
   "motifs": [
-   "mountains:cliff",
+   "mountains:suzuka",
    "cedar",
    "steps",
+   "travelers:shop",
    "teahouse:thatched"
   ],
   "mood": "mist"
  },
  "鈴鹿峠": {
   "motifs": [
+   "mountains:suzuka",
    "steps",
    "cedar",
-   "mountains:cliff",
-   "lantern"
+   "travelers:walking"
   ],
   "mood": "mist"
  },
@@ -573,6 +644,7 @@
    "river",
    "bridge:plank",
    "procession",
+   "travelers:rain",
    "teafields"
   ],
   "mood": "rain"
@@ -580,8 +652,9 @@
  "水口": {
   "motifs": [
    "kanpyo",
-   "castle:small",
-   "pinelane",
+   "travelers:two",
+   "paddies",
+   "distanthills",
    "street"
   ],
   "mood": "day"
@@ -589,46 +662,49 @@
  "石部": {
   "motifs": [
    "teahouse:thatched",
-   "street",
-   "pinelane",
-   "lantern",
-   "signpost=京立ち石部泊まり"
+   "smoke",
+   "travelers:shop",
+   "travelers:walking",
+   "street"
   ],
-  "mood": "dusk"
+  "mood": "day"
  },
  "琵琶湖のほとり": {
   "motifs": [
    "lake:wide",
-   "ferry=lake",
-   "distanthills",
+   "boats:sails",
+   "travelers:two",
    "pinelane"
   ],
   "mood": "day"
  },
  "草津": {
   "motifs": [
-   "teahouse:thatched",
-   "inn",
+   "teahouse",
+   "travelers:two",
+   "street:long",
    "signpost=追分 東海道・中山道",
-   "procession"
+   "distanthills"
   ],
   "mood": "day"
  },
  "大津": {
   "motifs": [
    "teahouse:thatched",
+   "well",
+   "travelers:shop",
    "willow",
-   "street",
-   "signpost=逢坂の関"
+   "signpost=逢坂の関",
+   "street"
   ],
   "mood": "day"
  },
  "京都 三条大橋": {
   "motifs": [
+   "sanjo_bridge",
    "river:wide",
-   "bridge:long",
-   "pagoda",
-   "mountains:layered",
+   "travelers:bridge",
+   "mountains:higashiyama",
    "machiya"
   ],
   "mood": "dusk"
@@ -636,23 +712,28 @@
  "島田の川止め宿": {
   "motifs": [
    "inn",
-   "river",
+   "river:vast",
+   "travelers:two",
    "street"
   ],
   "mood": "rain"
  },
  "川明けを待つ河原": {
   "motifs": [
-   "river",
-   "mountains"
+   "river:vast",
+   "porters",
+   "travelers:walking",
+   "mountains:layered"
   ],
   "mood": "morning"
  },
  "川越しの朝": {
   "motifs": [
-   "river",
+   "river:vast",
    "porters",
-   "mountains"
+   "travelers:two",
+   "mountains:layered",
+   "kasumi:morning"
   ],
   "mood": "morning"
  }
