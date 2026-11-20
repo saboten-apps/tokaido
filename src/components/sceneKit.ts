@@ -498,9 +498,45 @@ export const BUILDERS: Record<string, Builder> = {
     const s = isHuge ? 2.4 : v === 'big' ? 1.6 : v === 'distant' ? 0.75 : 1
     const x = v === 'left' ? -26 : v === 'distant' ? 14 : isHuge ? 8 : 24
     const z = v === 'distant' ? -95 : isHuge ? -68 : -80
+
+    if (isHuge) {
+      // 原「朝之富士」の画面を覆う巨大な富士
+      // 上3分の1を明るい白（雪）、山肌は藍の濃淡、稜線に沿って数本の縦の影（雪の筋）
+      const fujiGroup = new THREE.Group()
+      // 裾野〜中腹：藍の濃淡（下段：濃藍、中段：中藍）
+      const hTotal = 30 * s
+      const rBase = 22 * s
+      const baseMid = cone(c, rBase, hTotal * 0.68, 0x1d3656, 0, hTotal * 0.34, 0, 36)
+      const midLayer = cone(c, rBase * 0.68, hTotal * 0.55, 0x2b4f7c, 0, hTotal * 0.52, 0, 36)
+      // 上部3分の1：明るい白の雪冠
+      const snowCap = cone(c, rBase * 0.38, hTotal * 0.38, 0xffffff, 0, hTotal * 0.81, 0, 36)
+      fujiGroup.add(baseMid, midLayer, snowCap)
+
+      // 稜線と山肌の縦の影・雪の筋（白の雪筋と濃藍の影筋）
+      const ribAngles = [-0.28, -0.12, 0.04, 0.18, 0.32]
+      for (const [idx, ang] of ribAngles.entries()) {
+        const isSnow = idx % 2 === 0
+        const col = isSnow ? 0xffffff : 0x14253d
+        const rib = new THREE.Mesh(
+          new THREE.BoxGeometry(0.55 * s, 10 * s, 0.3 * s),
+          c.m(col),
+        )
+        const rx = Math.sin(ang) * (rBase * 0.42)
+        const rz = Math.cos(ang) * (rBase * 0.42)
+        rib.position.set(rx, hTotal * 0.64, rz)
+        rib.rotation.z = -ang * 0.6
+        rib.rotation.y = -ang
+        fujiGroup.add(rib)
+      }
+
+      fujiGroup.position.set(x, 0, z)
+      c.g.add(fujiGroup)
+      return
+    }
+
     const body = new THREE.Mesh(new THREE.ConeGeometry(20 * s, 28 * s, 30), c.m(0x3a5682))
     body.position.set(x, 13 * s, z)
-    // 雪冠：広重特有のギザギザした雪（上段の純白と中段のギザギザ白）
+    // 雪冠：広重特有のギザギザした雪
     const cap = new THREE.Mesh(new THREE.ConeGeometry(8.2 * s, 11 * s, 30), c.m(0xffffff))
     cap.position.set(x, 24 * s, z)
     c.g.add(body, cap)
@@ -639,6 +675,19 @@ export const BUILDERS: Record<string, Builder> = {
         cone(c, r * 0.82, h * 0.55, c.rand() < 0.5 ? 0x396345 : 0x4f784e, x, h * 0.48, z, 7, c.rand() * 0.3)
         // 上部：岩肌層（濃藍または茶）
         cone(c, r * 0.55, h * 0.5, c.rand() < 0.5 ? 0x2e465b : 0x45392e, x, h * 0.78, z, 7, c.rand() * 0.3)
+      }
+      return
+    }
+    if (v === 'kambara') {
+      // 蒲原「夜之雪」の白と藍の濃淡の山（夜の静寂に浮かぶ雪山）
+      for (let k = 0; k < 6; k++) {
+        const x = -38 + k * 16 + c.rand() * 4
+        const z = -40 - c.rand() * 14
+        const h = 20 + c.rand() * 10
+        const r = 12 + c.rand() * 4
+        cone(c, r, h * 0.55, 0x1d3658, x, h * 0.27, z, 7) // 濃藍の山肌
+        cone(c, r * 0.82, h * 0.5, 0x325682, x, h * 0.52, z, 7) // 中藍層
+        cone(c, r * 0.55, h * 0.45, 0xffffff, x, h * 0.78, z, 7) // 純白の雪頂
       }
       return
     }
@@ -1279,16 +1328,21 @@ export const BUILDERS: Record<string, Builder> = {
     }
   },
   snowroofs(c) {
+    // 蒲原「夜之雪」の白一面の地面と、雪の帽子をかぶった左右の家並み
+    plane(c, 100, 100, 0xf6f9fc, 0, 0.02, -15) // 白い雪原
     for (let z = 6; z > -36; z -= 4.2) {
       for (const side of [-1, 1]) {
         const x = side * (5.5 + c.rand() * 0.5)
         const w = 3.6 + c.rand() * 0.8
         const d = 3.2
-        box(c, w, 2.0, d, 0x3d3530, x, 1.0, z)
-        box(c, w * 0.6, 1.2, 0.05, 0xf0ece1, x - side * 0.2, 0.8, z + side * 1.62)
-        box(c, w + 0.6, 0.2, d + 0.6, 0x221e1a, x, 2.1, z)
-        cone(c, Math.max(w, d) * 0.85, 1.4, 0x282420, x, 2.7, z, 4, Math.PI / 4)
-        cone(c, Math.max(w, d) * 0.83, 1.25, 0xf6fafc, x, 2.85, z, 4, Math.PI / 4)
+        box(c, w, 2.0, d, 0x2e2722, x, 1.0, z) // 暗い木造壁
+        box(c, w * 0.6, 1.2, 0.05, 0xf0ece1, x - side * 0.2, 0.8, z + side * 1.62) // 障子
+        // 雪の帽子：分厚く白い雪の屋根
+        box(c, w + 0.6, 0.2, d + 0.6, 0x1e1a17, x, 2.1, z)
+        cone(c, Math.max(w, d) * 0.88, 1.4, 0x282420, x, 2.7, z, 4, Math.PI / 4)
+        // 屋根を覆う純白の雪帽子
+        cone(c, Math.max(w, d) * 0.92, 1.35, 0xffffff, x, 2.88, z, 4, Math.PI / 4)
+        box(c, w + 0.4, 0.25, d + 0.4, 0xffffff, x, 2.2, z) // 軒先の積雪
       }
     }
   },
@@ -1363,23 +1417,87 @@ export const BUILDERS: Record<string, Builder> = {
   },
   travelers(c, v) {
     if (v === 'three') {
-      // 原「朝之富士」の三人連れの旅人（笠、合羽、背負い荷、杖）
-      for (let i = 0; i < 3; i++) {
-        traveler(c, {
-          x: -1.2 + i * 0.9,
-          z: -1.5 - i * 1.8,
-          scale: 1.05,
-          color: [0x29436e, 0x9b3b2b, 0x4a6943][i],
-          hat: true,
-          kappa: i !== 1,
-          kappaColor: i === 0 ? 0x9b3b2b : 0x243a5e,
-          pack: 'back',
-          motion: 'walk',
-          walkSpeed: 0.7,
-          walkRange: 1.8,
-          phase: i * 0.4,
-        })
-      }
+      // 原「朝之富士」の三人連れの旅人（手前に大きめ、荷を担ぐ人を含む）
+      // 1. 手前右：天秤棒で荷を担ぐ人
+      traveler(c, {
+        x: 1.4,
+        z: 1.2,
+        ry: -0.2,
+        scale: 1.15,
+        color: 0x243a5e,
+        hat: true,
+        pack: 'shoulder',
+        motion: 'walk',
+        walkSpeed: 0.7,
+        walkRange: 1.5,
+      })
+      // 2. 手前中央：合羽・背負い荷の旅人
+      traveler(c, {
+        x: -0.2,
+        z: 0.1,
+        ry: 0.1,
+        scale: 1.15,
+        color: 0x8a3a2a,
+        hat: true,
+        kappa: true,
+        kappaColor: 0x2a3848,
+        pack: 'back',
+        motion: 'walk',
+        walkSpeed: 0.7,
+        walkRange: 1.5,
+        phase: 0.8,
+      })
+      // 3. 手前左：笠・合羽・杖を持つ旅人
+      traveler(c, {
+        x: -1.6,
+        z: -1.1,
+        ry: 0.25,
+        scale: 1.15,
+        color: 0x4a6943,
+        hat: true,
+        kappa: true,
+        pack: 'back',
+        motion: 'walk',
+        walkSpeed: 0.7,
+        walkRange: 1.5,
+        phase: 1.6,
+      })
+      return
+    }
+    if (v === 'snow') {
+      // 蒲原「夜之雪」の雪中を行く旅人2人（大きめに、画面手前の雪道）
+      // 1. 深編笠と合羽、前かがみで雪を踏みしめて歩く旅人
+      traveler(c, {
+        x: -1.0,
+        z: 0.6,
+        ry: 0.2,
+        scale: 1.25,
+        color: 0x22354c,
+        hat: true,
+        hatColor: 0x1a1a1a,
+        kappa: true,
+        kappaColor: 0x1f2b3a,
+        pack: 'back',
+        motion: 'walk',
+        walkSpeed: 0.45,
+        walkRange: 1.2,
+      })
+      // 2. 合羽を着て背負い荷を持つ旅人
+      traveler(c, {
+        x: 1.1,
+        z: -0.8,
+        ry: -0.3,
+        scale: 1.25,
+        color: 0x6e4e32,
+        hat: true,
+        kappa: true,
+        kappaColor: 0x4a3625,
+        pack: 'back',
+        motion: 'walk',
+        walkSpeed: 0.45,
+        walkRange: 1.2,
+        phase: 1.2,
+      })
       return
     }
     if (v === 'bonfire') {
@@ -1427,6 +1545,19 @@ export const BUILDERS: Record<string, Builder> = {
       // 雨の中、合羽を着て菅笠を押さえ急ぎ足の旅人たち（大磯・庄野）
       traveler(c, { x: -1.0, z: -2.0, ry: 0.1, color: 0x2b466f, hat: true, kappa: true, kappaColor: 0x9b3b2b, pack: 'back', motion: 'walk', walkSpeed: 1.2, walkRange: 2.4 })
       traveler(c, { x: 1.2, z: -5.5, ry: 3.1, color: 0x4a6345, hat: true, kappa: true, kappaColor: 0x223652, pack: 'back', motion: 'walk', walkSpeed: 1.1, walkRange: 2.2, phase: 1.5 })
+      return
+    }
+    if (v === 'kambara') {
+      // 蒲原「夜之雪」の白と藍の濃淡の山（夜の静寂に浮かぶ雪山）
+      for (let k = 0; k < 6; k++) {
+        const x = -38 + k * 16 + c.rand() * 4
+        const z = -40 - c.rand() * 14
+        const h = 20 + c.rand() * 10
+        const r = 12 + c.rand() * 4
+        cone(c, r, h * 0.55, 0x1d3658, x, h * 0.27, z, 7) // 濃藍の山肌
+        cone(c, r * 0.82, h * 0.5, 0x325682, x, h * 0.52, z, 7) // 中藍層
+        cone(c, r * 0.55, h * 0.45, 0xffffff, x, h * 0.78, z, 7) // 純白の雪頂
+      }
       return
     }
     if (v === 'snow') {

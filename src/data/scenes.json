@@ -214,8 +214,7 @@
   "motifs": [
    "snowroofs",
    "travelers:snow",
-   "mountains:snow",
-   "pinelane"
+   "mountains:kambara"
   ],
   "mood": "snow"
  },
@@ -253,6 +252,7 @@
   "motifs": [
    "sea:wide",
    "boats:sails",
+   "fuji:distant",
    "harbor",
    "travelers:two",
    "pinelane"
