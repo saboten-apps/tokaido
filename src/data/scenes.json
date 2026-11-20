@@ -24,8 +24,9 @@
   "motifs": [
    "sea:wide",
    "boats:sails",
-   "teahouse",
+   "procession",
    "travelers:two",
+   "teahouse",
    "street",
    "kasumi:morning"
   ],
@@ -44,7 +45,7 @@
  "川崎": {
   "motifs": [
    "river:wide",
-   "ferry=river",
+   "ferry:kawasaki",
    "travelers:two",
    "fuji:distant",
    "teahouse:thatched",
@@ -151,11 +152,11 @@
  "箱根": {
   "motifs": [
    "lake:wide",
-   "mountains:layered",
+   "mountains:hakone",
    "fuji:distant",
    "procession",
    "travelers:walking",
-   "sekisho"
+   "sekisho:small"
   ],
   "mood": "morning"
  },

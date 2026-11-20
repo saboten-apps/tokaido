@@ -164,7 +164,8 @@ export interface TravelerOpts {
 
 export function traveler(c: Ctx, opts: TravelerOpts): THREE.Group {
   const g = new THREE.Group()
-  const s = opts.scale ?? 1
+  // 広重の人物比率（画面の1/6〜1/4）に合わせた1.5倍基準
+  const s = (opts.scale ?? 1) * 1.5
   const color = opts.color ?? (c.rand() < 0.4 ? 0x2b466f : c.rand() < 0.6 ? 0x8a3a2a : c.rand() < 0.8 ? 0x4f6b42 : 0xb89548)
   const isSit = opts.pose === 'sit'
 
@@ -266,7 +267,8 @@ export interface PackhorseOpts {
 
 export function packhorse(c: Ctx, opts: PackhorseOpts): THREE.Group {
   const g = new THREE.Group()
-  const s = opts.scale ?? 1
+  // 広重の馬の堂々とした比率に合わせた1.5倍基準
+  const s = (opts.scale ?? 1) * 1.5
   const col = opts.color ?? (c.rand() < 0.4 ? 0x6b4a2e : c.rand() < 0.7 ? 0x2a2220 : 0x8a5a36)
 
   const body = new THREE.Mesh(new THREE.BoxGeometry(1.8 * s, 0.85 * s, 0.75 * s), c.m(col))
@@ -346,7 +348,7 @@ export function packhorse(c: Ctx, opts: PackhorseOpts): THREE.Group {
       y: y0,
       z: gz,
       ry: opts.ry ?? 0,
-      scale: s * 0.95,
+      scale: (opts.scale ?? 1) * 0.95,
       color: 0x243a5e,
       hat: true,
       hatColor: 0x1f1f1f,
@@ -449,11 +451,13 @@ export const BUILDERS: Record<string, Builder> = {
     c.effects.push((t) => waves.forEach((wv, i) => (wv.position.x += Math.sin(t * 0.9 + i) * 0.004)))
   },
   lake(c, v) {
-    const w = v === 'wide' ? 120 : 100
-    // 広重ブルー（ベロ藍）の湖面
-    plane(c, w, 150, 0x1d476f, -55, 0.0, -30, 0.2)
-    plane(c, 20, 150, 0x366e96, -20, 0.005, -30, 0.2)
-    plane(c, 3.2, 150, 0xe0d4a8, -8.5, 0.01, -30, 1)
+    const w = v === 'wide' ? 70 : 100
+    // 広重ブルー（ベロ藍）の湖面：箱根などの場合は左下手前に広く広がる
+    const lx = v === 'wide' ? -24 : -55
+    const lz = v === 'wide' ? -8 : -30
+    plane(c, w, 100, 0x143c68, lx, 0.03, lz, 0.2)
+    plane(c, 24, 100, 0x276698, lx + 14, 0.035, lz, 0.2)
+    plane(c, 4.0, 100, 0xdfd3a8, lx + 25, 0.04, lz, 1)
     for (let i = 0; i < 8; i++) {
       const m = new THREE.Mesh(new THREE.SphereGeometry(8 + c.rand() * 6, 12, 8), c.m(0x486b58))
       m.scale.set(1.8, 0.55, 1)
@@ -502,6 +506,55 @@ export const BUILDERS: Record<string, Builder> = {
     c.g.add(body, cap)
   },
   mountains(c, v) {
+    if (v === 'hakone') {
+      // 箱根「湖水図」の大胆で形の違う山（青緑・黄・茶の層）
+      // 山を4つに厳選して大型化、高さ・幅・傾きを変え、岩肌を3〜4色で層状に塗り分ける
+      // 1. 手前の主役の山（画面中央〜左へ急峻に落ち込む巨峰）
+      const hero = new THREE.Group()
+      const h1Base = cone(c, 12, 14, 0xc8aa60, 0, 7, 0, 7, 0.2) // 黄土層
+      const h1Mid = cone(c, 10, 18, 0x2d5f3e, 0, 16, 0, 7, -0.1) // 青緑層
+      const h1Upper = cone(c, 7.5, 16, 0x6e4e32, 0, 24, 0, 6, 0.15) // 茶褐層
+      const h1Peak = cone(c, 5.0, 12, 0x1e3f2b, 0, 31, 0, 5, -0.2) // 濃緑山頂
+      hero.add(h1Base, h1Mid, h1Upper, h1Peak)
+      hero.scale.set(1.2, 1.1, 1.1)
+      hero.rotation.z = -0.18 // 大胆な傾き
+      hero.position.set(6, 0, -24)
+      c.g.add(hero)
+
+      // 2. 右中景の山（幅広・茶と黄土が際立つ山）
+      const m2 = new THREE.Group()
+      const m2Base = cone(c, 16, 12, 0x6e4e32, 0, 6, 0, 6, -0.1)
+      const m2Mid = cone(c, 13, 16, 0xc8aa60, 0, 14, 0, 6, 0.15)
+      const m2Peak = cone(c, 9, 14, 0x2d5f3e, 0, 22, 0, 5, -0.1)
+      m2.add(m2Base, m2Mid, m2Peak)
+      m2.scale.set(1.3, 0.95, 1.0)
+      m2.rotation.z = 0.14
+      m2.position.set(22, 0, -32)
+      c.g.add(m2)
+
+      // 3. 奥中央の山（急峻にそびえる青緑の鋭峰）
+      const m3 = new THREE.Group()
+      const m3Base = cone(c, 14, 15, 0xc8aa60, 0, 7.5, 0, 6, 0.3)
+      const m3Mid = cone(c, 11, 20, 0x2d5f3e, 0, 17.5, 0, 6, -0.2)
+      const m3Peak = cone(c, 7, 16, 0x243e56, 0, 26, 0, 5, 0.1)
+      m3.add(m3Base, m3Mid, m3Peak)
+      m3.scale.set(1.1, 1.15, 1.0)
+      m3.rotation.z = -0.08
+      m3.position.set(-2, 0, -48)
+      c.g.add(m3)
+
+      // 4. 左奥の山（重なる層状の山）
+      const m4 = new THREE.Group()
+      const m4Base = cone(c, 15, 14, 0x6e4e32, 0, 7, 0, 6, 0.1)
+      const m4Mid = cone(c, 12, 16, 0x2d5f3e, 0, 15, 0, 6, -0.15)
+      const m4Peak = cone(c, 8, 12, 0xc8aa60, 0, 22, 0, 5, 0.2)
+      m4.add(m4Base, m4Mid, m4Peak)
+      m4.scale.set(1.2, 0.9, 1.1)
+      m4.position.set(-28, 0, -42)
+      c.g.add(m4)
+
+      return
+    }
     if (v === 'higashiyama') {
       // 京都 東山のなだらかで美しい連山（丸みのある青緑の重なり）
       for (let k = 0; k < 8; k++) {
@@ -795,13 +848,41 @@ export const BUILDERS: Record<string, Builder> = {
       for (let r = 0; r < 5; r++) box(c, 6.4, 0.42, 0.55, 0x2f6b34, cx, 0.22, cz - 2 + r)
     }
   },
-  ferry(c, _v, arg) {
-    if (arg === 'river') boat(c, -5, RIVER_Z, 0.1, 1.2)
-    else {
-      boat(c, -18, -4, 1.4, 1.5)
-      boat(c, -30, -22, 1.2, 1.1)
+  ferry(c, v, arg) {
+    if (v === 'kawasaki' || arg === 'river') {
+      // 川崎「六郷渡舟」の渡し舟（旅人と荷馬を乗せて大河を渡る）
+      const boatGroup = new THREE.Group()
+      const hull = new THREE.Mesh(new THREE.BoxGeometry(6.4, 0.55, 2.6), c.m(0x7a5a38))
+      hull.position.y = 0.2
+      const bow = new THREE.Mesh(new THREE.ConeGeometry(1.3, 1.6, 4), c.m(0x7a5a38))
+      bow.rotation.z = -Math.PI / 2
+      bow.rotation.x = Math.PI / 4
+      bow.position.set(3.8, 0.3, 0)
+      boatGroup.add(hull, bow)
+
+      // 竿を差す船頭
+      figure(c, 0x243e62, -2.6, 0.45, 0, 1.0)
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 4.6, 6), c.m(0x5a422a))
+      pole.rotation.z = 0.65
+      pole.position.set(-2.0, 1.8, 0.4)
+      boatGroup.add(pole)
+
+      // 舟に乗る荷馬と旅人たち
+      packhorse(c, { x: 0.6, y: 0.25, z: 0, ry: 0, scale: 0.85, cargo: true, rider: false, groom: false, motion: 'idle' })
+      traveler(c, { x: -1.2, y: 0.25, z: -0.6, ry: 1.2, scale: 0.85, pose: 'sit', color: 0x8a3a2a, hat: true, motion: 'breathe' })
+      traveler(c, { x: 2.0, y: 0.25, z: 0.5, ry: -1.5, scale: 0.85, pose: 'sit', color: 0x4a6943, hat: true, motion: 'breathe' })
+
+      boatGroup.position.set(-6, 0.05, RIVER_Z + 1)
+      c.g.add(boatGroup)
+      c.effects.push((t) => {
+        boatGroup.position.y = 0.05 + Math.sin(t * 1.2) * 0.04
+        boatGroup.rotation.z = Math.sin(t * 1.0) * 0.015
+      })
+      return
     }
-    figure(c, 0x3b5a8a, arg === 'river' ? -5.4 : -18.5, 0.5, arg === 'river' ? RIVER_Z : -4)
+    boat(c, -18, -4, 1.4, 1.5)
+    boat(c, -30, -22, 1.2, 1.1)
+    figure(c, 0x3b5a8a, -18.5, 0.5, -4)
   },
   porters(c) {
     for (const [x, z] of [[-6, -11], [1, -13.5], [8, -11.5]] as const) {
@@ -833,7 +914,24 @@ export const BUILDERS: Record<string, Builder> = {
       box(c, 1.1, 3.4, 0.04, cols[Math.floor(c.rand() * cols.length)], x, 2.3, z)
     }
   },
-  sekisho(c) {
+  sekisho(c, v) {
+    if (v === 'small') {
+      const z = -6
+      const x = 4.2
+      // 小さな関所の門：控えめな門柱と屋根
+      cyl(c, 0.2, 0.24, 3.2, 0x5e4328, x - 1.2, 1.6, z, 8)
+      cyl(c, 0.2, 0.24, 3.2, 0x5e4328, x + 1.2, 1.6, z, 8)
+      box(c, 3.2, 0.3, 0.4, 0x4a3828, x, 3.1, z)
+      cone(c, 2.4, 0.8, 0x3a322d, x, 3.7, z, 4, Math.PI / 4)
+      // 白い柵
+      for (let k = 0; k < 4; k++) box(c, 0.1, 1.2, 0.1, 0x7a5a38, x + 1.6 + k * 0.9, 0.6, z)
+      box(c, 3.0, 0.08, 0.08, 0x7a5a38, x + 2.8, 1.0, z)
+      // 番所
+      box(c, 3.8, 1.8, 2.6, 0xcfb58a, x + 1.0, 0.9, z - 3.2)
+      cone(c, 3.2, 1.1, 0x4b3d36, x + 1.0, 2.1, z - 3.2, 4, Math.PI / 4)
+      box(c, 2.4, 0.8, 0.04, 0x24406e, x + 1.0, 1.5, z - 1.8) // 幔幕
+      return
+    }
     const z = -7
     // 関所の門：太い柱と、屋根つきの門
     for (const side of [-1, 1]) cyl(c, 0.34, 0.4, 4.6, 0x5e4328, side * 2.4, 2.3, z, 10)
@@ -1104,10 +1202,10 @@ export const BUILDERS: Record<string, Builder> = {
   fishmarket(c) {
     for (const [x, z] of [[3.2, 0], [4.4, -4]] as const) {
       figure(c, 0x3d5a7d, x, 0, z, 1.0)
-      cyl(c, 0.03, 0.03, 2.4, 0x6e5235, x, 1.25, z, 6).rotation.z = Math.PI / 2
-      for (const dx of [-1.1, 1.1]) {
-        cyl(c, 0.32, 0.3, 0.35, 0x9e7b4f, x + dx, 0.7, z, 8)
-        cyl(c, 0.28, 0.28, 0.1, 0xdf5334, x + dx, 0.85, z, 8)
+      cyl(c, 0.04, 0.04, 3.2, 0x6e5235, x, 1.55, z, 6).rotation.z = Math.PI / 2
+      for (const dx of [-1.4, 1.4]) {
+        cyl(c, 0.42, 0.38, 0.45, 0x9e7b4f, x + dx, 0.9, z, 8)
+        cyl(c, 0.36, 0.36, 0.12, 0xdf5334, x + dx, 1.1, z, 8)
       }
     }
   },
