@@ -1563,6 +1563,50 @@ export const BUILDERS: Record<string, Builder> = {
       }
       return
     }
+    if (v === 'akasaka') {
+      // 赤坂「旅舎招婦ノ図」の旅籠の座敷・縁側でくつろぐ旅人と給仕の仲居
+      // 1. 座敷で膳に向かってくつろぐ旅人
+      traveler(c, {
+        x: -4.8,
+        y: 0.3,
+        z: -3.8,
+        ry: 1.2,
+        pose: 'sit',
+        color: 0x253d62,
+        hat: false,
+        motion: 'breathe',
+      })
+      // お膳とお椀
+      box(c, 0.6, 0.22, 0.6, 0x822520, -4.1, 0.4, -3.6) // 朱塗りの角膳
+      cyl(c, 0.1, 0.12, 0.1, 0x1f1f1f, -4.1, 0.55, -3.6, 6) // お椀
+      // 2. 給仕する仲居（前傾姿勢）
+      traveler(c, {
+        x: -3.4,
+        y: 0.3,
+        z: -3.4,
+        ry: -1.8,
+        pose: 'stand',
+        color: 0x9e382b,
+        hat: false,
+        motion: 'breathe',
+      })
+      // 行灯の暖かい明かり
+      box(c, 0.3, 0.6, 0.3, 0xf6ecd2, -5.6, 0.6, -3.2)
+      box(c, 0.32, 0.04, 0.32, 0x3a2e24, -5.6, 0.92, -3.2)
+      // 3. 縁側で足を休める旅人
+      traveler(c, {
+        x: -2.0,
+        y: 0.1,
+        z: -2.2,
+        ry: 0.2,
+        pose: 'sit',
+        color: 0x486b45,
+        hat: true,
+        pack: 'back',
+        motion: 'breathe',
+      })
+      return
+    }
     if (v === 'shop') {
       // 店先・茶屋の旅人たち（鳴海・鞠子・袋井など）
       traveler(c, { x: -2.2, z: -1.8, ry: 1.4, pose: 'stand', color: 0x29436e, hat: true, pack: 'back', motion: 'breathe' })
@@ -1796,6 +1840,50 @@ export const BUILDERS: Record<string, Builder> = {
     }
   },
   arimatsu(c, v) {
+    if (v === 'akasaka') {
+      // 赤坂「旅舎招婦ノ図」の旅籠の座敷・縁側でくつろぐ旅人と給仕の仲居
+      // 1. 座敷で膳に向かってくつろぐ旅人
+      traveler(c, {
+        x: -4.8,
+        y: 0.3,
+        z: -3.8,
+        ry: 1.2,
+        pose: 'sit',
+        color: 0x253d62,
+        hat: false,
+        motion: 'breathe',
+      })
+      // お膳とお椀
+      box(c, 0.6, 0.22, 0.6, 0x822520, -4.1, 0.4, -3.6) // 朱塗りの角膳
+      cyl(c, 0.1, 0.12, 0.1, 0x1f1f1f, -4.1, 0.55, -3.6, 6) // お椀
+      // 2. 給仕する仲居（前傾姿勢）
+      traveler(c, {
+        x: -3.4,
+        y: 0.3,
+        z: -3.4,
+        ry: -1.8,
+        pose: 'stand',
+        color: 0x9e382b,
+        hat: false,
+        motion: 'breathe',
+      })
+      // 行灯の暖かい明かり
+      box(c, 0.3, 0.6, 0.3, 0xf6ecd2, -5.6, 0.6, -3.2)
+      box(c, 0.32, 0.04, 0.32, 0x3a2e24, -5.6, 0.92, -3.2)
+      // 3. 縁側で足を休める旅人
+      traveler(c, {
+        x: -2.0,
+        y: 0.1,
+        z: -2.2,
+        ry: 0.2,
+        pose: 'sit',
+        color: 0x486b45,
+        hat: true,
+        pack: 'back',
+        motion: 'breathe',
+      })
+      return
+    }
     if (v === 'shop') {
       // 鳴海「名物有松絞」の絞り問屋（大きな藍の絞り暖簾と軒下の反物）
       const x = -5.8
