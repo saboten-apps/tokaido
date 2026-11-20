@@ -934,12 +934,41 @@ export const BUILDERS: Record<string, Builder> = {
     figure(c, 0x3b5a8a, -18.5, 0.5, -4)
   },
   porters(c) {
-    for (const [x, z] of [[-6, -11], [1, -13.5], [8, -11.5]] as const) {
-      box(c, 2.6, 0.22, 1.8, 0x7a5a38, x, 1.5, z)
-      for (const dx of [-1.1, 1.1]) for (const dz of [-0.7, 0.7]) {
-        figure(c, 0x3b4f7a, x + dx, 0, z + dz, 1.15)
+    // 大井川・島田の川越し人足と輦台（旅人を乗せて大河を渡る）
+    for (const [x, z, s] of [[-4.5, -7.5, 1.1], [2.5, -9.5, 1.0], [8.5, -12.5, 0.9]] as const) {
+      // 輦台の担ぎ棒
+      box(c, 4.2 * s, 0.12 * s, 0.12 * s, 0x5a422b, x, 1.25 * s, z - 0.7 * s)
+      box(c, 4.2 * s, 0.12 * s, 0.12 * s, 0x5a422b, x, 1.25 * s, z + 0.7 * s)
+      // 輦台の台座と手すり
+      box(c, 2.4 * s, 0.15 * s, 1.6 * s, 0x7a5a38, x, 1.35 * s, z)
+      box(c, 0.08 * s, 0.6 * s, 1.6 * s, 0x5a422b, x - 1.15 * s, 1.65 * s, z)
+      box(c, 0.08 * s, 0.6 * s, 1.6 * s, 0x5a422b, x + 1.15 * s, 1.65 * s, z)
+
+      // 輦台に乗る旅人（笠と着物で座る）
+      traveler(c, {
+        x,
+        y: 1.4 * s,
+        z,
+        scale: 0.95 * s,
+        pose: 'sit',
+        color: 0x8a3a2a,
+        hat: true,
+        motion: 'breathe',
+      })
+
+      // 水に入って輦台を肩に担ぐ川越人足4人
+      for (const dx of [-1.3 * s, 1.3 * s]) {
+        for (const dz of [-0.7 * s, 0.7 * s]) {
+          // ふんどし姿の人足（たくましい体つき）
+          cyl(c, 0.18 * s, 0.22 * s, 0.65 * s, 0xd4a578, x + dx, 0.9 * s, z + dz, 6) // 上半身
+          box(c, 0.42 * s, 0.3 * s, 0.35 * s, 0x223b5d, x + dx, 0.5 * s, z + dz) // 藍のふんどし・股引き
+          cyl(c, 0.16 * s, 0.16 * s, 0.3 * s, 0xd4a578, x + dx, 1.32 * s, z + dz, 6) // 頭部
+          // ねじり鉢巻き
+          cyl(c, 0.17 * s, 0.17 * s, 0.06 * s, 0xffffff, x + dx, 1.42 * s, z + dz, 6)
+        }
       }
-      figure(c, 0xb08a4a, x, 1.5, z, 0.9)
+      // 水しぶき・波頭
+      box(c, 3.6 * s, 0.08, 2.4 * s, 0xe8f2f8, x, 0.08, z)
     }
   },
   kanpyo(c) {
