@@ -2076,6 +2076,20 @@ export const BUILDERS: Record<string, Builder> = {
       return
     }
   },
+  well(c) {
+    // 大津「走井茶屋」の名水が湧き出る走井の井戸
+    const x = -3.2
+    const z = -2.2
+    // 石組みの四角い井戸枠
+    box(c, 1.8, 0.7, 1.8, 0x828078, x, 0.35, z)
+    box(c, 1.3, 0.5, 1.3, 0x1d3a58, x, 0.35, z) // 澄んだ清水
+    // 井戸の柱と屋根
+    for (const side of [-1, 1]) cyl(c, 0.08, 0.08, 2.2, 0x4a3420, x + side * 0.75, 1.1, z, 6)
+    box(c, 1.8, 0.1, 0.1, 0x4a3420, x, 2.1, z)
+    cone(c, 1.6, 0.6, 0x3d3024, x, 2.45, z, 4, Math.PI / 4) // 杉皮屋根
+    // 水桶
+    cyl(c, 0.2, 0.24, 0.32, 0x9e7b4f, x + 1.2, 0.16, z + 0.4, 8)
+  },
   sanjo_bridge(c) {
     // 京都「三条大橋」の鴨川に架かる堂々たる大木橋（金の擬宝珠と渡る人々）
     const len = 38
